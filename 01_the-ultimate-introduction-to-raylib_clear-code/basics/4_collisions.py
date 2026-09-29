@@ -17,7 +17,11 @@ while not window_should_close():
     screen_width = get_screen_width()
     screen_height = get_screen_height()
 
-    # reset
+    print(
+        check_collision_circles(
+            player_position, player_radius, obstacle_position, obstacle_radius
+        )
+    )
 
     # input
     mouse_position = get_mouse_position()
