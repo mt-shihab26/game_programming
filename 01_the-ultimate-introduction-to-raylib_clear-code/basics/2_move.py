@@ -16,16 +16,16 @@ while not window_should_close():
     screen_height = get_screen_height()
 
     # updates
-    if spaceship_position.x < 0:
+    if spaceship_position.x <= 0:
         spaceship_direction.x = 1
 
-    if (spaceship_position.x + spaceship_texture.width) > screen_width:
+    if (spaceship_position.x + spaceship_texture.width) >= screen_width:
         spaceship_direction.x = -1
 
-    if spaceship_position.y < 0:
+    if spaceship_position.y <= 0:
         spaceship_direction.y = 1
 
-    if (spaceship_position.y + spaceship_texture.height) > screen_height:
+    if (spaceship_position.y + spaceship_texture.height) >= screen_height:
         spaceship_direction.y = -1
 
     spaceship_position.x += spaceship_direction.x * spaceship_speed * delta_time
