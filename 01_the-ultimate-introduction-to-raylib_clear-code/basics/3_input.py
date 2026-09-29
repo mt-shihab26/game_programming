@@ -1,7 +1,7 @@
 from os.path import join
 from pyray import *
 
-init_window(1000, 700, "Move")
+init_window(1000, 700, "Input")
 
 # load
 spaceship_texture = load_texture(join("assets", "spaceship.png"))
