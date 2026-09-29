@@ -42,6 +42,9 @@ while not window_should_close():
     draw_rectangle_rec(r1, BLUE)
     draw_rectangle_rec(r2, GREEN)
 
+    if collision_rec:
+        draw_rectangle_rec(collision_rec, YELLOW)
+
     end_drawing()
 
 # unload
