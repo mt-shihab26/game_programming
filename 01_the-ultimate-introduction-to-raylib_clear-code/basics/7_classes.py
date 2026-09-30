@@ -9,7 +9,7 @@ class Player:
         self.direction = Vector2(0, 0)
         self.speed = 500
 
-    def update(self, delta_time: float):
+    def update(self, delta_time: float) -> None:
         self.direction.x = 0
         self.direction.y = 0
 
@@ -30,9 +30,26 @@ class Player:
         draw_texture_v(self.texture, self.position, WHITE)
 
 
+class Block:
+    def __init__(self, position: Vector2, speed: float) -> None:
+        self.speed = speed
+        self.rectangle = Rectangle(position.x, position.y, 200, 100)
+        self.direction = Vector2(1, 0)
+
+    def update(self, delta_time: float) -> None:
+        self.direction = vector2_normalize(self.direction)
+
+        self.rectangle.x += self.direction.x * self.speed * delta_time
+        self.rectangle.y += self.direction.y * self.speed * delta_time
+
+    def draw(self) -> None:
+        draw_rectangle_rec(self.rectangle, GREEN)
+
+
 init_window(1000, 600, "Audio")
 
 player = Player(Vector2(500, 200))
+block = Block(Vector2(0, 0), 200)
 
 while not window_should_close():
     # states
@@ -40,11 +57,13 @@ while not window_should_close():
 
     # updates
     player.update(delta_time)
+    block.update(delta_time)
 
-    # rendering
+    # drawing
     begin_drawing()
     clear_background(BLACK)
     player.draw()
+    block.draw()
     end_drawing()
 
 
