@@ -23,7 +23,6 @@ camera_object = Camera2D()
 camera_zoom = 0
 camera_object.zoom = 1
 camera_direction = 0
-camera_speed = 50
 
 while not window_should_close():
     # states
@@ -66,8 +65,9 @@ while not window_should_close():
 
     camera_object.target = player_position
     camera_object.offset = Vector2(screen_width / 2, screen_height / 2)
-    camera_object.rotation += camera_direction * camera_speed * delta_time
-    camera_object.zoom += camera_zoom * delta_time
+    camera_object.rotation += camera_direction * 50 * delta_time
+    camera_object.zoom += camera_zoom * 2 * delta_time
+    camera_object.zoom = max(0.2, min(2, camera_object.zoom))
 
     # drawing
     begin_drawing()
