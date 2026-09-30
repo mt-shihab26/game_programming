@@ -2,14 +2,12 @@ from pyray import (
     WHITE,
     KeyboardKey,
     Vector2,
-    draw_texture,
     draw_texture_v,
     get_screen_height,
     get_screen_width,
     is_key_down,
     load_texture,
     unload_texture,
-    vector2_normalize,
 )
 
 from core.config import PLAYER_SPEED

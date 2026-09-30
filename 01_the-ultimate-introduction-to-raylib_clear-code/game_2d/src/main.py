@@ -8,7 +8,6 @@ from pyray import (
     init_window,
     is_window_resized,
     close_window,
-    load_audio_stream,
     window_should_close,
     begin_drawing,
 )
@@ -60,6 +59,5 @@ class Game:
                 break
 
 
-game = Game()
-
-game.run()
+if __name__ == "__main__":
+    Game().run()

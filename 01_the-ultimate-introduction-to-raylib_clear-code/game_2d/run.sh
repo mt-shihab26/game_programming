@@ -1,1 +1,1 @@
-python ./src/main.py
+python "$(dirname "$0")/src/main.py"

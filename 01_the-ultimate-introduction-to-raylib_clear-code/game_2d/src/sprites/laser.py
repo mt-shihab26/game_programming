@@ -1,4 +1,3 @@
-
 from pyray import load_texture, unload_texture
 
 from core.paths import laser_image_path

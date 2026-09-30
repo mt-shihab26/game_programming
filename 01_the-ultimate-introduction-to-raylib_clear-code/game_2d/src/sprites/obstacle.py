@@ -57,6 +57,6 @@ class Obstacle(Sprite):
 
     def __get_new_position(self) -> Vector2:
         return Vector2(
-            randint(0, get_screen_width() - self.texture.width),
+            randint(0, max(0, get_screen_width() - self.texture.width)),
             -self.texture.height,
         )
