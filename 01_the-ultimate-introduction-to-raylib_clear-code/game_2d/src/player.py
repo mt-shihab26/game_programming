@@ -4,6 +4,7 @@ from pyray import (
     Vector2,
     draw_texture,
     draw_texture_v,
+    get_screen_height,
     get_screen_width,
     is_key_down,
     load_texture,
@@ -19,7 +20,10 @@ class Player:
     def __init__(self) -> None:
         self.texture = load_texture(join("assets", "images", "spaceship.png"))
         self.direction = Vector2(0, 0)
-        self.position = Vector2((get_screen_width() / 2) - (self.texture.width / 2), 0)
+        self.position = Vector2(
+            (get_screen_width() / 2) - (self.texture.width / 2),
+            (get_screen_height() / 2) - (self.texture.height / 2),
+        )
         self.speed = PLAYER_SPEED
 
     def deinit(self) -> None:
