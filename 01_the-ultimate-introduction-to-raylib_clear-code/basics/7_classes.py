@@ -20,7 +20,6 @@ class Player(Sprite):
     def __init__(self, position: Vector2) -> None:
         super().__init__(position, 500)
         self.texture = load_texture(join("assets", "spaceship.png"))
-        self.direction = Vector2(0, 0)
 
     def update(self, delta_time: float) -> None:
         self.direction.x = 0
@@ -55,22 +54,24 @@ class Block(Sprite):
 
 init_window(1000, 600, "OOP")
 
-player = Player(Vector2(500, 200))
-block = Block(Vector2(0, 0), 200)
+sprites = [
+    Player(Vector2(500, 200)),
+    Block(Vector2(0, 0), 200),
+]
 
 while not window_should_close():
     # states
     delta_time = get_frame_time()
 
     # updates
-    player.update(delta_time)
-    block.update(delta_time)
+    for sprite in sprites:
+        sprite.update(delta_time)
 
     # drawing
     begin_drawing()
     clear_background(BLACK)
-    player.draw()
-    block.draw()
+    for sprite in sprites:
+        sprite.draw()
     end_drawing()
 
 
