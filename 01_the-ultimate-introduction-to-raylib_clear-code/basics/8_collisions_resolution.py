@@ -1,0 +1,77 @@
+from pyray import *
+from os.path import join
+
+init_window(1300, 800, "Collisions Resolution")
+
+player_rectangle = Rectangle(400, 300, 60, 60)
+player_speed = 300
+player_direction = Vector2(0, 0)
+
+
+def get_blocks(screen_width: float, screen_height: float) -> list[Rectangle]:
+    level_map = [
+        "1111111111111111111",
+        "1010000000000000001",
+        "1010000000001111111",
+        "1000000000000000111",
+        "1000000200000000011",
+        "1000000000000100001",
+        "1000000000000100001",
+        "1001100000000100001",
+        "1001100000000100001",
+        "1001100000000100001",
+        "1111111111111111111",
+    ]
+
+    blocks: list[Rectangle] = []
+    rows_len = len(level_map)
+    columns_len = len(level_map[0])
+    for i, row in enumerate(level_map):
+        for j, column in enumerate(row):
+            if column == "1":
+                x_size = screen_width / columns_len
+                y_size = screen_height / rows_len
+                x_position = j * x_size
+                y_position = i * y_size
+                block = Rectangle(x_position, y_position, x_size, y_size)
+                blocks.append(block)
+    return blocks
+
+
+while not window_should_close():
+    # states
+    screen_width = get_screen_width()
+    screen_height = get_screen_height()
+    delta_time = get_frame_time()
+
+    # resets
+    player_direction = Vector2(0, 0)
+
+    # inputs
+    if is_key_down(KeyboardKey.KEY_DOWN):
+        player_direction.y = 1
+    if is_key_down(KeyboardKey.KEY_UP):
+        player_direction.y = -1
+    if is_key_down(KeyboardKey.KEY_RIGHT):
+        player_direction.x = 1
+    if is_key_down(KeyboardKey.KEY_LEFT):
+        player_direction.x = -1
+
+    # updates
+    player_direction = vector2_normalize(player_direction)
+
+    player_rectangle.x += player_direction.x * player_speed * delta_time
+    player_rectangle.y += player_direction.y * player_speed * delta_time
+
+    # rendering
+    begin_drawing()
+    clear_background(WHITE)
+
+    for block in get_blocks(screen_width, screen_height):
+        draw_rectangle_rec(block, GRAY)
+
+    draw_rectangle_rec(player_rectangle, BLACK)
+
+    end_drawing()
+
+close_window()
