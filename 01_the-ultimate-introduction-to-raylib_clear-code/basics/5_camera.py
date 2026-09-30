@@ -4,6 +4,7 @@ from random import choice, randint
 
 init_window(1000, 700, "Camera")
 
+
 player_position = Vector2(0, 0)
 player_radius = 50
 player_direction = Vector2(0, 0)
@@ -20,6 +21,7 @@ circles = [
 
 camera_object = Camera2D()
 camera_object.zoom = 1
+camera_direction = 0
 
 while not window_should_close():
     # states
@@ -30,7 +32,7 @@ while not window_should_close():
     # reset
     player_direction.x = 0
     player_direction.y = 0
-
+    camera_direction = 0
     # input
     if is_key_down(KeyboardKey.KEY_RIGHT):
         player_direction.x = 1
@@ -41,11 +43,20 @@ while not window_should_close():
     if is_key_down(KeyboardKey.KEY_UP):
         player_direction.y = -1
 
+    if is_key_down(KeyboardKey.KEY_S):
+        camera_direction = 1
+    if is_key_down(KeyboardKey.KEY_A):
+        camera_direction = -1
+
     # updates
     player_direction = vector2_normalize(player_direction)
 
-    player_direction.x += player_direction.x * player_speed * delta_time
-    player_direction.y += player_direction.y * player_speed * delta_time
+    player_position.x += player_direction.x * player_speed * delta_time
+    player_position.y += player_direction.y * player_speed * delta_time
+
+    camera_object.target = player_position
+    camera_object.offset = Vector2(screen_width / 2, screen_height / 2)
+    camera_object.rotation = camera_direction * 50 * delta_time
 
     # drawing
     begin_drawing()
