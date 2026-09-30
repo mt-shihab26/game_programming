@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from os.path import join
 from pyray import (
     WHITE,
     Vector2,
@@ -12,6 +11,7 @@ from pyray import (
 from random import randint
 
 from core.config import METEOR_SPEED_RANGE, METEOR_TIMER_DURATION
+from core.paths import meteor_image_path
 from core.sprite import Sprite
 from core.timer import Timer
 
@@ -24,7 +24,7 @@ class Meteor:
 
 class Obstacle(Sprite):
     def __init__(self) -> None:
-        self.texture = load_texture(join("assets", "images", "meteor.png"))
+        self.texture = load_texture(meteor_image_path())
         self.meteors: list[Meteor] = []
         self.timer = Timer(
             METEOR_TIMER_DURATION,

@@ -11,15 +11,15 @@ from pyray import (
     unload_texture,
     vector2_normalize,
 )
-from os.path import join
 
 from core.config import PLAYER_SPEED
+from core.paths import spaceship_image_path
 from core.sprite import Sprite
 
 
 class Player(Sprite):
     def __init__(self) -> None:
-        self.texture = load_texture(join("assets", "images", "spaceship.png"))
+        self.texture = load_texture(spaceship_image_path())
         self.direction = 0
         self.position = Vector2(
             (get_screen_width() / 2) - (self.texture.width / 2),

@@ -4,14 +4,14 @@ from pyray import (
     unload_music_stream,
     update_music_stream,
 )
-from os.path import join
 
+from core.paths import music_sound_path
 from core.sprite import Sprite
 
 
 class Music(Sprite):
     def __init__(self) -> None:
-        self.stream = load_music_stream(join("assets", "sounds", "music.wav"))
+        self.stream = load_music_stream(music_sound_path())
         play_music_stream(self.stream)
 
     def deinit(self) -> None:
