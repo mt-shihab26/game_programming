@@ -3,8 +3,26 @@ from os.path import join
 
 init_window(1300, 800, "Collisions Resolution")
 
+
+def collision(
+    axis: str, blocks: list[Rectangle], player: Rectangle, direction: Vector2
+):
+    for block in blocks:
+        if check_collision_recs(block, player):
+            if axis == "x":
+                if 0 < direction.x:  # moving right
+                    player.x = block.x - player.width
+                if direction.x < 0:  # moving left
+                    player.x = block.x + block.width
+            else:
+                if 0 < direction.y:  # moving bottom
+                    player.y = block.y - player.height
+                if direction.y < 0:  # moving top
+                    player.y = block.y + block.height
+
+
 player_rectangle = Rectangle(400, 300, 60, 60)
-player_speed = 300
+player_speed = 500
 player_direction = Vector2(0, 0)
 
 
@@ -43,6 +61,7 @@ while not window_should_close():
     screen_width = get_screen_width()
     screen_height = get_screen_height()
     delta_time = get_frame_time()
+    blocks = get_blocks(screen_width, screen_height)
 
     # resets
     player_direction = Vector2(0, 0)
@@ -61,13 +80,16 @@ while not window_should_close():
     player_direction = vector2_normalize(player_direction)
 
     player_rectangle.x += player_direction.x * player_speed * delta_time
+    collision("x", blocks, player_rectangle, player_direction)
+
     player_rectangle.y += player_direction.y * player_speed * delta_time
+    collision("y", blocks, player_rectangle, player_direction)
 
     # rendering
     begin_drawing()
     clear_background(WHITE)
 
-    for block in get_blocks(screen_width, screen_height):
+    for block in blocks:
         draw_rectangle_rec(block, GRAY)
 
     draw_rectangle_rec(player_rectangle, BLACK)
