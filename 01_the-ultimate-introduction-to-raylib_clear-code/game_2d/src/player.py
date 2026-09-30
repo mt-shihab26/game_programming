@@ -20,10 +20,7 @@ class Player:
     def __init__(self) -> None:
         self.texture = load_texture(join("assets", "images", "spaceship.png"))
         self.direction = Vector2(0, 0)
-        self.position = Vector2(
-            (get_screen_width() / 2) - (self.texture.width / 2),
-            (get_screen_height() / 2) - (self.texture.height / 2),
-        )
+        self.position = self.__get_inital_player_position()
         self.speed = PLAYER_SPEED
 
     def deinit(self) -> None:
@@ -46,3 +43,9 @@ class Player:
 
     def draw(self) -> None:
         draw_texture_v(self.texture, self.position, WHITE)
+
+    def __get_inital_player_position(self) -> Vector2:
+        return Vector2(
+            (get_screen_width() / 2) - (self.texture.width / 2),
+            (get_screen_height() / 2) - (self.texture.height / 2),
+        )
