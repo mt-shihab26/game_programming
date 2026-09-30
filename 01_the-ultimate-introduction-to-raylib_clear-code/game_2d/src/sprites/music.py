@@ -19,6 +19,3 @@ class Music(Sprite):
 
     def update(self, delta_time: float) -> None:
         update_music_stream(self.stream)
-
-    def draw(self) -> None:
-        pass
