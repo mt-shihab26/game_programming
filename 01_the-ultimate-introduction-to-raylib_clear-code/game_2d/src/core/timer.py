@@ -1,8 +1,16 @@
+from collections.abc import Callable
+
 from pyray import get_time
 
 
 class Timer:
-    def __init__(self, duration: float, repeat=False, autostart=False, func=None):
+    def __init__(
+        self,
+        duration: float,
+        repeat=False,
+        autostart=False,
+        func: Callable[[], None] | None = None,
+    ):
         self.duration = duration
         self.start_time = 0
         self.active = False
@@ -19,12 +27,13 @@ class Timer:
     def stop(self):
         self.active = False
         self.start_time = 0
-        if self.repeat:
-            self.start()
 
     def update(self):
-        if self.active:
-            if get_time() - self.start_time >= self.duration:
-                if self.func:
-                    self.func()
-                self.stop()
+        if not self.active:
+            return
+        if get_time() - self.start_time >= self.duration:
+            if self.func:
+                self.func()
+            self.stop()
+            if self.repeat:
+                self.start()
