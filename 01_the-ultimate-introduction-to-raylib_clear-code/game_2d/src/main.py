@@ -5,11 +5,13 @@ from pyray import (
     init_window,
     is_window_resized,
     close_window,
+    load_audio_stream,
     window_should_close,
     begin_drawing,
 )
 
 from core.config import BG_COLOR, WINDOW_WIDTH, WINDOW_HEIGHT
+from sprites.music import Music
 from sprites.player import Player
 from sprites.obstacle import Obstacle
 
@@ -18,7 +20,7 @@ class Game:
     def __init__(self) -> None:
         init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Game 2D")
         self.__wait_for_window_size()
-        self.sprites = [Obstacle(), Player()]
+        self.sprites = [Obstacle(), Player(), Music()]
 
     def __deinit(self) -> None:
         for sprite in self.sprites:
