@@ -20,13 +20,18 @@ class Player:
     def __init__(self) -> None:
         self.texture = load_texture(join("assets", "images", "spaceship.png"))
         self.direction = Vector2(0, 0)
-        self.position = self.__get_inital_player_position()
+        self.position = Vector2(
+            (get_screen_width() / 2) - (self.texture.width / 2),
+            (get_screen_height() * 5 / 6) - self.texture.height / 2,
+        )
         self.speed = PLAYER_SPEED
 
     def deinit(self) -> None:
         unload_texture(self.texture)
 
     def update(self, delta_time: float) -> None:
+        self.direction.x = 0
+        self.direction.y = 0
         if is_key_down(KeyboardKey.KEY_UP) or is_key_down(KeyboardKey.KEY_K):
             self.direction.y = -1
         if is_key_down(KeyboardKey.KEY_DOWN) or is_key_down(KeyboardKey.KEY_J):
@@ -43,9 +48,3 @@ class Player:
 
     def draw(self) -> None:
         draw_texture_v(self.texture, self.position, WHITE)
-
-    def __get_inital_player_position(self) -> Vector2:
-        return Vector2(
-            (get_screen_width() / 2) - (self.texture.width / 2),
-            (get_screen_height() / 2) - (self.texture.height / 2),
-        )
