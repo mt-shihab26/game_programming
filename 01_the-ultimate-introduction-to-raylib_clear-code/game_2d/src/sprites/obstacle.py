@@ -44,6 +44,7 @@ class Obstacle(Sprite):
         for meteor in self.meteors:
             if meteor.position.y <= get_screen_height():
                 meteors.append(meteor)
+        self.meteors = meteors
 
     def draw(self) -> None:
         for meteor in self.meteors:
