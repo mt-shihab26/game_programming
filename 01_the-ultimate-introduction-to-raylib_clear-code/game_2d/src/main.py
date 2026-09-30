@@ -1,4 +1,5 @@
 from pyray import (
+    RED,
     clear_background,
     close_audio_device,
     end_drawing,
@@ -23,7 +24,7 @@ class Game:
         init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Game 2D")
         init_audio_device()
         self.__wait_for_window_size()
-        self.sprites = [Obstacle(), Player(), Music()]
+        self.sprites = [Music(), Obstacle(), Player()]
 
     def __deinit(self) -> None:
         for sprite in self.sprites:
@@ -53,7 +54,7 @@ class Game:
         # Tiling WMs (Hyprland) resize the window only after the first frames are drawn
         for _ in range(10):
             begin_drawing()
-            clear_background(BG_COLOR)
+            clear_background(RED)
             end_drawing()
             if is_window_resized():
                 break

@@ -20,7 +20,7 @@ from core.sprite import Sprite
 class Player(Sprite):
     def __init__(self) -> None:
         self.texture = load_texture(join("assets", "images", "spaceship.png"))
-        self.direction = Vector2(0, 0)
+        self.direction = 0
         self.position = Vector2(
             (get_screen_width() / 2) - (self.texture.width / 2),
             (get_screen_height() * 5 / 6) - self.texture.height / 2,
@@ -31,21 +31,12 @@ class Player(Sprite):
         unload_texture(self.texture)
 
     def update(self, delta_time: float) -> None:
-        self.direction.x = 0
-        self.direction.y = 0
-        if is_key_down(KeyboardKey.KEY_UP) or is_key_down(KeyboardKey.KEY_K):
-            self.direction.y = -1
-        if is_key_down(KeyboardKey.KEY_DOWN) or is_key_down(KeyboardKey.KEY_J):
-            self.direction.y = 1
+        self.direction = 0
         if is_key_down(KeyboardKey.KEY_LEFT) or is_key_down(KeyboardKey.KEY_H):
-            self.direction.x = -1
+            self.direction = -1
         if is_key_down(KeyboardKey.KEY_RIGHT) or is_key_down(KeyboardKey.KEY_L):
-            self.direction.x = 1
-
-        self.direction = vector2_normalize(self.direction)
-
-        self.position.x += self.direction.x * self.speed * delta_time
-        self.position.y += self.direction.y * self.speed * delta_time
+            self.direction = 1
+        self.position.x += self.direction * self.speed * delta_time
 
     def draw(self) -> None:
         draw_texture_v(self.texture, self.position, WHITE)
