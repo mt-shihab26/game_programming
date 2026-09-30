@@ -16,6 +16,7 @@ from core.config import BG_COLOR, WINDOW_WIDTH, WINDOW_HEIGHT
 from sprites.music import Music
 from sprites.player import Player
 from sprites.obstacle import Obstacle
+from sprites.weapon import Weapon
 
 
 class Game:

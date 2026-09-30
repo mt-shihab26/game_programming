@@ -13,6 +13,7 @@ from pyray import (
 from core.config import PLAYER_SPEED
 from core.paths import spaceship_image_path
 from core.sprite import Sprite
+from sprites.weapon import Weapon
 
 
 class Player(Sprite):
@@ -24,8 +25,10 @@ class Player(Sprite):
             (get_screen_height() * 5 / 6) - self.texture.height / 2,
         )
         self.speed = PLAYER_SPEED
+        self.weapon = Weapon()
 
     def deinit(self) -> None:
+        self.weapon.deinit()
         unload_texture(self.texture)
 
     def update(self, delta_time: float) -> None:
@@ -41,5 +44,8 @@ class Player(Sprite):
         if self.position.x < 0:
             self.position.x = 0
 
+        self.weapon.update(delta_time, self.position)
+
     def draw(self) -> None:
         draw_texture_v(self.texture, self.position, WHITE)
+        self.weapon.draw()
