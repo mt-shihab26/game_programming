@@ -11,12 +11,15 @@ player_speed = 400
 
 circles = [
     (
-        Vector2(randint(-2000, 2000), randint(-2000, 2000)),  # position
+        Vector2(randint(-2000, 2000), randint(-1000, 1000)),  # position
         randint(50, 200),  # radius
         choice([RED, GREEN, BLUE, YELLOW, ORANGE]),  # color
     )
     for i in range(100)
 ]
+
+camera_object = Camera2D()
+camera_object.zoom = 1
 
 while not window_should_close():
     # states
@@ -46,11 +49,13 @@ while not window_should_close():
 
     # drawing
     begin_drawing()
-    clear_background(BLACK)
+    begin_mode_2d(camera_object)
+    clear_background(WHITE)
     draw_fps(screen_width - 105, 10)
     for circle in circles:
         draw_circle_v(*circle)
     draw_circle_v(player_position, player_radius, BLACK)
+    end_mode_2d()
     end_drawing()
 
 close_window()
