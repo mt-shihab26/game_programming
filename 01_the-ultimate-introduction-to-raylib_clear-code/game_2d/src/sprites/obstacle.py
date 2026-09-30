@@ -17,7 +17,7 @@ from core.timer import Timer
 class Obstacle(Sprite):
     def __init__(self) -> None:
         self.texture = load_texture(join("assets", "images", "meteor.png"))
-        self.positions = []
+        self.items = []
         self.timer = Timer(
             METEOR_TIMER_DURATION,
             repeat=True,
@@ -30,20 +30,25 @@ class Obstacle(Sprite):
 
     def update(self, delta_time: float) -> None:
         self.timer.update()
-        for position in self.positions:
-            position.y += (
-                randint(METEOR_SPEED_RANGE[0], METEOR_SPEED_RANGE[1]) * delta_time
-            )
+        for item in self.items:
+            item.position.y += item.speed * delta_time
 
     def draw(self) -> None:
-        for position in self.positions:
-            draw_texture_v(self.texture, position, WHITE)
+        for item in self.items:
+            draw_texture_v(self.texture, item.position, WHITE)
 
     def __get_new_position(self):
-        return Vector2(
-            randint(0, get_screen_width() - self.texture.width),
-            -self.texture.height,
-        )
+        random_x = randint(0, get_screen_width() - self.texture.width)
+        return {
+            "position": Vector2(random_x, -self.texture.height),
+            "speed": randint(METEOR_SPEED_RANGE[0], METEOR_SPEED_RANGE[1]),
+        }
 
     def __add_new_position(self):
-        self.positions.append(self.__get_new_position())
+        random_x = randint(0, get_screen_width() - self.texture.width)
+        self.items.append(
+            {
+                "position": Vector2(random_x, -self.texture.height),
+                "speed": randint(METEOR_SPEED_RANGE[0], METEOR_SPEED_RANGE[1]),
+            }
+        )
