@@ -1,0 +1,44 @@
+from pyray import (
+    WHITE,
+    KeyboardKey,
+    Vector2,
+    draw_texture,
+    draw_texture_v,
+    get_screen_width,
+    is_key_down,
+    load_texture,
+    unload_texture,
+    vector2_normalize,
+)
+from os.path import join
+
+from config import PLAYER_SPEED
+
+
+class Player:
+    def __init__(self) -> None:
+        self.texture = load_texture(join("assets", "images", "spaceship.png"))
+        self.direction = Vector2(0, 0)
+        self.position = Vector2((get_screen_width() / 2) - (self.texture.width / 2), 0)
+        self.speed = PLAYER_SPEED
+
+    def deinit(self) -> None:
+        unload_texture(self.texture)
+
+    def update(self, delta_time: float) -> None:
+        if is_key_down(KeyboardKey.KEY_UP) or is_key_down(KeyboardKey.KEY_K):
+            self.direction.y = -1
+        if is_key_down(KeyboardKey.KEY_DOWN) or is_key_down(KeyboardKey.KEY_J):
+            self.direction.y = 1
+        if is_key_down(KeyboardKey.KEY_LEFT) or is_key_down(KeyboardKey.KEY_H):
+            self.direction.x = -1
+        if is_key_down(KeyboardKey.KEY_RIGHT) or is_key_down(KeyboardKey.KEY_L):
+            self.direction.x = 1
+
+        self.direction = vector2_normalize(self.direction)
+
+        self.position.x += self.direction.x * self.speed * delta_time
+        self.position.y += self.direction.y * self.speed * delta_time
+
+    def draw(self) -> None:
+        draw_texture_v(self.texture, self.position, WHITE)
