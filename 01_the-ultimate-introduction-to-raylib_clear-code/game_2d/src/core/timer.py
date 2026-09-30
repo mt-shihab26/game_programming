@@ -2,7 +2,7 @@ from pyray import get_time
 
 
 class Timer:
-    def __init__(self, duration: int, repeat=False, autostart=False, func=None):
+    def __init__(self, duration: float, repeat=False, autostart=False, func=None):
         self.duration = duration
         self.start_time = 0
         self.active = False
