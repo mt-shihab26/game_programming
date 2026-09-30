@@ -67,13 +67,13 @@ while not window_should_close():
     player_direction = Vector2(0, 0)
 
     # inputs
-    if is_key_down(KeyboardKey.KEY_DOWN):
+    if is_key_down(KeyboardKey.KEY_DOWN) or is_key_down(KeyboardKey.KEY_J):
         player_direction.y = 1
-    if is_key_down(KeyboardKey.KEY_UP):
+    if is_key_down(KeyboardKey.KEY_UP) or is_key_down(KeyboardKey.KEY_K):
         player_direction.y = -1
-    if is_key_down(KeyboardKey.KEY_RIGHT):
+    if is_key_down(KeyboardKey.KEY_RIGHT) or is_key_down(KeyboardKey.KEY_L):
         player_direction.x = 1
-    if is_key_down(KeyboardKey.KEY_LEFT):
+    if is_key_down(KeyboardKey.KEY_LEFT) or is_key_down(KeyboardKey.KEY_H):
         player_direction.x = -1
 
     # updates
