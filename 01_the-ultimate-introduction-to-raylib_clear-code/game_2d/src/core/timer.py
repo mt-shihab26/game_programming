@@ -25,6 +25,6 @@ class Timer:
     def update(self):
         if self.active:
             if get_time() - self.start_time >= self.duration:
-                if self.func and self.start_time:
+                if self.func:
                     self.func()
                 self.stop()
