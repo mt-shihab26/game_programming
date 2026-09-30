@@ -13,10 +13,11 @@ from pyray import (
 )
 from os.path import join
 
-from config import PLAYER_SPEED
+from core.config import PLAYER_SPEED
+from core.sprite import Sprite
 
 
-class Player:
+class Player(Sprite):
     def __init__(self) -> None:
         self.texture = load_texture(join("assets", "images", "spaceship.png"))
         self.direction = Vector2(0, 0)
