@@ -15,6 +15,12 @@ class Sprite:
         self.position.x += self.direction.x * self.speed * delta_time
         self.position.y += self.direction.y * self.speed * delta_time
 
+    def update(self, delta_time: float) -> None:
+        pass
+
+    def draw(self) -> None:
+        pass
+
 
 class Player(Sprite):
     def __init__(self, position: Vector2) -> None:
@@ -54,7 +60,7 @@ class Block(Sprite):
 
 init_window(1000, 600, "OOP")
 
-sprites = [
+sprites: list[Sprite] = [
     Player(Vector2(500, 200)),
     Block(Vector2(0, 0), 200),
 ]
