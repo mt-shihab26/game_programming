@@ -2,12 +2,25 @@ from pyray import *
 from os.path import join
 
 
-class Player:
-    def __init__(self, position: Vector2) -> None:
+class Sprite:
+    def __init__(
+        self, position: Vector2, speed: float, direction: Vector2 = Vector2(0, 0)
+    ) -> None:
         self.position = position
+        self.speed = speed
+        self.direction = direction
+
+    def move(self, delta_time):
+        self.direction = vector2_normalize(self.direction)
+        self.position.x += self.direction.x * self.speed * delta_time
+        self.position.y += self.direction.y * self.speed * delta_time
+
+
+class Player(Sprite):
+    def __init__(self, position: Vector2) -> None:
+        super().__init__(position, 500)
         self.texture = load_texture(join("assets", "spaceship.png"))
         self.direction = Vector2(0, 0)
-        self.speed = 500
 
     def update(self, delta_time: float) -> None:
         self.direction.x = 0
@@ -22,31 +35,25 @@ class Player:
         if is_key_down(KeyboardKey.KEY_UP):
             self.direction.y = -1
 
-        self.direction = vector2_normalize(self.direction)
-        self.position.x += self.direction.x * self.speed * delta_time
-        self.position.y += self.direction.y * self.speed * delta_time
+        self.move(delta_time)
 
     def draw(self) -> None:
         draw_texture_v(self.texture, self.position, WHITE)
 
 
-class Block:
+class Block(Sprite):
     def __init__(self, position: Vector2, speed: float) -> None:
-        self.speed = speed
-        self.rectangle = Rectangle(position.x, position.y, 200, 100)
-        self.direction = Vector2(1, 0)
+        super().__init__(position, speed, Vector2(1, 0))
+        self.size = Vector2(200, 100)
 
     def update(self, delta_time: float) -> None:
-        self.direction = vector2_normalize(self.direction)
-
-        self.rectangle.x += self.direction.x * self.speed * delta_time
-        self.rectangle.y += self.direction.y * self.speed * delta_time
+        self.move(delta_time)
 
     def draw(self) -> None:
-        draw_rectangle_rec(self.rectangle, GREEN)
+        draw_rectangle_v(self.position, self.size, GREEN)
 
 
-init_window(1000, 600, "Audio")
+init_window(1000, 600, "OOP")
 
 player = Player(Vector2(500, 200))
 block = Block(Vector2(0, 0), 200)
