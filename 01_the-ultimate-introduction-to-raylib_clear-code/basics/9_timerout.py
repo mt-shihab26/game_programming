@@ -1,10 +1,16 @@
 from pyray import *
 from os.path import join
 from random import choice
+from typing import Callable
 
 
 class Timer:
-    def __init__(self, duration: float, repeat: bool = False, func=None):
+    def __init__(
+        self,
+        duration: float,
+        repeat: bool = False,
+        func: Callable[[], None] | None = None,
+    ):
         self.duration = duration
         self.repeat = repeat
         self.func = func
@@ -18,7 +24,8 @@ class Timer:
             if not self.repeat:
                 self.active = False
             self.start_time = get_time()
-            self.func()
+            if self.func:
+                self.func()
 
 
 class Sprite:
@@ -69,7 +76,6 @@ sprites = [
 while not window_should_close():
     # states
     delta_time = get_frame_time()
-    time = get_time()
 
     # updates
     for sprite in sprites:
