@@ -1,28 +1,36 @@
+from dataclasses import dataclass
 from os.path import join
 from pyray import (
     WHITE,
     Vector2,
     draw_texture_v,
+    get_screen_height,
     get_screen_width,
     load_texture,
     unload_texture,
 )
-from random import randint, randrange
+from random import randint
 
 from core.config import METEOR_SPEED_RANGE, METEOR_TIMER_DURATION
 from core.sprite import Sprite
 from core.timer import Timer
 
 
+@dataclass
+class Meteor:
+    position: Vector2
+    speed: int
+
+
 class Obstacle(Sprite):
     def __init__(self) -> None:
         self.texture = load_texture(join("assets", "images", "meteor.png"))
-        self.items = []
+        self.meteors: list[Meteor] = []
         self.timer = Timer(
             METEOR_TIMER_DURATION,
             repeat=True,
             autostart=True,
-            func=self.__add_new_position,
+            func=self.__add_new_meteor,
         )
 
     def deinit(self) -> None:
@@ -30,25 +38,24 @@ class Obstacle(Sprite):
 
     def update(self, delta_time: float) -> None:
         self.timer.update()
-        for item in self.items:
-            item.position.y += item.speed * delta_time
+        for meteor in self.meteors:
+            meteor.position.y += meteor.speed * delta_time
+        meteors: list[Meteor] = []
+        for meteor in self.meteors:
+            if meteor.position.y <= get_screen_height():
+                meteors.append(meteor)
 
     def draw(self) -> None:
-        for item in self.items:
-            draw_texture_v(self.texture, item.position, WHITE)
+        for meteor in self.meteors:
+            draw_texture_v(self.texture, meteor.position, WHITE)
 
-    def __get_new_position(self):
-        random_x = randint(0, get_screen_width() - self.texture.width)
-        return {
-            "position": Vector2(random_x, -self.texture.height),
-            "speed": randint(METEOR_SPEED_RANGE[0], METEOR_SPEED_RANGE[1]),
-        }
+    def __add_new_meteor(self) -> None:
+        self.meteors.append(
+            Meteor(self.__get_new_position(), randint(*METEOR_SPEED_RANGE))
+        )
 
-    def __add_new_position(self):
-        random_x = randint(0, get_screen_width() - self.texture.width)
-        self.items.append(
-            {
-                "position": Vector2(random_x, -self.texture.height),
-                "speed": randint(METEOR_SPEED_RANGE[0], METEOR_SPEED_RANGE[1]),
-            }
+    def __get_new_position(self) -> Vector2:
+        return Vector2(
+            randint(0, get_screen_width() - self.texture.width),
+            -self.texture.height,
         )
