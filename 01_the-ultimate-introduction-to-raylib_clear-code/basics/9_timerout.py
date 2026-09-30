@@ -1,6 +1,6 @@
 from pyray import *
 from os.path import join
-from random import choice
+from random import choice, randint
 from typing import Callable
 
 
@@ -54,7 +54,10 @@ class Block(Sprite):
         self.color = choice([RED, YELLOW, ORANGE, GRAY, BLACK, BLUE])
 
     def position_change(self):
-        pass
+        self.position = Vector2(
+            randint(0, int(get_screen_width() - self.size.x)),
+            randint(0, int(get_screen_height() - self.size.y)),
+        )
 
     def update(self, delta_time: float) -> None:
         self.color_timer.update()
