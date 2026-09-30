@@ -44,7 +44,9 @@ class Player(Sprite):
         if self.position.x < 0:
             self.position.x = 0
 
-        self.weapon.update(delta_time, self.position)
+        self.weapon.update(
+            delta_time, self.position.x + (self.texture.width / 2), self.position.y
+        )
 
     def draw(self) -> None:
         draw_texture_v(self.texture, self.position, WHITE)
