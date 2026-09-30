@@ -1,7 +1,9 @@
 from pyray import (
     clear_background,
+    close_audio_device,
     end_drawing,
     get_frame_time,
+    init_audio_device,
     init_window,
     is_window_resized,
     close_window,
@@ -19,12 +21,14 @@ from sprites.obstacle import Obstacle
 class Game:
     def __init__(self) -> None:
         init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Game 2D")
+        init_audio_device()
         self.__wait_for_window_size()
         self.sprites = [Obstacle(), Player(), Music()]
 
     def __deinit(self) -> None:
         for sprite in self.sprites:
             sprite.deinit()
+        close_audio_device()
         close_window()
 
     def run(self) -> None:
