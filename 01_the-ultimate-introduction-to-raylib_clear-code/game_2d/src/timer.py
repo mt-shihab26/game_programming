@@ -1,4 +1,4 @@
-from settings import get_time
+from pyray import get_time
 
 
 class Timer:
@@ -28,4 +28,3 @@ class Timer:
                 if self.func and self.start_time:
                     self.func()
                 self.stop()
-
