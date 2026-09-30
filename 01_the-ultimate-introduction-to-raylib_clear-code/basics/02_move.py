@@ -30,6 +30,7 @@ while not window_should_close():
 
     spaceship_position.x += spaceship_direction.x * spaceship_speed * delta_time
     spaceship_position.y += spaceship_direction.y * spaceship_speed * delta_time
+    print(delta_time, spaceship_position.x, spaceship_position.y)
 
     # drawing
     begin_drawing()
