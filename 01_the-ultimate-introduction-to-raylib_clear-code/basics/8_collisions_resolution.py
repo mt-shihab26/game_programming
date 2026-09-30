@@ -15,9 +15,9 @@ def collision(
                 if direction.x < 0:  # moving left
                     player.x = block.x + block.width
             else:
-                if 0 < direction.y:  # moving bottom
+                if 0 < direction.y:  # moving down
                     player.y = block.y - player.height
-                if direction.y < 0:  # moving top
+                if direction.y < 0:  # moving up
                     player.y = block.y + block.height
 
 
