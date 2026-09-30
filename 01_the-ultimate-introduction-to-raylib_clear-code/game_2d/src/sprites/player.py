@@ -38,5 +38,10 @@ class Player(Sprite):
             self.direction = 1
         self.position.x += self.direction * self.speed * delta_time
 
+        if get_screen_width() < self.position.x + self.texture.width:
+            self.position.x = get_screen_width() - self.texture.width
+        if self.position.x < 0:
+            self.position.x = 0
+
     def draw(self) -> None:
         draw_texture_v(self.texture, self.position, WHITE)
