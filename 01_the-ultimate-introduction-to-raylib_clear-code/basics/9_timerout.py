@@ -3,6 +3,24 @@ from os.path import join
 from random import choice
 
 
+class Timer:
+    def __init__(self, duration: float, repeat: bool = False, func=None):
+        self.duration = duration
+        self.repeat = repeat
+        self.func = func
+        self.start_time = get_time()
+        self.active = True
+
+    def update(self):
+        if not self.active:
+            return
+        if get_time() - self.start_time >= self.duration:
+            if not self.repeat:
+                self.active = False
+            self.start_time = get_time()
+            self.func()
+
+
 class Sprite:
     def __init__(
         self, position: Vector2, speed: float, direction: Vector2 = Vector2(0, 0)
@@ -22,11 +40,19 @@ class Block(Sprite):
         super().__init__(position, speed, Vector2(0, 0))
         self.size = Vector2(200, 100)
         self.color = GREEN
+        self.color_timer = Timer(1.5, repeat=True, func=self.color_change)
+        self.position_timer = Timer(4, repeat=True, func=self.position_change)
 
-    def update(self, delta_time: float, change_color: bool) -> None:
+    def color_change(self):
+        self.color = choice([RED, YELLOW, ORANGE, GRAY, BLACK, BLUE])
+
+    def position_change(self):
+        pass
+
+    def update(self, delta_time: float) -> None:
+        self.color_timer.update()
+        self.position_timer.update()
         self.move(delta_time)
-        if change_color:
-            self.color = choice([RED, YELLOW, ORANGE, GRAY, BLACK, BLUE])
 
     def draw(self) -> None:
         draw_rectangle_v(self.position, self.size, self.color)
@@ -40,22 +66,14 @@ sprites = [
     Block(Vector2(500, 200), 200),
 ]
 
-count = 1
-
 while not window_should_close():
     # states
     delta_time = get_frame_time()
     time = get_time()
 
-    prev_count = count
-    diff_time = time / count
-    if diff_time >= 1.5:
-        print(time, diff_time, True)
-        count += 1
-
     # updates
     for sprite in sprites:
-        sprite.update(delta_time, count != prev_count)
+        sprite.update(delta_time)
 
     # drawing
     begin_drawing()
