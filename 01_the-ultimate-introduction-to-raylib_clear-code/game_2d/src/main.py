@@ -17,8 +17,8 @@ from core.config import BG_COLOR, WINDOW_WIDTH, WINDOW_HEIGHT
 from core.sprite import Sprite
 from sprites.music import Music
 from sprites.player import Player
-from sprites.obstacle import Obstacle
-from sprites.weapon import Weapon
+from sprites.obstacle import Meteor, Obstacle
+from sprites.weapon import Laser, Weapon
 
 
 class Game:
@@ -38,9 +38,13 @@ class Game:
 
     def update(self, delta_time: float) -> None:
         for laser in self.player.weapon.lasers:
-            print(laser)
             for meteor in self.obstacle.meteors:
-                print(meteor)
+                if (
+                    meteor.position.x <= laser.position.x
+                    and laser.position.x <= meteor.position.x + meteor.width
+                ):
+                    self.player.weapon.lasers.remove(laser)
+                    self.obstacle.meteors.remove(meteor)
 
         for sprite in self.sprites:
             sprite.update(delta_time)
