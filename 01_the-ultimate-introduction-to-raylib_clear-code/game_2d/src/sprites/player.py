@@ -37,17 +37,18 @@ class Player(Sprite):
 
     def update(self, delta_time: float) -> None:
         self.direction.x = 0
+
         if is_key_down(KeyboardKey.KEY_LEFT) or is_key_down(KeyboardKey.KEY_H):
             self.direction.x = -1
         if is_key_down(KeyboardKey.KEY_RIGHT) or is_key_down(KeyboardKey.KEY_L):
             self.direction.x = 1
 
+        super().update(delta_time)
+
         if get_screen_width() < self.position.x + self.texture.width:
             self.position.x = get_screen_width() - self.texture.width
         if self.position.x < 0:
             self.position.x = 0
-
-        super().update(delta_time)
 
         self.weapon.update(
             delta_time, self.position.x + (self.texture.width / 2), self.position.y

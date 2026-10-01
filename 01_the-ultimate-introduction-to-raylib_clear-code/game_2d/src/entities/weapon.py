@@ -6,6 +6,7 @@ from pyray import (
     load_sound,
     load_texture,
     play_sound,
+    unload_sound,
     unload_texture,
 )
 
@@ -44,6 +45,7 @@ class Weapon:
 
     def close(self) -> None:
         unload_texture(self.texture)
+        unload_sound(self.sound)
 
     def update(
         self, delta_time: float, player_center_x: float, player_y: float
