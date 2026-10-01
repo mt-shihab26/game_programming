@@ -22,6 +22,13 @@ class Laser:
     position: Vector2
     speed: int
 
+    @override
+    def __repr__(self) -> str:
+        return (
+            f"Laser(x={self.position.x:.1f}, y={self.position.y:.1f}, "
+            f"speed={self.speed})"
+        )
+
 
 class Weapon:
     def __init__(self) -> None:

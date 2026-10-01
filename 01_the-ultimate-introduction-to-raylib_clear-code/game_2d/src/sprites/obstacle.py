@@ -14,12 +14,20 @@ from core.timer import Timer
 
 from random import randint
 from dataclasses import dataclass
+from typing import override
 
 
 @dataclass
 class Meteor:
     position: Vector2
     speed: int
+
+    @override
+    def __repr__(self) -> str:
+        return (
+            f"Meteor(x={self.position.x:.1f}, y={self.position.y:.1f}, "
+            f"speed={self.speed})"
+        )
 
 
 class Obstacle(Sprite):

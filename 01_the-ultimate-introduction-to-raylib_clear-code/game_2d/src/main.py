@@ -2,6 +2,7 @@ from pyray import (
     RED,
     clear_background,
     close_audio_device,
+    draw_fps,
     end_drawing,
     get_frame_time,
     init_audio_device,
@@ -38,6 +39,8 @@ class Game:
     def update(self, delta_time: float) -> None:
         for laser in self.player.weapon.lasers:
             print(laser)
+            for meteor in self.obstacle.meteors:
+                print(meteor)
 
         for sprite in self.sprites:
             sprite.update(delta_time)
@@ -45,6 +48,7 @@ class Game:
     def draw(self) -> None:
         begin_drawing()
         clear_background(BG_COLOR)
+        draw_fps(0, 0)
         for sprite in self.sprites:
             sprite.draw()
         end_drawing()
