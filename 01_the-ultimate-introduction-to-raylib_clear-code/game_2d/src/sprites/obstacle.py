@@ -9,7 +9,7 @@ from pyray import (
 )
 from core.config import METEOR_SPEED_RANGE, INITAIL_METEOR_TIMER_DURATION
 from core.paths import meteor_image_path
-from core.sprite import Sprite
+from core.entity import Entity
 from core.timer import Timer
 
 from random import randint
@@ -30,7 +30,7 @@ class Meteor:
         )
 
 
-class Obstacle(Sprite):
+class Obstacle(Entity):
     def __init__(self) -> None:
         self.texture = load_texture(meteor_image_path())
         self.meteors: list[Meteor] = []

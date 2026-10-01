@@ -20,7 +20,7 @@ from core.config import (
     WINDOW_WIDTH,
     WINDOW_HEIGHT,
 )
-from core.sprite import Sprite
+from core.entity import Entity
 from sprites.counter import Counter
 from sprites.explosion import Explosion
 from sprites.background import Background
@@ -39,7 +39,7 @@ class Game:
         self.counter = Counter()
         self.explosion = Explosion()
 
-        self.sprites: list[Sprite] = [
+        self.sprites: list[Entity] = [
             Background(),
             self.obstacle,
             self.player,

@@ -13,7 +13,7 @@ from pyray import (
 )
 
 from core.paths import explosion_image_paths, explosion_sound_path
-from core.sprite import Sprite
+from core.entity import Entity
 
 
 @dataclass
@@ -30,7 +30,7 @@ class Distory:
         )
 
 
-class Explosion(Sprite):
+class Explosion(Entity):
     def __init__(self) -> None:
         self.textures: list[Texture] = []
         for image_path in explosion_image_paths():

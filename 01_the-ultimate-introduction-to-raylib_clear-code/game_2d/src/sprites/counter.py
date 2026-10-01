@@ -11,10 +11,10 @@ from pyray import (
 
 from core.config import FONT_SIZE
 from core.paths import stormfaze_font_path
-from core.sprite import Sprite
+from core.entity import Entity
 
 
-class Counter(Sprite):
+class Counter(Entity):
     def __init__(self) -> None:
         self.count = 0
         self.font = load_font(stormfaze_font_path())

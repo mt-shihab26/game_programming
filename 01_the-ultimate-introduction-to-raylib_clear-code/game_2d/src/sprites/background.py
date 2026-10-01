@@ -11,7 +11,7 @@ from pyray import (
 )
 
 from core.paths import music_sound_path, star_image_path
-from core.sprite import Sprite
+from core.entity import Entity
 
 STAR_MAP = [
     [0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
@@ -29,7 +29,7 @@ STAR_MAP = [
 ]
 
 
-class Background(Sprite):
+class Background(Entity):
     def __init__(self) -> None:
         self.stream = load_music_stream(music_sound_path())
         play_music_stream(self.stream)

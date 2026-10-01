@@ -12,11 +12,11 @@ from pyray import (
 
 from core.config import PLAYER_SPEED
 from core.paths import spaceship_image_path
-from core.sprite import Sprite
+from core.entity import Entity
 from sprites.weapon import Weapon
 
 
-class Player(Sprite):
+class Player(Entity):
     def __init__(self) -> None:
         self.texture = load_texture(spaceship_image_path())
         self.direction = 0
