@@ -34,7 +34,7 @@ class Weapon:
     def __init__(self) -> None:
         self.texture = load_texture(laser_image_path())
         self.lasers: list[Laser] = []
-        self.timer = Timer(0.5, repeat=True, autostart=True)
+        self.timer = Timer(0.1, repeat=True, autostart=True)
 
     def close(self) -> None:
         unload_texture(self.texture)

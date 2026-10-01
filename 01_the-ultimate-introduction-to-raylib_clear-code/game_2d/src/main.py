@@ -37,14 +37,32 @@ class Game:
         close_window()
 
     def update(self, delta_time: float) -> None:
-        for laser in self.player.weapon.lasers:
-            for meteor in self.obstacle.meteors:
+        remove_lasers_indexs: list[int] = []
+        remove_meteors_indexs: list[int] = []
+        for laser_index, laser in enumerate(self.player.weapon.lasers):
+            for meteor_index, meteor in enumerate(self.obstacle.meteors):
                 if (
                     meteor.position.x <= laser.position.x
                     and laser.position.x <= meteor.position.x + meteor.width
                 ):
-                    self.player.weapon.lasers.remove(laser)
-                    self.obstacle.meteors.remove(meteor)
+                    remove_lasers_indexs.append(laser_index)
+                    remove_meteors_indexs.append(laser_index)
+
+        lasers: list[Laser] = []
+        for index, laser in enumerate(self.player.weapon.lasers):
+            try:
+                x = remove_lasers_indexs.index(index)
+            except:
+                lasers.append(laser)
+        self.player.weapon.lasers = lasers
+
+        meteors: list[Meteor] = []
+        for index, meteor in enumerate(self.obstacle.meteors):
+            try:
+                x = remove_meteors_indexs.index(index)
+            except:
+                meteors.append(meteor)
+        self.obstacle.meteors = meteors
 
         for sprite in self.sprites:
             sprite.update(delta_time)
