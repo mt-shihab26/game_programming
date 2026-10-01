@@ -36,6 +36,9 @@ class Game:
         close_window()
 
     def update(self, delta_time: float) -> None:
+        for laser in self.player.weapon.lasers:
+            print(laser)
+
         for sprite in self.sprites:
             sprite.update(delta_time)
 
