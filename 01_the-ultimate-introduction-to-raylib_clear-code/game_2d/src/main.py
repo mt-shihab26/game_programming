@@ -1,6 +1,8 @@
 from pyray import (
     RED,
     Vector2,
+    check_collision_boxes,
+    check_collision_recs,
     clear_background,
     close_audio_device,
     draw_fps,
@@ -70,16 +72,7 @@ class Game:
         remove_meteors_indexs: list[int] = []
         for laser_index, laser in enumerate(self.player.weapon.lasers):
             for meteor_index, meteor in enumerate(self.obstacle.meteors):
-                y_position_collision = (
-                    laser.position.y + self.player.weapon.texture.height
-                    < meteor.position.y + (self.obstacle.texture.height / 3)
-                )
-                x_position_collision = (
-                    meteor.position.x <= laser.position.x
-                    and laser.position.x + self.player.weapon.texture.width
-                    <= meteor.position.x + self.obstacle.texture.width
-                )
-                if y_position_collision and x_position_collision:
+                if check_collision_recs(laser.rec(), meteor.rec()):
                     self.on_laser_hit_meteor(meteor.position)
                     remove_lasers_indexs.append(laser_index)
                     remove_meteors_indexs.append(meteor_index)

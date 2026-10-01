@@ -1,5 +1,6 @@
 from pyray import (
     WHITE,
+    Rectangle,
     Vector2,
     draw_texture_v,
     load_sound,
@@ -20,6 +21,8 @@ from typing import override
 class Laser:
     position: Vector2
     speed: int
+    width: int
+    height: int
 
     @override
     def __repr__(self) -> str:
@@ -27,6 +30,9 @@ class Laser:
             f"Laser(x={self.position.x:.1f}, y={self.position.y:.1f}, "
             f"speed={self.speed})"
         )
+
+    def rec(self):
+        return Rectangle(self.position.x, self.position.y, self.width, self.height)
 
 
 class Weapon:
@@ -64,6 +70,8 @@ class Weapon:
                     laser_y,
                 ),
                 LASER_SPEED,
+                self.texture.width,
+                self.texture.height,
             )
         )
         play_sound(self.sound)

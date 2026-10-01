@@ -1,6 +1,7 @@
 from pyray import (
     WHITE,
     Vector2,
+    Rectangle,
     draw_texture_v,
     get_screen_height,
     get_screen_width,
@@ -21,6 +22,8 @@ from typing import override
 class Meteor:
     position: Vector2
     speed: int
+    width: int
+    height: int
 
     @override
     def __repr__(self) -> str:
@@ -28,6 +31,9 @@ class Meteor:
             f"Meteor(x={self.position.x:.1f}, y={self.position.y:.1f}, "
             f"speed={self.speed})"
         )
+
+    def rec(self):
+        return Rectangle(self.position.x, self.position.y, self.width, self.height)
 
 
 class Obstacle(Entity):
@@ -63,6 +69,8 @@ class Obstacle(Entity):
             Meteor(
                 self.__get_new_position(),
                 randint(*METEOR_SPEED_RANGE),
+                self.texture.width,
+                self.texture.height,
             )
         )
 
