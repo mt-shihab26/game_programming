@@ -14,7 +14,7 @@ from core.config import PLAYER_SPEED
 from core.paths import spaceship_image_path
 from core.entity import Entity
 from core.sprite import Sprite
-from sprites.weapon import Weapon
+from entities.weapon import Weapon
 
 
 class Player(Sprite):

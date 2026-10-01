@@ -23,12 +23,12 @@ from core.config import (
     WINDOW_HEIGHT,
 )
 from core.entity import Entity
-from sprites.counter import Counter
-from sprites.explosion import Explosion
-from sprites.background import Background
+from entities.counter import Counter
+from entities.explosion import Explosion
+from entities.background import Background
 from sprites.player import Player
-from sprites.obstacle import Meteor, Obstacle
-from sprites.weapon import Laser
+from entities.obstacle import Meteor, Obstacle
+from entities.weapon import Laser
 
 
 class Game:
