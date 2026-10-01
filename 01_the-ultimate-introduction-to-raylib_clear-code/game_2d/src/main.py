@@ -17,7 +17,12 @@ from pyray import (
     begin_drawing,
 )
 
-from core.config import BG_COLOR, WINDOW_WIDTH, WINDOW_HEIGHT
+from core.config import (
+    BG_COLOR,
+    MIN_METEOR_TIMER_DURATION,
+    WINDOW_WIDTH,
+    WINDOW_HEIGHT,
+)
 from core.paths import explosion_sound_path
 from core.sprite import Sprite
 from sprites.counter import Counter
@@ -103,7 +108,7 @@ class Game:
         if (
             0 < self.counter.count
             and self.counter.count % 4 == 0
-            and 0.1 < self.obstacle.timer.duration
+            and MIN_METEOR_TIMER_DURATION < self.obstacle.timer.duration
         ):
             self.obstacle.timer.duration = round(self.obstacle.timer.duration - 0.1, 1)
 
