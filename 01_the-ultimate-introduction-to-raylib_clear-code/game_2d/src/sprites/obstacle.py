@@ -21,13 +21,12 @@ from typing import override
 class Meteor:
     position: Vector2
     speed: int
-    width: int
 
     @override
     def __repr__(self) -> str:
         return (
             f"Meteor(x={self.position.x:.1f}, y={self.position.y:.1f}, "
-            f"speed={self.speed}), width={self.width}"
+            f"speed={self.speed})"
         )
 
 
@@ -64,7 +63,6 @@ class Obstacle(Sprite):
             Meteor(
                 self.__get_new_position(),
                 randint(*METEOR_SPEED_RANGE),
-                self.texture.width,
             )
         )
 
