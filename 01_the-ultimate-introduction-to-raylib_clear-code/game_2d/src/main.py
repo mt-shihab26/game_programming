@@ -31,7 +31,7 @@ from sprites.weapon import Laser
 
 class Game:
     def __init__(self) -> None:
-        init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Game 2D")
+        init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Space shooter")
         init_audio_device()
         self.wait_for_window_size()
         self.obstacle = Obstacle()
@@ -52,6 +52,13 @@ class Game:
             sprite.close()
         close_audio_device()
         close_window()
+
+    def run(self) -> None:
+        while not window_should_close():
+            delta_time = get_frame_time()
+            self.update(delta_time)
+            self.draw()
+        self.close()
 
     def update(self, delta_time: float) -> None:
         self.handle_laser_meteor_collisions()
@@ -124,13 +131,6 @@ class Game:
             end_drawing()
             if is_window_resized():
                 break
-
-    def run(self) -> None:
-        while not window_should_close():
-            delta_time = get_frame_time()
-            self.update(delta_time)
-            self.draw()
-        self.close()
 
 
 if __name__ == "__main__":
