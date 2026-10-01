@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from pyray import (
     WHITE,
     Vector2,
@@ -8,12 +7,13 @@ from pyray import (
     load_texture,
     unload_texture,
 )
-from random import randint
-
 from core.config import METEOR_SPEED_RANGE, METEOR_TIMER_DURATION
 from core.paths import meteor_image_path
 from core.sprite import Sprite
 from core.timer import Timer
+
+from random import randint
+from dataclasses import dataclass
 
 
 @dataclass

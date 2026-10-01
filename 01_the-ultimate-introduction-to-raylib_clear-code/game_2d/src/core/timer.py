@@ -1,6 +1,6 @@
-from collections.abc import Callable
-
 from pyray import get_time
+
+from collections.abc import Callable
 
 
 class Timer:

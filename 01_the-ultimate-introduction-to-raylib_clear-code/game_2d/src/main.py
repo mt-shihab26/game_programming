@@ -13,52 +13,58 @@ from pyray import (
 )
 
 from core.config import BG_COLOR, WINDOW_WIDTH, WINDOW_HEIGHT
+from core.sprite import Sprite
 from sprites.music import Music
 from sprites.player import Player
 from sprites.obstacle import Obstacle
 from sprites.weapon import Weapon
 
 
-class Game:
-    def __init__(self) -> None:
-        init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Game 2D")
-        init_audio_device()
-        self.__wait_for_window_size()
-        self.sprites = [Music(), Obstacle(), Player()]
+def init() -> list[Sprite]:
+    init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Game 2D")
+    init_audio_device()
+    wait_for_window_size()
+    return [Music(), Obstacle(), Player()]
 
-    def __deinit(self) -> None:
-        for sprite in self.sprites:
-            sprite.deinit()
-        close_audio_device()
-        close_window()
 
-    def run(self) -> None:
-        while not window_should_close():
-            delta_time = get_frame_time()
-            self.__update(delta_time)
-            self.__draw()
-        self.__deinit()
+def deinit(sprites: list[Sprite]) -> None:
+    for sprite in sprites:
+        sprite.deinit()
+    close_audio_device()
+    close_window()
 
-    def __update(self, delta_time: float) -> None:
-        for sprite in self.sprites:
-            sprite.update(delta_time)
 
-    def __draw(self) -> None:
+def update(sprites: list[Sprite], delta_time: float) -> None:
+    for sprite in sprites:
+        sprite.update(delta_time)
+
+
+def draw(sprites: list[Sprite]) -> None:
+    begin_drawing()
+    clear_background(BG_COLOR)
+    for sprite in sprites:
+        sprite.draw()
+    end_drawing()
+
+
+def wait_for_window_size() -> None:
+    # Tiling WMs (Hyprland) resize the window only after the first frames are drawn
+    for _ in range(10):
         begin_drawing()
-        clear_background(BG_COLOR)
-        for sprite in self.sprites:
-            sprite.draw()
+        clear_background(RED)
         end_drawing()
+        if is_window_resized():
+            break
 
-    def __wait_for_window_size(self) -> None:
-        # Tiling WMs (Hyprland) resize the window only after the first frames are drawn
-        for _ in range(10):
-            begin_drawing()
-            clear_background(RED)
-            end_drawing()
-            if is_window_resized():
-                break
+
+def main() -> None:
+    sprites = init()
+    while not window_should_close():
+        delta_time = get_frame_time()
+        update(sprites, delta_time)
+        draw(sprites)
+    deinit(sprites)
 
 
 if __name__ == "__main__":
-    Game().run()
+    main()
