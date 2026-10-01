@@ -8,6 +8,9 @@ class Counter(Sprite):
     def __init__(self) -> None:
         self.count = 0
 
+    def up(self):
+        self.count += 1
+
     def close(self) -> None:
         pass
 

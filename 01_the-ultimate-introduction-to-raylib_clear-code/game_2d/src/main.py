@@ -29,7 +29,8 @@ class Game:
         self.wait_for_window_size()
         self.obstacle = Obstacle()
         self.player = Player()
-        self.sprites: list[Sprite] = [Music(), self.obstacle, self.player, Counter()]
+        self.counter = Counter()
+        self.sprites: list[Sprite] = [Music(), self.obstacle, self.player, self.counter]
 
     def close(self) -> None:
         for sprite in self.sprites:
@@ -52,6 +53,7 @@ class Game:
                     <= meteor.position.x + self.obstacle.texture.width
                 )
                 if y_position_collision and x_position_collision:
+                    self.counter.up()
                     remove_lasers_indexs.append(laser_index)
                     remove_meteors_indexs.append(meteor_index)
 
