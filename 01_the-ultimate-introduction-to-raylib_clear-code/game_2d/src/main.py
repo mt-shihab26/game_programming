@@ -27,9 +27,9 @@ def init() -> list[Sprite]:
     return [Music(), Obstacle(), Player()]
 
 
-def deinit(sprites: list[Sprite]) -> None:
+def close(sprites: list[Sprite]) -> None:
     for sprite in sprites:
-        sprite.deinit()
+        sprite.close()
     close_audio_device()
     close_window()
 
@@ -63,7 +63,7 @@ def main() -> None:
         delta_time = get_frame_time()
         update(sprites, delta_time)
         draw(sprites)
-    deinit(sprites)
+    close(sprites)
 
 
 if __name__ == "__main__":

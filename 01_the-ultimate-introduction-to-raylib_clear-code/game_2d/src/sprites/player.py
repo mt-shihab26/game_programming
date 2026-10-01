@@ -27,8 +27,8 @@ class Player(Sprite):
         self.speed = PLAYER_SPEED
         self.weapon = Weapon()
 
-    def deinit(self) -> None:
-        self.weapon.deinit()
+    def close(self) -> None:
+        self.weapon.close()
         unload_texture(self.texture)
 
     def update(self, delta_time: float) -> None:

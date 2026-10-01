@@ -33,7 +33,7 @@ class Obstacle(Sprite):
             func=self.__add_new_meteor,
         )
 
-    def deinit(self) -> None:
+    def close(self) -> None:
         unload_texture(self.texture)
 
     def update(self, delta_time: float) -> None:

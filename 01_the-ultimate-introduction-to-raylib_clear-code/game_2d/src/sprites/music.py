@@ -14,7 +14,7 @@ class Music(Sprite):
         self.stream = load_music_stream(music_sound_path())
         play_music_stream(self.stream)
 
-    def deinit(self) -> None:
+    def close(self) -> None:
         unload_music_stream(self.stream)
 
     def update(self, delta_time: float) -> None:

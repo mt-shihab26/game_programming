@@ -29,7 +29,7 @@ class Weapon:
         self.lasers: list[Laser] = []
         self.timer = Timer(0.5, repeat=True, autostart=True)
 
-    def deinit(self) -> None:
+    def close(self) -> None:
         unload_texture(self.texture)
 
     def update(
