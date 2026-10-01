@@ -35,9 +35,18 @@ class Weapon:
     def update(
         self, delta_time: float, player_center_x: float, player_y: float
     ) -> None:
-        self.timer.update()
-
-        self.__add_new_laser(player_center_x, player_y)
+        if self.timer.update():
+            laser_x = player_center_x - (self.texture.width / 2)
+            laser_y = player_y - self.texture.height
+            self.lasers.append(
+                Laser(
+                    Vector2(
+                        laser_x,
+                        laser_y,
+                    ),
+                    LASER_SPEED,
+                )
+            )
 
         for laser in self.lasers:
             laser.position.y -= laser.speed * delta_time
@@ -51,26 +60,3 @@ class Weapon:
     def draw(self) -> None:
         for laser in self.lasers:
             draw_texture_v(self.texture, laser.position, WHITE)
-
-    def __has_laser_at_x(self, laser_x: float) -> bool:
-        for laser in self.lasers:
-            if laser.position.x == laser_x:
-                return True
-        return False
-
-    def __add_new_laser(self, player_center_x: float, player_y: float) -> None:
-        if self.timer.previous_count == self.timer.current_count:
-            return
-
-        laser_x = player_center_x - (self.texture.width / 2)
-
-        if not self.__has_laser_at_x(laser_x):
-            self.lasers.append(
-                Laser(
-                    Vector2(
-                        laser_x,
-                        player_y - self.texture.height,
-                    ),
-                    LASER_SPEED,
-                )
-            )
