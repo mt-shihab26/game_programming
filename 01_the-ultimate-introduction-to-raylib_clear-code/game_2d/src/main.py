@@ -19,6 +19,7 @@ from core.config import BG_COLOR, WINDOW_WIDTH, WINDOW_HEIGHT
 from core.paths import explosion_sound_path
 from core.sprite import Sprite
 from sprites.counter import Counter
+from sprites.explosion import Explosion
 from sprites.music import Music
 from sprites.player import Player
 from sprites.obstacle import Meteor, Obstacle
@@ -33,8 +34,16 @@ class Game:
         self.obstacle = Obstacle()
         self.player = Player()
         self.counter = Counter()
-        self.sprites: list[Sprite] = [Music(), self.obstacle, self.player, self.counter]
+        self.explosion = Explosion()
         self.explosion_sound = load_sound(explosion_sound_path())
+
+        self.sprites: list[Sprite] = [
+            Music(),
+            self.obstacle,
+            self.player,
+            self.counter,
+            self.explosion,
+        ]
 
     def close(self) -> None:
         for sprite in self.sprites:
