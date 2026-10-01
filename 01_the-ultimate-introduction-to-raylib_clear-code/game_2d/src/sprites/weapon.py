@@ -34,10 +34,15 @@ class Weapon:
     def update(
         self, delta_time: float, player_center_x: float, player_y: float
     ) -> None:
-        if not self.__is_laser_exist_on_the_x_position_of_player(player_center_x):
+        laser_x = player_center_x - (self.texture.width / 2)
+
+        if not self.__has_laser_at_x(laser_x):
             self.lasers.append(
                 Laser(
-                    Vector2(player_center_x, player_y - self.texture.height),
+                    Vector2(
+                        laser_x,
+                        player_y - self.texture.height,
+                    ),
                     LASER_SPEED,
                 )
             )
@@ -57,10 +62,8 @@ class Weapon:
         for laser in self.lasers:
             draw_texture_v(self.texture, laser.position, WHITE)
 
-    def __is_laser_exist_on_the_x_position_of_player(
-        self, player_center_x: float
-    ) -> bool:
+    def __has_laser_at_x(self, laser_x: float) -> bool:
         for laser in self.lasers:
-            if laser.position.x == player_center_x:
+            if laser.position.x == laser_x:
                 return True
         return False
