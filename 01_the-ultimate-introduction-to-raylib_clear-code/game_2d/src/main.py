@@ -9,11 +9,14 @@ from pyray import (
     init_window,
     is_window_resized,
     close_window,
+    load_sound,
+    play_sound,
     window_should_close,
     begin_drawing,
 )
 
 from core.config import BG_COLOR, WINDOW_WIDTH, WINDOW_HEIGHT
+from core.paths import explosion_sound_path
 from core.sprite import Sprite
 from sprites.counter import Counter
 from sprites.music import Music
@@ -31,6 +34,7 @@ class Game:
         self.player = Player()
         self.counter = Counter()
         self.sprites: list[Sprite] = [Music(), self.obstacle, self.player, self.counter]
+        self.explosion_sound = load_sound(explosion_sound_path())
 
     def close(self) -> None:
         for sprite in self.sprites:
@@ -80,6 +84,7 @@ class Game:
 
     def on_laser_hit_meteor(self):
         self.counter.up()
+        play_sound(self.explosion_sound)
 
     def draw(self) -> None:
         begin_drawing()
