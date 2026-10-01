@@ -1,9 +1,11 @@
 from pyray import (
     RED,
+    Vector2,
     clear_background,
     close_audio_device,
     draw_fps,
     end_drawing,
+    float_equals,
     get_frame_time,
     init_audio_device,
     init_window,
@@ -71,7 +73,7 @@ class Game:
                     <= meteor.position.x + self.obstacle.texture.width
                 )
                 if y_position_collision and x_position_collision:
-                    self.on_laser_hit_meteor()
+                    self.on_laser_hit_meteor(meteor.position)
                     remove_lasers_indexs.append(laser_index)
                     remove_meteors_indexs.append(meteor_index)
 
@@ -91,9 +93,10 @@ class Game:
                 meteors.append(meteor)
         self.obstacle.meteors = meteors
 
-    def on_laser_hit_meteor(self):
+    def on_laser_hit_meteor(self, position: Vector2):
         self.counter.up()
         play_sound(self.explosion_sound)
+        self.explosion.add(position)
 
     def draw(self) -> None:
         begin_drawing()
