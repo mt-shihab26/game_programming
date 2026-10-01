@@ -27,6 +27,7 @@ class Weapon:
     def __init__(self) -> None:
         self.texture = load_texture(laser_image_path())
         self.lasers: list[Laser] = []
+        self.timer = Timer(0.5, repeat=True, autostart=True)
 
     def deinit(self) -> None:
         unload_texture(self.texture)
@@ -34,18 +35,9 @@ class Weapon:
     def update(
         self, delta_time: float, player_center_x: float, player_y: float
     ) -> None:
-        laser_x = player_center_x - (self.texture.width / 2)
+        self.timer.update()
 
-        if not self.__has_laser_at_x(laser_x):
-            self.lasers.append(
-                Laser(
-                    Vector2(
-                        laser_x,
-                        player_y - self.texture.height,
-                    ),
-                    LASER_SPEED,
-                )
-            )
+        self.__add_new_laser(player_center_x, player_y)
 
         for laser in self.lasers:
             laser.position.y -= laser.speed * delta_time
@@ -65,3 +57,20 @@ class Weapon:
             if laser.position.x == laser_x:
                 return True
         return False
+
+    def __add_new_laser(self, player_center_x: float, player_y: float) -> None:
+        if self.timer.previous_count == self.timer.current_count:
+            return
+
+        laser_x = player_center_x - (self.texture.width / 2)
+
+        if not self.__has_laser_at_x(laser_x):
+            self.lasers.append(
+                Laser(
+                    Vector2(
+                        laser_x,
+                        player_y - self.texture.height,
+                    ),
+                    LASER_SPEED,
+                )
+            )
