@@ -32,8 +32,8 @@ class Player(Sprite):
         self.weapon = Weapon()
 
     def close(self) -> None:
-        super().close()
         self.weapon.close()
+        super().close()
 
     def update(self, delta_time: float) -> None:
         self.direction.x = 0
