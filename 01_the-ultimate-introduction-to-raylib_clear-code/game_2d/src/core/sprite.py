@@ -1,8 +1,7 @@
 from pyray import (
     WHITE,
-    Texture,
     Vector2,
-    draw_texture,
+    Rectangle,
     draw_texture_v,
     load_texture,
     unload_texture,
@@ -35,3 +34,8 @@ class Sprite(Entity):
     def draw(self) -> None:
         super().draw()
         draw_texture_v(self.texture, self.position, WHITE)
+
+    def rec(self):
+        return Rectangle(
+            self.position.x, self.position.y, self.texture.width, self.texture.height
+        )

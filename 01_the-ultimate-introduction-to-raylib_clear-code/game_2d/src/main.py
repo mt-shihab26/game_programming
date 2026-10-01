@@ -1,7 +1,6 @@
 from pyray import (
     RED,
     Vector2,
-    check_collision_boxes,
     check_collision_recs,
     clear_background,
     close_audio_device,
@@ -36,6 +35,7 @@ class Game:
         init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Space shooter")
         init_audio_device()
         self.wait_for_window_size()
+        self.running = True
         self.obstacle = Obstacle()
         self.player = Player()
         self.counter = Counter()
@@ -56,7 +56,7 @@ class Game:
         close_window()
 
     def run(self) -> None:
-        while not window_should_close():
+        while self.running and not window_should_close():
             delta_time = get_frame_time()
             self.update(delta_time)
             self.draw()
@@ -64,6 +64,7 @@ class Game:
 
     def update(self, delta_time: float) -> None:
         self.handle_laser_meteor_collisions()
+        self.handle_player_meteor_collisions()
         for sprite in self.sprites:
             sprite.update(delta_time)
 
@@ -72,26 +73,30 @@ class Game:
         remove_meteors_indexs: list[int] = []
         for laser_index, laser in enumerate(self.player.weapon.lasers):
             for meteor_index, meteor in enumerate(self.obstacle.meteors):
+                if meteor_index in remove_meteors_indexs:
+                    continue
                 if check_collision_recs(laser.rec(), meteor.rec()):
                     self.on_laser_hit_meteor(meteor.position)
                     remove_lasers_indexs.append(laser_index)
                     remove_meteors_indexs.append(meteor_index)
+                    break
 
         lasers: list[Laser] = []
         for index, laser in enumerate(self.player.weapon.lasers):
-            try:
-                x = remove_lasers_indexs.index(index)
-            except:
+            if index not in remove_lasers_indexs:
                 lasers.append(laser)
         self.player.weapon.lasers = lasers
 
         meteors: list[Meteor] = []
         for index, meteor in enumerate(self.obstacle.meteors):
-            try:
-                x = remove_meteors_indexs.index(index)
-            except:
+            if index not in remove_meteors_indexs:
                 meteors.append(meteor)
         self.obstacle.meteors = meteors
+
+    def handle_player_meteor_collisions(self):
+        for meteor in self.obstacle.meteors:
+            if check_collision_recs(self.player.rec(), meteor.rec()):
+                self.running = False
 
     def on_laser_hit_meteor(self, position: Vector2):
         self.counter.up()

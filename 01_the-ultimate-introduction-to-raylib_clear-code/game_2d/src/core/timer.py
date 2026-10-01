@@ -43,5 +43,5 @@ class Timer:
     def __repr__(self):
         return (
             f"Timer(duration={self.duration}, start_time={self.start_time}, "
-            f"active={self.active}, repeat={self.repeat}"
+            f"active={self.active}, repeat={self.repeat})"
         )

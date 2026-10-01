@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import override
 
 from pyray import (
@@ -9,6 +8,7 @@ from pyray import (
     load_sound,
     load_texture,
     play_sound,
+    unload_sound,
     unload_texture,
 )
 
@@ -16,7 +16,6 @@ from core.paths import explosion_image_paths, explosion_sound_path
 from core.entity import Entity
 
 
-@dataclass
 class Distory:
     def __init__(self, position: Vector2) -> None:
         self.index = 0.0
@@ -43,6 +42,7 @@ class Explosion(Entity):
     def close(self) -> None:
         for texture in self.textures:
             unload_texture(texture)
+        unload_sound(self.sound)
 
     def add(self, position: Vector2):
         self.distories.append(Distory(position))

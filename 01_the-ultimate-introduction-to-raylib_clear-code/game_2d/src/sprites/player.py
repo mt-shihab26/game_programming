@@ -1,18 +1,13 @@
 from pyray import (
-    WHITE,
     KeyboardKey,
     Vector2,
-    draw_texture_v,
     get_screen_height,
     get_screen_width,
     is_key_down,
-    load_texture,
-    unload_texture,
 )
 
 from core.config import PLAYER_SPEED
 from core.paths import spaceship_image_path
-from core.entity import Entity
 from core.sprite import Sprite
 from entities.weapon import Weapon
 

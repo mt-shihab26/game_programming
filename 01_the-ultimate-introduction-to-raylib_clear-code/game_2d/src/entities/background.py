@@ -7,6 +7,7 @@ from pyray import (
     load_texture,
     play_music_stream,
     unload_music_stream,
+    unload_texture,
     update_music_stream,
 )
 
@@ -34,17 +35,18 @@ class Background(Entity):
         self.stream = load_music_stream(music_sound_path())
         play_music_stream(self.stream)
         self.texture = load_texture(star_image_path())
-        self.width = get_screen_width() / len(STAR_MAP[0])
-        self.height = get_screen_height() / len(STAR_MAP)
 
     def close(self) -> None:
         unload_music_stream(self.stream)
+        unload_texture(self.texture)
 
     def update(self, delta_time: float) -> None:
         update_music_stream(self.stream)
+
+    def draw(self) -> None:
+        width = get_screen_width() / len(STAR_MAP[0])
+        height = get_screen_height() / len(STAR_MAP)
         for y, row in enumerate(STAR_MAP):
             for x, col in enumerate(row):
                 if col == 1:
-                    draw_texture(
-                        self.texture, int(x * self.width), int(y * self.height), WHITE
-                    )
+                    draw_texture(self.texture, int(x * width), int(y * height), WHITE)

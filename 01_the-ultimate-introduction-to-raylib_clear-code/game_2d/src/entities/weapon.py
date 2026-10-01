@@ -58,7 +58,7 @@ class Weapon:
 
         lasers: list[Laser] = []
         for laser in self.lasers:
-            if 0 <= laser.position.y:
+            if 0 <= laser.position.y + laser.height:
                 lasers.append(laser)
         self.lasers = lasers
 
