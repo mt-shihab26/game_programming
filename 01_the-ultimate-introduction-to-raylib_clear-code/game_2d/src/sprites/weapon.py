@@ -3,12 +3,14 @@ from pyray import (
     Vector2,
     draw_texture_v,
     get_screen_height,
+    load_sound,
     load_texture,
+    play_sound,
     unload_texture,
 )
 
 from core.config import LASER_SPEED
-from core.paths import laser_image_path
+from core.paths import laser_image_path, laser_sound_path
 from core.sprite import Sprite
 from core.timer import Timer
 from sprites import player
@@ -33,6 +35,7 @@ class Laser:
 class Weapon:
     def __init__(self) -> None:
         self.texture = load_texture(laser_image_path())
+        self.sound = load_sound(laser_sound_path())
         self.lasers: list[Laser] = []
         self.timer = Timer(0.5, repeat=True, autostart=True)
 
@@ -43,17 +46,7 @@ class Weapon:
         self, delta_time: float, player_center_x: float, player_y: float
     ) -> None:
         if self.timer.update():
-            laser_x = player_center_x - (self.texture.width / 2)
-            laser_y = player_y - self.texture.height
-            self.lasers.append(
-                Laser(
-                    Vector2(
-                        laser_x,
-                        laser_y,
-                    ),
-                    LASER_SPEED,
-                )
-            )
+            self.shoot_laser(player_center_x, player_y)
 
         for laser in self.lasers:
             laser.position.y -= laser.speed * delta_time
@@ -63,6 +56,20 @@ class Weapon:
             if 0 <= laser.position.y:
                 lasers.append(laser)
         self.lasers = lasers
+
+    def shoot_laser(self, player_center_x: float, player_y: float):
+        laser_x = player_center_x - (self.texture.width / 2)
+        laser_y = player_y - self.texture.height
+        self.lasers.append(
+            Laser(
+                Vector2(
+                    laser_x,
+                    laser_y,
+                ),
+                LASER_SPEED,
+            )
+        )
+        play_sound(self.sound)
 
     def draw(self) -> None:
         for laser in self.lasers:

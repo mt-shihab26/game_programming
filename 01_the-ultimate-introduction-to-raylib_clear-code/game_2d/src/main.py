@@ -58,7 +58,7 @@ class Game:
                     <= meteor.position.x + self.obstacle.texture.width
                 )
                 if y_position_collision and x_position_collision:
-                    self.counter.up()
+                    self.on_laser_hit_meteor()
                     remove_lasers_indexs.append(laser_index)
                     remove_meteors_indexs.append(meteor_index)
 
@@ -77,6 +77,9 @@ class Game:
             except:
                 meteors.append(meteor)
         self.obstacle.meteors = meteors
+
+    def on_laser_hit_meteor(self):
+        self.counter.up()
 
     def draw(self) -> None:
         begin_drawing()
