@@ -39,11 +39,11 @@ class Game:
         close_window()
 
     def update(self, delta_time: float) -> None:
-        self.update_when_hit_laser_to_meteor()
+        self.handle_laser_meteor_collisions()
         for sprite in self.sprites:
             sprite.update(delta_time)
 
-    def update_when_hit_laser_to_meteor(self):
+    def handle_laser_meteor_collisions(self):
         remove_lasers_indexs: list[int] = []
         remove_meteors_indexs: list[int] = []
         for laser_index, laser in enumerate(self.player.weapon.lasers):
