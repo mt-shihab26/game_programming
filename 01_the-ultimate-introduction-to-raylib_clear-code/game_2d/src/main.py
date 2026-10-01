@@ -15,6 +15,7 @@ from pyray import (
 
 from core.config import BG_COLOR, WINDOW_WIDTH, WINDOW_HEIGHT
 from core.sprite import Sprite
+from sprites.counter import Counter
 from sprites.music import Music
 from sprites.player import Player
 from sprites.obstacle import Meteor, Obstacle
@@ -28,7 +29,7 @@ class Game:
         self.wait_for_window_size()
         self.obstacle = Obstacle()
         self.player = Player()
-        self.sprites: list[Sprite] = [Music(), self.obstacle, self.player]
+        self.sprites: list[Sprite] = [Music(), self.obstacle, self.player, Counter()]
 
     def close(self) -> None:
         for sprite in self.sprites:
