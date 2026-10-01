@@ -9,7 +9,7 @@ from core.paths import music_sound_path
 from core.sprite import Sprite
 
 
-class Music(Sprite):
+class Background(Sprite):
     def __init__(self) -> None:
         self.stream = load_music_stream(music_sound_path())
         play_music_stream(self.stream)

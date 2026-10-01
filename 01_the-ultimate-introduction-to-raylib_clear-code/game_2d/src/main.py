@@ -27,7 +27,7 @@ from core.paths import explosion_sound_path
 from core.sprite import Sprite
 from sprites.counter import Counter
 from sprites.explosion import Explosion
-from sprites.music import Music
+from sprites.background import Background
 from sprites.player import Player
 from sprites.obstacle import Meteor, Obstacle
 from sprites.weapon import Laser, Weapon
@@ -44,7 +44,7 @@ class Game:
         self.explosion = Explosion()
 
         self.sprites: list[Sprite] = [
-            Music(),
+            Background(),
             self.obstacle,
             self.player,
             self.counter,
