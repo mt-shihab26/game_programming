@@ -8,18 +8,20 @@ from pyray import (
     draw_text,
     draw_texture,
     draw_texture_v,
+    load_sound,
     load_texture,
+    play_sound,
     unload_texture,
 )
 
-from core.paths import explosion_image_paths
+from core.paths import explosion_image_paths, explosion_sound_path
 from core.sprite import Sprite
 
 
 @dataclass
 class Distory:
     def __init__(self, position: Vector2) -> None:
-        self.index = 0
+        self.index = 0.0
         self.position = position
 
     @override
@@ -37,6 +39,8 @@ class Explosion(Sprite):
             self.textures.append(load_texture(image_path))
         self.frames = len(self.textures)
         self.distories: list[Distory] = []
+        self.speed = 50
+        self.sound = load_sound(explosion_sound_path())
 
     def close(self) -> None:
         for texture in self.textures:
@@ -44,17 +48,25 @@ class Explosion(Sprite):
 
     def add(self, position: Vector2):
         self.distories.append(Distory(position))
+        play_sound(self.sound)
 
     def update(self, delta_time: float) -> None:
         for distory in self.distories:
-            distory.index += int(1 * delta_time)
+            distory.index += self.speed * delta_time
         distories: list[Distory] = []
         for distory in self.distories:
-            if distory.index < self.frames:
+            if int(distory.index) < self.frames:
                 distories.append(distory)
         self.distories = distories
-        print(self.distories)
 
     def draw(self) -> None:
         for distory in self.distories:
-            draw_texture_v(self.textures[distory.index], distory.position, WHITE)
+            texture = self.textures[int(distory.index)]
+            draw_texture_v(
+                texture,
+                Vector2(
+                    distory.position.x - (texture.width / 2),
+                    distory.position.y - (texture.height / 2),
+                ),
+                WHITE,
+            )

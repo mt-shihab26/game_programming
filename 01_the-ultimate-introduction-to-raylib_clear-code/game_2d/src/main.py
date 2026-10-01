@@ -37,7 +37,6 @@ class Game:
         self.player = Player()
         self.counter = Counter()
         self.explosion = Explosion()
-        self.explosion_sound = load_sound(explosion_sound_path())
 
         self.sprites: list[Sprite] = [
             Music(),
@@ -95,8 +94,12 @@ class Game:
 
     def on_laser_hit_meteor(self, position: Vector2):
         self.counter.up()
-        play_sound(self.explosion_sound)
-        self.explosion.add(position)
+        self.explosion.add(
+            Vector2(
+                position.x + (self.obstacle.texture.width / 2),
+                position.y + (self.obstacle.texture.height / 2),
+            )
+        )
 
     def draw(self) -> None:
         begin_drawing()
