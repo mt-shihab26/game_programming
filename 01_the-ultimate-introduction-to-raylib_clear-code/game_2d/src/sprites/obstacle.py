@@ -7,7 +7,7 @@ from pyray import (
     load_texture,
     unload_texture,
 )
-from core.config import METEOR_SPEED_RANGE, METEOR_TIMER_DURATION
+from core.config import METEOR_SPEED_RANGE, INITAIL_METEOR_TIMER_DURATION
 from core.paths import meteor_image_path
 from core.sprite import Sprite
 from core.timer import Timer
@@ -35,7 +35,7 @@ class Obstacle(Sprite):
         self.texture = load_texture(meteor_image_path())
         self.meteors: list[Meteor] = []
         self.timer = Timer(
-            METEOR_TIMER_DURATION,
+            INITAIL_METEOR_TIMER_DURATION,
             repeat=True,
             autostart=True,
             func=self.__add_new_meteor,

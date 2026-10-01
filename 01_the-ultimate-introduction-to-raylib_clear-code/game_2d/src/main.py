@@ -100,6 +100,12 @@ class Game:
                 position.y + (self.obstacle.texture.height / 2),
             )
         )
+        if (
+            0 < self.counter.count
+            and self.counter.count % 4 == 0
+            and 0.1 < self.obstacle.timer.duration
+        ):
+            self.obstacle.timer.duration = round(self.obstacle.timer.duration - 0.1, 1)
 
     def draw(self) -> None:
         begin_drawing()
