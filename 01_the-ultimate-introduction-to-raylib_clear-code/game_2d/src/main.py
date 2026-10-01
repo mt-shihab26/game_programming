@@ -5,14 +5,11 @@ from pyray import (
     close_audio_device,
     draw_fps,
     end_drawing,
-    float_equals,
     get_frame_time,
     init_audio_device,
     init_window,
     is_window_resized,
     close_window,
-    load_sound,
-    play_sound,
     window_should_close,
     begin_drawing,
 )
@@ -23,14 +20,13 @@ from core.config import (
     WINDOW_WIDTH,
     WINDOW_HEIGHT,
 )
-from core.paths import explosion_sound_path
 from core.sprite import Sprite
 from sprites.counter import Counter
 from sprites.explosion import Explosion
 from sprites.background import Background
 from sprites.player import Player
 from sprites.obstacle import Meteor, Obstacle
-from sprites.weapon import Laser, Weapon
+from sprites.weapon import Laser
 
 
 class Game:

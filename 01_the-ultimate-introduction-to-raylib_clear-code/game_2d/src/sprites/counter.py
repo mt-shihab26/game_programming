@@ -1,9 +1,7 @@
 from pyray import (
     WHITE,
     Vector2,
-    draw_text,
     draw_text_ex,
-    draw_text_pro,
     get_screen_height,
     get_screen_width,
     load_font,

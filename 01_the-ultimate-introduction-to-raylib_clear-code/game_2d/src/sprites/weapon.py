@@ -2,7 +2,6 @@ from pyray import (
     WHITE,
     Vector2,
     draw_texture_v,
-    get_screen_height,
     load_sound,
     load_texture,
     play_sound,
@@ -11,9 +10,7 @@ from pyray import (
 
 from core.config import LASER_SPEED
 from core.paths import laser_image_path, laser_sound_path
-from core.sprite import Sprite
 from core.timer import Timer
-from sprites import player
 
 from dataclasses import dataclass
 from typing import override

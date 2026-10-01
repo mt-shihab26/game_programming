@@ -5,8 +5,6 @@ from pyray import (
     WHITE,
     Texture,
     Vector2,
-    draw_text,
-    draw_texture,
     draw_texture_v,
     load_sound,
     load_texture,
