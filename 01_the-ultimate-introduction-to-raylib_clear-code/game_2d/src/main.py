@@ -10,8 +10,10 @@ from pyray import (
     init_window,
     close_window,
     load_music_stream,
+    load_sound,
     load_texture,
     unload_music_stream,
+    unload_sound,
     unload_texture,
     window_should_close,
     begin_drawing,
@@ -24,11 +26,18 @@ from core.config import (
     WINDOW_HEIGHT,
 )
 from core.entity import Entity
-from core.paths import music_sound_path, spaceship_image_path, star_image_path
+from core.paths import (
+    laser_image_path,
+    laser_sound_path,
+    music_sound_path,
+    spaceship_image_path,
+    star_image_path,
+)
 from core.window import wait_for_window_size
 from entities.counter import Counter
 from entities.explosion import Explosion
 from entities.background import Background
+from sprites.laser_2 import Laser2
 from sprites.player import Player
 from entities.obstacle import Meteor, Obstacle
 from entities.weapon import Laser
@@ -39,9 +48,13 @@ class Game:
         self.textures = {
             "player": load_texture(spaceship_image_path()),
             "star": load_texture(star_image_path()),
+            "laser": load_texture(laser_image_path()),
         }
         self.musics = {
             "background": load_music_stream(music_sound_path()),
+        }
+        self.sounds = {
+            "laser": load_sound(laser_sound_path()),
         }
 
     def unload(self) -> None:
@@ -49,6 +62,13 @@ class Game:
             unload_texture(texture)
         for music in self.musics.values():
             unload_music_stream(music)
+        for sound in self.sounds.values():
+            unload_sound(sound)
+
+    def shoot_laser(self, position: Vector2):
+        self.lasers.append(
+            Laser2(self.textures["laser"], self.sounds["laser"], position)
+        )
 
     def __init__(self) -> None:
         init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Space shooter")
@@ -60,38 +80,43 @@ class Game:
         self.background = Background(self.textures["star"], self.musics["background"])
         self.player = Player(self.textures["player"], self.shoot_laser)
 
+        self.lasers: list[Laser2] = []
+
         self.obstacle = Obstacle()
         self.counter = Counter()
         self.explosion = Explosion()
 
         self.sprites: list[Entity] = [
-            self.background,
             self.obstacle,
-            self.player,
             self.counter,
             self.explosion,
         ]
 
-    def shoot_laser(self, position: Vector2):
-        print("shoot", position.x, position.y)
-
     def close(self) -> None:
-        self.unload()
+        self.background.close()
+        self.player.close()
+
+        for laser in self.lasers:
+            laser.close()
+
         for sprite in self.sprites:
             sprite.close()
+
+        self.unload()
+
         close_audio_device()
         close_window()
-
-    def run(self) -> None:
-        while not window_should_close():
-            delta_time = get_frame_time()
-            self.update(delta_time)
-            self.draw()
-        self.close()
 
     def update(self, delta_time: float) -> None:
         self.handle_laser_meteor_collisions()
         self.handle_player_meteor_collisions()
+
+        self.background.update(delta_time)
+        self.player.update(delta_time)
+
+        for laser in self.lasers:
+            laser.update(delta_time)
+
         for sprite in self.sprites:
             sprite.update(delta_time)
 
@@ -144,9 +169,24 @@ class Game:
         begin_drawing()
         clear_background(BG_COLOR)
         draw_fps(0, 0)
+
+        self.background.draw()
+        self.player.draw()
+
+        for laser in self.lasers:
+            laser.draw()
+
         for sprite in self.sprites:
             sprite.draw()
+
         end_drawing()
+
+    def run(self) -> None:
+        while not window_should_close():
+            delta_time = get_frame_time()
+            self.update(delta_time)
+            self.draw()
+        self.close()
 
 
 if __name__ == "__main__":
