@@ -32,24 +32,9 @@ class Player(Sprite):
         super().close()
 
     def update(self, delta_time: float) -> None:
-        self.direction.x = 0
-
-        if is_key_down(KeyboardKey.KEY_LEFT) or is_key_down(KeyboardKey.KEY_H):
-            self.direction.x = -1
-        if is_key_down(KeyboardKey.KEY_RIGHT) or is_key_down(KeyboardKey.KEY_L):
-            self.direction.x = 1
-
-        if is_key_down(KeyboardKey.KEY_SPACE):
-            self.shoot = True
-        else:
-            self.shoot = False
-
-        super().update(delta_time)
-
-        if get_screen_width() < self.position.x + self.texture.width:
-            self.position.x = get_screen_width() - self.texture.width
-        if self.position.x < 0:
-            self.position.x = 0
+        self.handle_movement()
+        self.handle_shooting()
+        self.handle_not_out_of_screen()
 
         self.weapon.update(
             delta_time,
@@ -57,6 +42,38 @@ class Player(Sprite):
             self.position.y,
             self.shoot,
         )
+
+        super().update(delta_time)
+
+    def handle_movement(self):
+        self.direction.x = 0
+        self.direction.y = 0
+
+        if is_key_down(KeyboardKey.KEY_LEFT) or is_key_down(KeyboardKey.KEY_H):
+            self.direction.x = -1
+        if is_key_down(KeyboardKey.KEY_RIGHT) or is_key_down(KeyboardKey.KEY_L):
+            self.direction.x = 1
+
+        if is_key_down(KeyboardKey.KEY_UP) or is_key_down(KeyboardKey.KEY_K):
+            self.direction.y = -1
+        if is_key_down(KeyboardKey.KEY_DOWN) or is_key_down(KeyboardKey.KEY_J):
+            self.direction.y = 1
+
+    def handle_shooting(self):
+        if is_key_down(KeyboardKey.KEY_SPACE):
+            self.shoot = True
+        else:
+            self.shoot = False
+
+    def handle_not_out_of_screen(self):
+        if get_screen_width() < self.position.x + self.texture.width:
+            self.position.x = get_screen_width() - self.texture.width
+        if self.position.x < 0:
+            self.position.x = 0
+        if get_screen_height() < self.position.y + self.texture.height:
+            self.position.y = get_screen_height() - self.texture.height
+        if self.position.y < 0:
+            self.position.y = 0
 
     def draw(self) -> None:
         super().draw()
