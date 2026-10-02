@@ -54,7 +54,6 @@ class Game:
 
         self.player = Player(self.textures["player"])
 
-        self.running = True
         self.obstacle = Obstacle()
         self.counter = Counter()
         self.explosion = Explosion()
@@ -75,7 +74,7 @@ class Game:
         close_window()
 
     def run(self) -> None:
-        while self.running and not window_should_close():
+        while not window_should_close():
             delta_time = get_frame_time()
             self.update(delta_time)
             self.draw()
@@ -115,7 +114,7 @@ class Game:
     def handle_player_meteor_collisions(self):
         for meteor in self.obstacle.meteors:
             if check_collision_recs(self.player.rec(), meteor.rec()):
-                self.running = False
+                pass
 
     def on_laser_hit_meteor(self, position: Vector2):
         self.counter.up()
