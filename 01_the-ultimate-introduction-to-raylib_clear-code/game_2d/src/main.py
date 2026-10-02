@@ -52,9 +52,7 @@ class Game:
 
     def __init__(self) -> None:
         init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Space shooter")
-
         init_audio_device()
-
         wait_for_window_size()
 
         self.load()
