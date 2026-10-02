@@ -58,7 +58,7 @@ class Game:
         self.load()
 
         self.background = Background(self.textures["star"], self.musics["background"])
-        self.player = Player(self.textures["player"])
+        self.player = Player(self.textures["player"], self.shoot_laser)
 
         self.obstacle = Obstacle()
         self.counter = Counter()
@@ -71,6 +71,9 @@ class Game:
             self.counter,
             self.explosion,
         ]
+
+    def shoot_laser(self, position: Vector2):
+        print("shoot", position.x, position.y)
 
     def close(self) -> None:
         self.unload()

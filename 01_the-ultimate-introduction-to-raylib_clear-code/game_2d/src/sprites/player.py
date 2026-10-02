@@ -1,3 +1,5 @@
+from typing import Callable
+
 from pyray import get_screen_height, get_screen_width, is_key_down
 from core.paths import spaceship_image_path
 from pyray import KeyboardKey, Texture, Vector2
@@ -7,7 +9,7 @@ from core.config import PLAYER_SPEED
 
 
 class Player(Sprite):
-    def __init__(self, texture: Texture) -> None:
+    def __init__(self, texture: Texture, on_shoot: Callable[[Vector2], None]) -> None:
         super().__init__(
             texture=texture,
             position=Vector2(
@@ -17,6 +19,7 @@ class Player(Sprite):
             speed=PLAYER_SPEED,
             direction=Vector2(0, 0),
         )
+        self.on_shoot = on_shoot
         self.weapon = Weapon()
         self.shoot = False
 
@@ -55,6 +58,7 @@ class Player(Sprite):
     def handle_shooting(self):
         if is_key_down(KeyboardKey.KEY_SPACE):
             self.shoot = True
+            self.on_shoot(self.position)
         else:
             self.shoot = False
 
