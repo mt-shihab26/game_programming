@@ -1,16 +1,9 @@
-from pyray import (
-    KeyboardKey,
-    Texture,
-    Vector2,
-    get_screen_height,
-    get_screen_width,
-    is_key_down,
-)
-
-from core.config import PLAYER_SPEED
+from pyray import get_screen_height, get_screen_width, is_key_down
 from core.paths import spaceship_image_path
+from pyray import KeyboardKey, Texture, Vector2
 from core.sprite import Sprite
 from entities.weapon import Weapon
+from core.config import PLAYER_SPEED
 
 
 class Player(Sprite):
@@ -66,14 +59,10 @@ class Player(Sprite):
             self.shoot = False
 
     def handle_not_out_of_screen(self):
-        if get_screen_width() < self.position.x + self.size.x:
-            self.position.x = get_screen_width() - self.size.x
-        if self.position.x < 0:
-            self.position.x = 0
-        if get_screen_height() < self.position.y + self.size.y:
-            self.position.y = get_screen_height() - self.size.y
-        if self.position.y < 0:
-            self.position.y = 0
+        width = get_screen_width()
+        height = get_screen_height()
+        self.position.x = max(0, min(self.position.x, width - self.size.x))
+        self.position.y = max(0, min(self.position.y, height - self.size.y))
 
     def draw(self) -> None:
         super().draw()
