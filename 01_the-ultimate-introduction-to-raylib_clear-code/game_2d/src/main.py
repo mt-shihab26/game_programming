@@ -109,6 +109,7 @@ class Game:
     def update(self, delta_time: float) -> None:
         self.handle_laser_meteor_collisions()
         self.handle_player_meteor_collisions()
+        self.handle_remove_lasers_out_of_screen()
 
         self.background.update(delta_time)
         self.player.update(delta_time)
@@ -144,11 +145,6 @@ class Game:
                 meteors.append(meteor)
         self.obstacle.meteors = meteors
 
-    def handle_player_meteor_collisions(self):
-        for meteor in self.obstacle.meteors:
-            if check_collision_recs(self.player.rec(), meteor.rec()):
-                pass
-
     def on_laser_hit_meteor(self, position: Vector2):
         self.counter.up()
         self.explosion.add(
@@ -163,6 +159,14 @@ class Game:
             and MIN_METEOR_TIMER_DURATION < self.obstacle.timer.duration
         ):
             self.obstacle.timer.duration = round(self.obstacle.timer.duration - 0.1, 1)
+
+    def handle_player_meteor_collisions(self):
+        for meteor in self.obstacle.meteors:
+            if check_collision_recs(self.player.rec(), meteor.rec()):
+                pass
+
+    def handle_remove_lasers_out_of_screen(self):
+        self.lasers = [laser for laser in self.lasers if laser.position.y >= 0]
 
     def draw(self) -> None:
         begin_drawing()
