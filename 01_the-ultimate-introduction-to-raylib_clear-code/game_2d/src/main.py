@@ -1,5 +1,4 @@
 from pyray import (
-    RED,
     Vector2,
     check_collision_recs,
     clear_background,
@@ -9,7 +8,6 @@ from pyray import (
     get_frame_time,
     init_audio_device,
     init_window,
-    is_window_resized,
     close_window,
     load_texture,
     unload_texture,
@@ -25,6 +23,7 @@ from core.config import (
 )
 from core.entity import Entity
 from core.paths import spaceship_image_path
+from core.window import wait_for_window_size
 from entities.counter import Counter
 from entities.explosion import Explosion
 from entities.background import Background
@@ -48,7 +47,7 @@ class Game:
 
         init_audio_device()
 
-        self.wait_for_window_size()
+        wait_for_window_size()
 
         self.load()
 
@@ -138,15 +137,6 @@ class Game:
         for sprite in self.sprites:
             sprite.draw()
         end_drawing()
-
-    def wait_for_window_size(self) -> None:
-        # Tiling WMs (Hyprland) resize the window only after the first frames are drawn
-        for _ in range(10):
-            begin_drawing()
-            clear_background(RED)
-            end_drawing()
-            if is_window_resized():
-                break
 
 
 if __name__ == "__main__":
