@@ -59,10 +59,7 @@ class Player(Sprite):
             self.shoot = False
 
     def handle_not_out_of_screen(self):
-        width = get_screen_width()
-        height = get_screen_height()
-        self.position.x = max(0, min(self.position.x, width - self.size.x))
-        self.position.y = max(0, min(self.position.y, height - self.size.y))
+        self.position = self.constraint()
 
     def draw(self) -> None:
         super().draw()

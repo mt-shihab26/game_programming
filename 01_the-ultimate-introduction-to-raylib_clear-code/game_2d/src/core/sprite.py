@@ -8,6 +8,7 @@ from pyray import (
     unload_texture,
     vector2_normalize,
 )
+from pyray import get_screen_height, get_screen_width
 
 from core.entity import Entity
 
@@ -44,3 +45,10 @@ class Sprite(Entity):
 
     def rec(self):
         return Rectangle(self.position.x, self.position.y, self.size.x, self.size.y)
+
+    def constraint(self) -> Vector2:
+        width = get_screen_width()
+        height = get_screen_height()
+        x = max(0, min(self.position.x, width - self.size.x))
+        y = max(0, min(self.position.y, height - self.size.y))
+        return Vector2(x, y)
