@@ -2,6 +2,7 @@ from pyray import (
     WHITE,
     Texture,
     Vector2,
+    Music,
     draw_texture,
     draw_texture_ex,
     get_screen_height,
@@ -20,13 +21,10 @@ from core.entity import Entity
 
 
 class Background(Entity):
-    def __init__(
-        self,
-        texture: Texture,
-    ) -> None:
-        self.stream = load_music_stream(music_sound_path())
-        play_music_stream(self.stream)
+    def __init__(self, texture: Texture, music: Music) -> None:
         self.texture = texture
+        self.music = music
+
         self.stars = [
             (
                 Vector2(
@@ -37,12 +35,13 @@ class Background(Entity):
             for i in range(30)
         ]
 
+        play_music_stream(self.music)
+
     def close(self) -> None:
-        unload_music_stream(self.stream)
-        unload_texture(self.texture)
+        pass
 
     def update(self, delta_time: float) -> None:
-        update_music_stream(self.stream)
+        update_music_stream(self.music)
 
     def draw(self) -> None:
         for star in self.stars:

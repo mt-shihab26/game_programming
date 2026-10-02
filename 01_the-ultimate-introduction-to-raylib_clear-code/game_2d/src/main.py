@@ -9,7 +9,9 @@ from pyray import (
     init_audio_device,
     init_window,
     close_window,
+    load_music_stream,
     load_texture,
+    unload_music_stream,
     unload_texture,
     window_should_close,
     begin_drawing,
@@ -22,7 +24,7 @@ from core.config import (
     WINDOW_HEIGHT,
 )
 from core.entity import Entity
-from core.paths import spaceship_image_path, star_image_path
+from core.paths import music_sound_path, spaceship_image_path, star_image_path
 from core.window import wait_for_window_size
 from entities.counter import Counter
 from entities.explosion import Explosion
@@ -38,10 +40,15 @@ class Game:
             "player": load_texture(spaceship_image_path()),
             "star": load_texture(star_image_path()),
         }
+        self.musics = {
+            "background": load_music_stream(music_sound_path()),
+        }
 
     def unload(self) -> None:
         for texture in self.textures.values():
             unload_texture(texture)
+        for music in self.musics.values():
+            unload_music_stream(music)
 
     def __init__(self) -> None:
         init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Space shooter")
@@ -52,7 +59,7 @@ class Game:
 
         self.load()
 
-        self.background = Background(self.textures["star"])
+        self.background = Background(self.textures["star"], self.musics["background"])
         self.player = Player(self.textures["player"])
 
         self.obstacle = Obstacle()
