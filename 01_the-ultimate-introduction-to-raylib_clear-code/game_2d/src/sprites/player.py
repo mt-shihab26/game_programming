@@ -38,7 +38,7 @@ class Player(Sprite):
 
         self.weapon.update(
             delta_time,
-            self.position.x + (self.texture.width / 2),
+            self.position.x + (self.size.x / 2),
             self.position.y,
             self.shoot,
         )
@@ -66,12 +66,12 @@ class Player(Sprite):
             self.shoot = False
 
     def handle_not_out_of_screen(self):
-        if get_screen_width() < self.position.x + self.texture.width:
-            self.position.x = get_screen_width() - self.texture.width
+        if get_screen_width() < self.position.x + self.size.x:
+            self.position.x = get_screen_width() - self.size.x
         if self.position.x < 0:
             self.position.x = 0
-        if get_screen_height() < self.position.y + self.texture.height:
-            self.position.y = get_screen_height() - self.texture.height
+        if get_screen_height() < self.position.y + self.size.y:
+            self.position.y = get_screen_height() - self.size.y
         if self.position.y < 0:
             self.position.y = 0
 

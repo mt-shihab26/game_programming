@@ -21,10 +21,12 @@ class Sprite(Entity):
         direction: Vector2 = Vector2(0, 0),
     ) -> None:
         super().__init__()
+
         self.texture = texture
         self.position = position
         self.speed = speed
         self.direction = direction
+        self.size = Vector2(texture.width, texture.height)
 
     def close(self) -> None:
         super().close()
@@ -33,6 +35,7 @@ class Sprite(Entity):
         self.direction = vector2_normalize(self.direction)
         self.position.x += self.direction.x * self.speed * delta_time
         self.position.y += self.direction.y * self.speed * delta_time
+
         super().update(delta_time)
 
     def draw(self) -> None:
@@ -40,6 +43,4 @@ class Sprite(Entity):
         draw_texture_v(self.texture, self.position, WHITE)
 
     def rec(self):
-        return Rectangle(
-            self.position.x, self.position.y, self.texture.width, self.texture.height
-        )
+        return Rectangle(self.position.x, self.position.y, self.size.x, self.size.y)
