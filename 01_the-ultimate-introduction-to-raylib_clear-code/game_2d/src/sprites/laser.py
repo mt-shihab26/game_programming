@@ -21,7 +21,7 @@ from dataclasses import dataclass
 from typing import Text, override
 
 
-class Laser2(Sprite):
+class Laser(Sprite):
     def __init__(self, texture: Texture, sound: Sound, position: Vector2) -> None:
         super().__init__(
             texture=texture,

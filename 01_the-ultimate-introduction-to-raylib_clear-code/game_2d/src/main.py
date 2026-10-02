@@ -37,7 +37,7 @@ from core.window import wait_for_window_size
 from entities.counter import Counter
 from entities.explosion import Explosion
 from entities.background import Background
-from sprites.laser_2 import Laser2
+from sprites.laser import Laser
 from sprites.player import Player
 from entities.obstacle import Meteor, Obstacle
 
@@ -66,7 +66,7 @@ class Game:
 
     def shoot_laser(self, position: Vector2):
         self.lasers.append(
-            Laser2(self.textures["laser"], self.sounds["laser"], position)
+            Laser(self.textures["laser"], self.sounds["laser"], position)
         )
 
     def __init__(self) -> None:
@@ -79,7 +79,7 @@ class Game:
         self.background = Background(self.textures["star"], self.musics["background"])
         self.player = Player(self.textures["player"], self.shoot_laser)
 
-        self.lasers: list[Laser2] = []
+        self.lasers: list[Laser] = []
 
         self.obstacle = Obstacle()
         self.counter = Counter()
@@ -132,7 +132,7 @@ class Game:
                     remove_meteors_indexs.append(meteor_index)
                     break
 
-        lasers: list[Laser2] = []
+        lasers: list[Laser] = []
         for index, laser in enumerate(self.lasers):
             if index not in remove_lasers_indexs:
                 lasers.append(laser)
