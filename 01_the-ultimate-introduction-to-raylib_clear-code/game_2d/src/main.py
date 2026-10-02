@@ -11,6 +11,8 @@ from pyray import (
     init_window,
     is_window_resized,
     close_window,
+    load_texture,
+    unload_texture,
     window_should_close,
     begin_drawing,
 )
@@ -22,6 +24,7 @@ from core.config import (
     WINDOW_HEIGHT,
 )
 from core.entity import Entity
+from core.paths import spaceship_image_path
 from entities.counter import Counter
 from entities.explosion import Explosion
 from entities.background import Background
@@ -31,13 +34,28 @@ from entities.weapon import Laser
 
 
 class Game:
+    def load(self) -> None:
+        self.textures = {
+            "player": load_texture(spaceship_image_path()),
+        }
+
+    def unload(self) -> None:
+        for texture in self.textures.values():
+            unload_texture(texture)
+
     def __init__(self) -> None:
         init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Space shooter")
+
         init_audio_device()
+
         self.wait_for_window_size()
+
+        self.load()
+
+        self.player = Player(self.textures["player"])
+
         self.running = True
         self.obstacle = Obstacle()
-        self.player = Player()
         self.counter = Counter()
         self.explosion = Explosion()
 
@@ -50,6 +68,7 @@ class Game:
         ]
 
     def close(self) -> None:
+        self.unload()
         for sprite in self.sprites:
             sprite.close()
         close_audio_device()

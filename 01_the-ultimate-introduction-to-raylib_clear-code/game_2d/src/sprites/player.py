@@ -1,5 +1,6 @@
 from pyray import (
     KeyboardKey,
+    Texture,
     Vector2,
     get_screen_height,
     get_screen_width,
@@ -13,16 +14,15 @@ from entities.weapon import Weapon
 
 
 class Player(Sprite):
-    def __init__(self) -> None:
+    def __init__(self, texture: Texture) -> None:
         super().__init__(
-            spaceship_image_path(),
-            Vector2(0, 0),
-            PLAYER_SPEED,
-            Vector2(0, 0),
-        )
-        self.position = Vector2(
-            (get_screen_width() / 2) - (self.texture.width / 2),
-            (get_screen_height() * 5 / 6) - self.texture.height / 2,
+            texture=texture,
+            position=Vector2(
+                (get_screen_width() / 2) - (texture.width / 2),
+                (get_screen_height() * 5 / 6) - (texture.height / 2),
+            ),
+            speed=PLAYER_SPEED,
+            direction=Vector2(0, 0),
         )
         self.weapon = Weapon()
 

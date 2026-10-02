@@ -1,5 +1,6 @@
 from pyray import (
     WHITE,
+    Texture,
     Vector2,
     Rectangle,
     draw_texture_v,
@@ -13,16 +14,19 @@ from core.entity import Entity
 
 class Sprite(Entity):
     def __init__(
-        self, texture_path: str, position: Vector2, speed: float, direction: Vector2
+        self,
+        texture: Texture,
+        position: Vector2 = Vector2(0, 0),
+        speed: float = 0,
+        direction: Vector2 = Vector2(0, 0),
     ) -> None:
         super().__init__()
-        self.texture = load_texture(texture_path)
+        self.texture = texture
         self.position = position
         self.speed = speed
         self.direction = direction
 
     def close(self) -> None:
-        unload_texture(self.texture)
         super().close()
 
     def update(self, delta_time: float) -> None:
