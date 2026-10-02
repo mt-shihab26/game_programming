@@ -20,25 +20,14 @@ class Player(Sprite):
             direction=Vector2(0, 0),
         )
         self.on_shoot = on_shoot
-        self.weapon = Weapon()
-        self.shoot = False
 
     def close(self) -> None:
-        self.weapon.close()
         super().close()
 
     def update(self, delta_time: float) -> None:
         self.handle_movement()
         self.handle_shooting()
-        self.handle_not_out_of_screen()
-
-        self.weapon.update(
-            delta_time,
-            self.position.x + (self.size.x / 2),
-            self.position.y,
-            self.shoot,
-        )
-
+        self.position = self.constraint()
         super().update(delta_time)
 
     def handle_movement(self):
@@ -57,14 +46,7 @@ class Player(Sprite):
 
     def handle_shooting(self):
         if is_key_down(KeyboardKey.KEY_SPACE):
-            self.shoot = True
-            self.on_shoot(self.position)
-        else:
-            self.shoot = False
-
-    def handle_not_out_of_screen(self):
-        self.position = self.constraint()
+            self.on_shoot(Vector2(self.position.x + (self.size.x / 2), self.position.y))
 
     def draw(self) -> None:
         super().draw()
-        self.weapon.draw()
