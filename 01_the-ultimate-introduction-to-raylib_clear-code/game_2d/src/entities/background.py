@@ -30,7 +30,7 @@ class Background(Entity):
                 Vector2(
                     randint(0, get_screen_width()), randint(0, get_screen_height())
                 ),
-                uniform(0.5, 1.5),
+                uniform(0.5, 1.6),
             )
             for i in range(30)
         ]
