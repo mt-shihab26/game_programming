@@ -22,7 +22,7 @@ from core.config import (
     WINDOW_HEIGHT,
 )
 from core.entity import Entity
-from core.paths import spaceship_image_path
+from core.paths import spaceship_image_path, star_image_path
 from core.window import wait_for_window_size
 from entities.counter import Counter
 from entities.explosion import Explosion
@@ -36,6 +36,7 @@ class Game:
     def load(self) -> None:
         self.textures = {
             "player": load_texture(spaceship_image_path()),
+            "star": load_texture(star_image_path()),
         }
 
     def unload(self) -> None:
@@ -51,6 +52,7 @@ class Game:
 
         self.load()
 
+        self.background = Background(self.textures["star"])
         self.player = Player(self.textures["player"])
 
         self.obstacle = Obstacle()
@@ -58,7 +60,7 @@ class Game:
         self.explosion = Explosion()
 
         self.sprites: list[Entity] = [
-            Background(),
+            self.background,
             self.obstacle,
             self.player,
             self.counter,
