@@ -64,11 +64,6 @@ class Game:
         for sound in self.sounds.values():
             unload_sound(sound)
 
-    def shoot_laser(self, position: Vector2):
-        self.lasers.append(
-            Laser(self.textures["laser"], self.sounds["laser"], position)
-        )
-
     def __init__(self) -> None:
         init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Space shooter")
         init_audio_device()
@@ -90,6 +85,11 @@ class Game:
             self.counter,
             self.explosion,
         ]
+
+    def shoot_laser(self, position: Vector2):
+        self.lasers.append(
+            Laser(self.textures["laser"], self.sounds["laser"], position)
+        )
 
     def close(self) -> None:
         self.background.close()
