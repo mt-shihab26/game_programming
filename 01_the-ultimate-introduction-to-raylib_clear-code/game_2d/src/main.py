@@ -40,7 +40,6 @@ from entities.background import Background
 from sprites.laser_2 import Laser2
 from sprites.player import Player
 from entities.obstacle import Meteor, Obstacle
-from entities.weapon import Laser
 
 
 class Game:
@@ -123,7 +122,7 @@ class Game:
     def handle_laser_meteor_collisions(self):
         remove_lasers_indexs: list[int] = []
         remove_meteors_indexs: list[int] = []
-        for laser_index, laser in enumerate(self.player.weapon.lasers):
+        for laser_index, laser in enumerate(self.lasers):
             for meteor_index, meteor in enumerate(self.obstacle.meteors):
                 if meteor_index in remove_meteors_indexs:
                     continue
@@ -133,11 +132,11 @@ class Game:
                     remove_meteors_indexs.append(meteor_index)
                     break
 
-        lasers: list[Laser] = []
-        for index, laser in enumerate(self.player.weapon.lasers):
+        lasers: list[Laser2] = []
+        for index, laser in enumerate(self.lasers):
             if index not in remove_lasers_indexs:
                 lasers.append(laser)
-        self.player.weapon.lasers = lasers
+        self.lasers = lasers
 
         meteors: list[Meteor] = []
         for index, meteor in enumerate(self.obstacle.meteors):
