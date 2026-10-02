@@ -25,6 +25,7 @@ class Player(Sprite):
             direction=Vector2(0, 0),
         )
         self.weapon = Weapon()
+        self.shoot = False
 
     def close(self) -> None:
         self.weapon.close()
@@ -38,6 +39,11 @@ class Player(Sprite):
         if is_key_down(KeyboardKey.KEY_RIGHT) or is_key_down(KeyboardKey.KEY_L):
             self.direction.x = 1
 
+        if is_key_down(KeyboardKey.KEY_SPACE):
+            self.shoot = True
+        else:
+            self.shoot = False
+
         super().update(delta_time)
 
         if get_screen_width() < self.position.x + self.texture.width:
@@ -46,7 +52,10 @@ class Player(Sprite):
             self.position.x = 0
 
         self.weapon.update(
-            delta_time, self.position.x + (self.texture.width / 2), self.position.y
+            delta_time,
+            self.position.x + (self.texture.width / 2),
+            self.position.y,
+            self.shoot,
         )
 
     def draw(self) -> None:

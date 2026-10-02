@@ -48,9 +48,9 @@ class Weapon:
         unload_sound(self.sound)
 
     def update(
-        self, delta_time: float, player_center_x: float, player_y: float
+        self, delta_time: float, player_center_x: float, player_y: float, shoot: bool
     ) -> None:
-        if self.timer.update():
+        if shoot and self.timer.update():
             self.shoot_laser(player_center_x, player_y)
 
         for laser in self.lasers:
