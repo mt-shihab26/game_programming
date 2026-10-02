@@ -1,24 +1,16 @@
-from pyray import (
-    WHITE,
-    Rectangle,
-    Sound,
-    Texture,
-    Vector2,
-    draw_texture_v,
-    load_sound,
-    load_texture,
-    play_sound,
-    unload_sound,
-    unload_texture,
-)
-
-from core.config import LASER_SPEED
 from core.paths import laser_image_path, laser_sound_path
+from dataclasses import dataclass
+from typing import override
+from pyray import draw_texture_v, load_sound, load_texture, play_sound
+from pyray import unload_sound, unload_texture
+
 from core.sprite import Sprite
 from core.timer import Timer
+from typing import Text
+from pyray import Rectangle, Sound, Texture, Vector2
 
-from dataclasses import dataclass
-from typing import Text, override
+from core.config import LASER_SPEED
+from pyray import WHITE
 
 
 class Laser(Sprite):
