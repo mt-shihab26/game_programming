@@ -1,5 +1,5 @@
 from pyray import get_screen_width
-from random import randint
+from random import randint, uniform
 
 from pyray import Vector2
 from core.sprite import Sprite
@@ -12,12 +12,12 @@ class Meteor(Sprite):
         self,
         texture,
     ) -> None:
+        position = Vector2(
+            randint(0, max(0, get_screen_width() - texture.width)), -texture.height
+        )
         super().__init__(
             texture=texture,
-            position=Vector2(
-                randint(0, max(0, get_screen_width() - texture.width)),
-                -texture.height,
-            ),
+            position=position,
             speed=randint(*METEOR_SPEED_RANGE),
-            direction=Vector2(0, 1),
+            direction=Vector2(uniform(-0.5, 0.5), 1),
         )
