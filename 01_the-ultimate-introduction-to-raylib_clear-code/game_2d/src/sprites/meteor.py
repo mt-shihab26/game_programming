@@ -21,12 +21,3 @@ class Meteor(Sprite):
             speed=randint(*METEOR_SPEED_RANGE),
             direction=Vector2(0, 1),
         )
-
-    def close(self) -> None:
-        super().close()
-
-    def update(self, delta_time: float) -> None:
-        super().update(delta_time)
-
-    def draw(self) -> None:
-        super().draw()

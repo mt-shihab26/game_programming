@@ -21,9 +21,6 @@ class Player(Sprite):
         )
         self.on_shoot = on_shoot
 
-    def close(self) -> None:
-        super().close()
-
     def update(self, delta_time: float) -> None:
         self.handle_movement()
         self.handle_shooting()
@@ -47,6 +44,3 @@ class Player(Sprite):
     def handle_shooting(self):
         if is_key_pressed(KeyboardKey.KEY_SPACE):
             self.on_shoot(Vector2(self.position.x + (self.size.x / 2), self.position.y))
-
-    def draw(self) -> None:
-        super().draw()
