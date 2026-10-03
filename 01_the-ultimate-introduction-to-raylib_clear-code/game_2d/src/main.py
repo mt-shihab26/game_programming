@@ -31,6 +31,7 @@ from core.config import (
 )
 from core.entity import Entity
 from core.paths import (
+    explosion_image_paths,
     laser_image_path,
     laser_sound_path,
     meteor_image_path,
@@ -55,7 +56,9 @@ class Game:
             "star": load_texture(star_image_path()),
             "laser": load_texture(laser_image_path()),
             "meteor": load_texture(meteor_image_path()),
+            "explosion": [load_texture(path) for path in explosion_image_paths()],
         }
+
         self.musics = {
             "background": load_music_stream(music_sound_path()),
         }
@@ -65,7 +68,11 @@ class Game:
 
     def unload(self) -> None:
         for texture in self.textures.values():
-            unload_texture(texture)
+            if isinstance(texture, list):
+                for frame in texture:
+                    unload_texture(frame)
+            else:
+                unload_texture(texture)
         for music in self.musics.values():
             unload_music_stream(music)
         for sound in self.sounds.values():
