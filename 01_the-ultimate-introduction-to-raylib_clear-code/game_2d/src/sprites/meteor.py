@@ -30,6 +30,9 @@ class Meteor(Sprite):
         super().update(delta_time)
         self.rotation += 50 * delta_time
 
+    def center(self) -> Vector2:
+        return self.position
+
     def draw(self) -> None:
         draw_texture_pro(
             self.texture,
