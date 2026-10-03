@@ -129,32 +129,17 @@ class Game:
             entity.update(delta_time)
 
     def handle_laser_meteor_collisions(self):
-        remove_lasers_indexs: list[int] = []
-        remove_meteors_indexs: list[int] = []
-        for laser_index, laser in enumerate(self.lasers):
-            for meteor_index, meteor in enumerate(self.meteors):
-                if meteor_index in remove_meteors_indexs:
-                    continue
+        for laser in self.lasers[:]:
+            for meteor in self.meteors:
                 if check_collision_circle_rec(
                     meteor.center(),
                     meteor.radius,
                     laser.rectangle(),
                 ):
                     self.on_laser_hit_meteor(meteor.position)
-                    remove_lasers_indexs.append(laser_index)
-                    remove_meteors_indexs.append(meteor_index)
+                    self.lasers.remove(laser)
+                    self.meteors.remove(meteor)
                     break
-
-        self.lasers = [
-            laser
-            for index, laser in enumerate(self.lasers)
-            if index not in remove_lasers_indexs
-        ]
-        self.meteors = [
-            meteor
-            for index, meteor in enumerate(self.meteors)
-            if index not in remove_meteors_indexs
-        ]
 
     def on_laser_hit_meteor(self, position: Vector2):
         self.counter.up()
