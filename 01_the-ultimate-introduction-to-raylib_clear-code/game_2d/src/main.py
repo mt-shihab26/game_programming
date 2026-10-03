@@ -92,6 +92,11 @@ class Game:
             self.explosion,
         ]
 
+    def entities(self) -> list[Entity]:
+        return (
+            [self.background, self.player] + self.lasers + self.meteors + self.sprites
+        )
+
     def add_laser(self, position: Vector2):
         texture = self.textures["laser"]
         sound = self.sounds["laser"]
@@ -102,17 +107,8 @@ class Game:
         self.meteors.append(Meteor(texture))
 
     def close(self) -> None:
-        self.background.close()
-        self.player.close()
-
-        for laser in self.lasers:
-            laser.close()
-
-        for meteor in self.meteors:
-            meteor.close()
-
-        for sprite in self.sprites:
-            sprite.close()
+        for entity in self.entities():
+            entity.close()
 
         self.unload()
 
@@ -125,19 +121,10 @@ class Game:
         self.handle_remove_lasers_out_of_screen()
         self.handle_remove_meteors_out_of_screen()
 
-        self.background.update(delta_time)
-        self.player.update(delta_time)
-
         self.meteor_timer.update()
 
-        for laser in self.lasers:
-            laser.update(delta_time)
-
-        for meteor in self.meteors:
-            meteor.update(delta_time)
-
-        for sprite in self.sprites:
-            sprite.update(delta_time)
+        for entity in self.entities():
+            entity.update(delta_time)
 
     def handle_laser_meteor_collisions(self):
         remove_lasers_indexs: list[int] = []
@@ -199,17 +186,8 @@ class Game:
         clear_background(BG_COLOR)
         draw_fps(0, 0)
 
-        self.background.draw()
-        self.player.draw()
-
-        for laser in self.lasers:
-            laser.draw()
-
-        for meteor in self.meteors:
-            meteor.draw()
-
-        for sprite in self.sprites:
-            sprite.draw()
+        for entity in self.entities():
+            entity.draw()
 
         end_drawing()
 
