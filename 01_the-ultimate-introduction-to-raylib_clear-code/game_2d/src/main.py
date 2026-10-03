@@ -1,5 +1,6 @@
 from pyray import (
     Vector2,
+    check_collision_circle_rec,
     check_collision_circles,
     check_collision_recs,
     clear_background,
@@ -134,7 +135,11 @@ class Game:
             for meteor_index, meteor in enumerate(self.meteors):
                 if meteor_index in remove_meteors_indexs:
                     continue
-                if check_collision_recs(laser.rectangle(), meteor.rectangle()):
+                if check_collision_circle_rec(
+                    meteor.center(),
+                    meteor.radius,
+                    laser.rectangle(),
+                ):
                     self.on_laser_hit_meteor(meteor.position)
                     remove_lasers_indexs.append(laser_index)
                     remove_meteors_indexs.append(meteor_index)
