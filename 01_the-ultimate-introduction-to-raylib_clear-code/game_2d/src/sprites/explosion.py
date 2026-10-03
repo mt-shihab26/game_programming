@@ -3,7 +3,7 @@ from pyray import WHITE, Texture, Vector2, draw_texture_v
 from core.entity import Entity
 
 
-class Explosion(Entity):
+class Explosion2(Entity):
     def __init__(self, textures: list[Texture], position: Vector2) -> None:
         super().__init__()
 

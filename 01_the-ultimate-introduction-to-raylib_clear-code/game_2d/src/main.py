@@ -42,8 +42,8 @@ from core.paths import (
 from core.timer import Timer
 from core.window import wait_for_window_size
 from entities.counter import Counter
-from entities.explosion import Explosion
 from entities.background import Background
+from sprites.explosion import Explosion2
 from sprites.laser import Laser
 from sprites.meteor import Meteor
 from sprites.player import Player
@@ -87,6 +87,7 @@ class Game:
 
         self.lasers: list[Laser] = []
         self.meteors: list[Meteor] = []
+        self.explosions: list[Explosion2] = []
 
         self.background = Background(self.textures["star"], self.musics["background"])
         self.player = Player(self.textures["player"], self.add_laser)
@@ -94,16 +95,21 @@ class Game:
         self.meteor_timer = Timer(MAX_METEOR_DURATION, True, True, self.add_meteor)
 
         self.counter = Counter()
-        self.explosion = Explosion()
 
         self.sprites: list[Entity] = [
             self.counter,
-            self.explosion,
         ]
 
     def entities(self) -> list[Entity]:
         return (
-            [self.background, self.player] + self.lasers + self.meteors + self.sprites
+            [
+                self.background,
+                self.player,
+            ]
+            + self.lasers
+            + self.meteors
+            + self.sprites
+            + self.explosions
         )
 
     def add_laser(self, position: Vector2):
@@ -114,6 +120,10 @@ class Game:
     def add_meteor(self):
         texture = self.textures["meteor"]
         self.meteors.append(Meteor(texture))
+
+    def add_explosion(self, position: Vector2):
+        textures = self.textures["explosion"]
+        self.explosions.append(Explosion2(textures, position))
 
     def close(self) -> None:
         for entity in self.entities():
@@ -143,6 +153,7 @@ class Game:
                     meteor.radius,
                     laser.rectangle(),
                 ):
+                    self.add_explosion(meteor.position)
                     self.on_laser_hit_meteor(meteor.position)
                     self.lasers.remove(laser)
                     self.meteors.remove(meteor)
@@ -151,14 +162,6 @@ class Game:
     def on_laser_hit_meteor(self, position: Vector2):
         self.counter.up()
 
-        meteor_texture = self.textures["meteor"]
-
-        self.explosion.add(
-            Vector2(
-                position.x + (meteor_texture.width / 2),
-                position.y + (meteor_texture.height / 2),
-            )
-        )
         if (
             0 < self.counter.count
             and self.counter.count % 4 == 0
