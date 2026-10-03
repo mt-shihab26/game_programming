@@ -1,5 +1,6 @@
 from pyray import (
     WHITE,
+    Font,
     Vector2,
     draw_text_ex,
     get_screen_height,
@@ -15,35 +16,20 @@ from core.entity import Entity
 
 
 class Counter(Entity):
-    def __init__(self) -> None:
+    def __init__(self, font: Font) -> None:
         self.count = 0
-        self.font = load_font_ex(stormfaze_font_path(), FONT_SIZE, None, 0)
+        self.font = font
 
     def up(self):
         self.count += 1
 
-    def close(self) -> None:
-        unload_font(self.font)
-
-    def update(self, delta_time: float) -> None:
-        pass
-
     def draw(self) -> None:
         text = f"{self.count}"
-        draw_text_ex(
-            self.font,
-            text,
-            Vector2(
-                int(
-                    (
-                        get_screen_width()
-                        - measure_text_ex(self.font, text, FONT_SIZE, 0).x
-                    )
-                    / 2
-                ),
-                int((get_screen_height() / 5) / 2),
+        position = Vector2(
+            int(
+                (get_screen_width() - measure_text_ex(self.font, text, FONT_SIZE, 0).x)
+                / 2
             ),
-            FONT_SIZE,
-            0,
-            WHITE,
+            int((get_screen_height() / 5) / 2),
         )
+        draw_text_ex(self.font, text, position, FONT_SIZE, 0, WHITE)

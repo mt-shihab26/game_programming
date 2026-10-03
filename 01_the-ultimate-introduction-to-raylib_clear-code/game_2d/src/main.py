@@ -7,14 +7,18 @@ from pyray import (
     close_audio_device,
     draw_fps,
     end_drawing,
+    ffi,
     get_frame_time,
     get_screen_height,
     init_audio_device,
     init_window,
     close_window,
+    load_font,
+    load_font_ex,
     load_music_stream,
     load_sound,
     load_texture,
+    unload_font,
     unload_music_stream,
     unload_sound,
     unload_texture,
@@ -24,6 +28,7 @@ from pyray import (
 
 from core.config import (
     BG_COLOR,
+    FONT_SIZE,
     MAX_METEOR_DURATION,
     MIN_METEOR_DURATION,
     WINDOW_WIDTH,
@@ -39,6 +44,7 @@ from core.paths import (
     music_sound_path,
     spaceship_image_path,
     star_image_path,
+    stormfaze_font_path,
 )
 from core.timer import Timer
 from core.window import wait_for_window_size
@@ -66,6 +72,9 @@ class Game:
             "laser": load_sound(laser_sound_path()),
             "explosion": load_sound(explosion_sound_path()),
         }
+        self.fonts = {
+            "stormfaze": load_font_ex(stormfaze_font_path(), FONT_SIZE, ffi.NULL, 0),
+        }
 
     def unload(self) -> None:
         for texture in self.textures.values():
@@ -78,6 +87,8 @@ class Game:
             unload_music_stream(music)
         for sound in self.sounds.values():
             unload_sound(sound)
+        for font in self.fonts.values():
+            unload_font(font)
 
     def __init__(self) -> None:
         init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Space shooter")
@@ -92,14 +103,9 @@ class Game:
 
         self.background = Background(self.textures["star"], self.musics["background"])
         self.player = Player(self.textures["player"], self.add_laser)
+        self.counter = Counter(self.fonts["stormfaze"])
 
         self.meteor_timer = Timer(MAX_METEOR_DURATION, True, True, self.add_meteor)
-
-        self.counter = Counter()
-
-        self.sprites: list[Entity] = [
-            self.counter,
-        ]
 
     def entities(self) -> list[Entity]:
         return (
@@ -109,8 +115,10 @@ class Game:
             ]
             + self.lasers
             + self.meteors
-            + self.sprites
             + self.explosions
+            + [
+                self.counter,
+            ]
         )
 
     def add_laser(self, position: Vector2):
@@ -157,14 +165,14 @@ class Game:
                     laser.rectangle(),
                 ):
                     self.add_explosion(meteor.position)
-                    self.on_laser_hit_meteor(meteor.position)
+                    self.counter.up()
                     self.lasers.remove(laser)
                     self.meteors.remove(meteor)
+                    # @TODO remove this function with thinking about the issue
+                    self.on_laser_hit_meteor(meteor.position)
                     break
 
     def on_laser_hit_meteor(self, position: Vector2):
-        self.counter.up()
-
         if (
             0 < self.counter.count
             and self.counter.count % 4 == 0
