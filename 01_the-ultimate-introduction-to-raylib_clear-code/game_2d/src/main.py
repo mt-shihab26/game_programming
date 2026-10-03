@@ -44,7 +44,7 @@ from core.timer import Timer
 from core.window import wait_for_window_size
 from entities.counter import Counter
 from entities.background import Background
-from sprites.explosion import Explosion2
+from entities.explosion import Explosion
 from sprites.laser import Laser
 from sprites.meteor import Meteor
 from sprites.player import Player
@@ -59,7 +59,6 @@ class Game:
             "meteor": load_texture(meteor_image_path()),
             "explosion": [load_texture(path) for path in explosion_image_paths()],
         }
-
         self.musics = {
             "background": load_music_stream(music_sound_path()),
         }
@@ -89,7 +88,7 @@ class Game:
 
         self.lasers: list[Laser] = []
         self.meteors: list[Meteor] = []
-        self.explosions: list[Explosion2] = []
+        self.explosions: list[Explosion] = []
 
         self.background = Background(self.textures["star"], self.musics["background"])
         self.player = Player(self.textures["player"], self.add_laser)
@@ -126,7 +125,7 @@ class Game:
     def add_explosion(self, position: Vector2):
         textures = self.textures["explosion"]
         sound = self.sounds["explosion"]
-        self.explosions.append(Explosion2(textures, position, sound))
+        self.explosions.append(Explosion(textures, position, sound))
 
     def close(self) -> None:
         for entity in self.entities():
