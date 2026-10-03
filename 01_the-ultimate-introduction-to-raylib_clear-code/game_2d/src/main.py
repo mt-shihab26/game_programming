@@ -1,4 +1,5 @@
 from pyray import (
+    Texture,
     Vector2,
     check_collision_recs,
     clear_background,
@@ -48,12 +49,17 @@ from sprites.player import Player
 
 class Game:
     def load(self) -> None:
-        self.textures = {
-            "player": load_texture(spaceship_image_path()),
-            "star": load_texture(star_image_path()),
-            "laser": load_texture(laser_image_path()),
-            "meteor": load_texture(meteor_image_path()),
+        images_paths = {
+            "player": spaceship_image_path(),
+            "star": star_image_path(),
+            "laser": laser_image_path(),
+            "meteor": meteor_image_path(),
         }
+
+        self.textures: dict[str, Texture] = {}
+        for key, value in images_paths.items():
+            self.textures[key] = load_texture(value)
+
         self.musics = {
             "background": load_music_stream(music_sound_path()),
         }
