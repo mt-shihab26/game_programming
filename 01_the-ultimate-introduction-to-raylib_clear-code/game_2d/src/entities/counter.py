@@ -24,12 +24,10 @@ class Counter(Entity):
         self.count += 1
 
     def draw(self) -> None:
-        text = f"{self.count}"
+        text_content = f"{self.count}"
+        text_size = measure_text_ex(self.font, text_content, FONT_SIZE, 0).x
         position = Vector2(
-            int(
-                (get_screen_width() - measure_text_ex(self.font, text, FONT_SIZE, 0).x)
-                / 2
-            ),
+            int((get_screen_width() - text_size) / 2),
             int((get_screen_height() / 5) / 2),
         )
-        draw_text_ex(self.font, text, position, FONT_SIZE, 0, WHITE)
+        draw_text_ex(self.font, text_content, position, FONT_SIZE, 0, WHITE)
