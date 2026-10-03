@@ -6,6 +6,7 @@ from pyray import (
     draw_fps,
     end_drawing,
     get_frame_time,
+    get_screen_height,
     init_audio_device,
     init_window,
     close_window,
@@ -21,7 +22,8 @@ from pyray import (
 
 from core.config import (
     BG_COLOR,
-    MIN_METEOR_TIMER_DURATION,
+    MAX_METEOR_DURATION,
+    MIN_METEOR_DURATION,
     WINDOW_WIDTH,
     WINDOW_HEIGHT,
 )
@@ -29,17 +31,19 @@ from core.entity import Entity
 from core.paths import (
     laser_image_path,
     laser_sound_path,
+    meteor_image_path,
     music_sound_path,
     spaceship_image_path,
     star_image_path,
 )
+from core.timer import Timer
 from core.window import wait_for_window_size
 from entities.counter import Counter
 from entities.explosion import Explosion
 from entities.background import Background
 from sprites.laser import Laser
+from sprites.meteor import Meteor
 from sprites.player import Player
-from entities.obstacle import Meteor, Obstacle
 
 
 class Game:
@@ -48,6 +52,7 @@ class Game:
             "player": load_texture(spaceship_image_path()),
             "star": load_texture(star_image_path()),
             "laser": load_texture(laser_image_path()),
+            "meteor": load_texture(meteor_image_path()),
         }
         self.musics = {
             "background": load_music_stream(music_sound_path()),
@@ -71,25 +76,30 @@ class Game:
 
         self.load()
 
-        self.background = Background(self.textures["star"], self.musics["background"])
-        self.player = Player(self.textures["player"], self.shoot_laser)
-
         self.lasers: list[Laser] = []
+        self.meteors: list[Meteor] = []
 
-        self.obstacle = Obstacle()
+        self.background = Background(self.textures["star"], self.musics["background"])
+        self.player = Player(self.textures["player"], self.add_laser)
+
+        self.meteor_timer = Timer(MAX_METEOR_DURATION, True, True, self.add_meteor)
+
         self.counter = Counter()
         self.explosion = Explosion()
 
         self.sprites: list[Entity] = [
-            self.obstacle,
             self.counter,
             self.explosion,
         ]
 
-    def shoot_laser(self, position: Vector2):
-        self.lasers.append(
-            Laser(self.textures["laser"], self.sounds["laser"], position)
-        )
+    def add_laser(self, position: Vector2):
+        texture = self.textures["laser"]
+        sound = self.sounds["laser"]
+        self.lasers.append(Laser(texture, sound, position))
+
+    def add_meteor(self):
+        texture = self.textures["meteor"]
+        self.meteors.append(Meteor(texture))
 
     def close(self) -> None:
         self.background.close()
@@ -97,6 +107,9 @@ class Game:
 
         for laser in self.lasers:
             laser.close()
+
+        for meteor in self.meteors:
+            meteor.close()
 
         for sprite in self.sprites:
             sprite.close()
@@ -110,12 +123,16 @@ class Game:
         self.handle_laser_meteor_collisions()
         self.handle_player_meteor_collisions()
         self.handle_remove_lasers_out_of_screen()
+        self.handle_remove_meteors_out_of_screen()
 
         self.background.update(delta_time)
         self.player.update(delta_time)
 
         for laser in self.lasers:
             laser.update(delta_time)
+
+        for meteor in self.meteors:
+            meteor.update(delta_time)
 
         for sprite in self.sprites:
             sprite.update(delta_time)
@@ -124,7 +141,7 @@ class Game:
         remove_lasers_indexs: list[int] = []
         remove_meteors_indexs: list[int] = []
         for laser_index, laser in enumerate(self.lasers):
-            for meteor_index, meteor in enumerate(self.obstacle.meteors):
+            for meteor_index, meteor in enumerate(self.meteors):
                 if meteor_index in remove_meteors_indexs:
                     continue
                 if check_collision_recs(laser.rec(), meteor.rec()):
@@ -140,33 +157,40 @@ class Game:
         self.lasers = lasers
 
         meteors: list[Meteor] = []
-        for index, meteor in enumerate(self.obstacle.meteors):
+        for index, meteor in enumerate(self.meteors):
             if index not in remove_meteors_indexs:
                 meteors.append(meteor)
-        self.obstacle.meteors = meteors
+        self.meteors = meteors
 
     def on_laser_hit_meteor(self, position: Vector2):
         self.counter.up()
+
+        meteor_texture = self.textures["meteor"]
+
         self.explosion.add(
             Vector2(
-                position.x + (self.obstacle.texture.width / 2),
-                position.y + (self.obstacle.texture.height / 2),
+                position.x + (meteor_texture.width / 2),
+                position.y + (meteor_texture.height / 2),
             )
         )
         if (
             0 < self.counter.count
             and self.counter.count % 4 == 0
-            and MIN_METEOR_TIMER_DURATION < self.obstacle.timer.duration
+            and MIN_METEOR_DURATION < self.meteor_timer.duration
         ):
-            self.obstacle.timer.duration = round(self.obstacle.timer.duration - 0.1, 1)
+            self.meteor_timer.duration = round(self.meteor_timer.duration - 0.1, 1)
 
     def handle_player_meteor_collisions(self):
-        for meteor in self.obstacle.meteors:
+        for meteor in self.meteors:
             if check_collision_recs(self.player.rec(), meteor.rec()):
                 pass
 
     def handle_remove_lasers_out_of_screen(self):
         self.lasers = [laser for laser in self.lasers if laser.position.y >= 0]
+
+    def handle_remove_meteors_out_of_screen(self):
+        h = get_screen_height()
+        self.meteors = [meteor for meteor in self.meteors if meteor.position.y <= h]
 
     def draw(self) -> None:
         begin_drawing()
@@ -178,6 +202,9 @@ class Game:
 
         for laser in self.lasers:
             laser.draw()
+
+        for meteor in self.meteors:
+            meteor.draw()
 
         for sprite in self.sprites:
             sprite.draw()
