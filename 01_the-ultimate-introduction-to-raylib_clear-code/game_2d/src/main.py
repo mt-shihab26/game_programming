@@ -139,17 +139,16 @@ class Game:
                     remove_meteors_indexs.append(meteor_index)
                     break
 
-        lasers: list[Laser] = []
-        for index, laser in enumerate(self.lasers):
-            if index not in remove_lasers_indexs:
-                lasers.append(laser)
-        self.lasers = lasers
-
-        meteors: list[Meteor] = []
-        for index, meteor in enumerate(self.meteors):
-            if index not in remove_meteors_indexs:
-                meteors.append(meteor)
-        self.meteors = meteors
+        self.lasers = [
+            laser
+            for index, laser in enumerate(self.lasers)
+            if index not in remove_lasers_indexs
+        ]
+        self.meteors = [
+            meteor
+            for index, meteor in enumerate(self.meteors)
+            if index not in remove_meteors_indexs
+        ]
 
     def on_laser_hit_meteor(self, position: Vector2):
         self.counter.up()
