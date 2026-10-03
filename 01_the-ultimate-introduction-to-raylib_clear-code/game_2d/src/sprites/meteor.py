@@ -15,8 +15,8 @@ class Meteor(Sprite):
         super().__init__(
             texture=texture,
             position=Vector2(
-                randint(0, max(0, get_screen_width() - self.texture.width)),
-                -self.texture.height,
+                randint(0, max(0, get_screen_width() - texture.width)),
+                -texture.height,
             ),
             speed=randint(*METEOR_SPEED_RANGE),
             direction=Vector2(0, 1),

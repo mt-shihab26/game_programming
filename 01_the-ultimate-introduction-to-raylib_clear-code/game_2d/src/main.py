@@ -128,6 +128,8 @@ class Game:
         self.background.update(delta_time)
         self.player.update(delta_time)
 
+        self.meteor_timer.update()
+
         for laser in self.lasers:
             laser.update(delta_time)
 
