@@ -138,9 +138,7 @@ class Game:
     def close(self) -> None:
         for entity in self.entities():
             entity.close()
-
         self.unload()
-
         close_audio_device()
         close_window()
 
@@ -205,10 +203,8 @@ class Game:
         begin_drawing()
         clear_background(BG_COLOR)
         draw_fps(0, 0)
-
         for entity in self.entities():
             entity.draw()
-
         end_drawing()
 
     def run(self) -> None:
