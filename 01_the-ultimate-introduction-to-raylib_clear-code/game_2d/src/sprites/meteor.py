@@ -24,18 +24,17 @@ class Meteor(Sprite):
             direction=Vector2(uniform(-0.5, 0.5), 1),
         )
         self.rotation = 0
-        self.rectangle = Rectangle(0, 0, self.size.x, self.size.y)
+        self.source = Rectangle(0, 0, self.size.x, self.size.y)
 
     def update(self, delta_time: float) -> None:
         super().update(delta_time)
         self.rotation += 50 * delta_time
 
     def draw(self) -> None:
-        target = Rectangle(self.position.x, self.position.y, self.size.x, self.size.y)
         draw_texture_pro(
             self.texture,
-            self.rectangle,
-            target,
+            self.source,
+            self.rec(),
             Vector2(self.size.x / 2, self.size.y / 2),
             self.rotation,
             WHITE,
