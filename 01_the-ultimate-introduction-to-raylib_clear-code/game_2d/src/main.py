@@ -32,6 +32,7 @@ from core.config import (
 from core.entity import Entity
 from core.paths import (
     explosion_image_paths,
+    explosion_sound_path,
     laser_image_path,
     laser_sound_path,
     meteor_image_path,
@@ -64,6 +65,7 @@ class Game:
         }
         self.sounds = {
             "laser": load_sound(laser_sound_path()),
+            "explosion": load_sound(explosion_sound_path()),
         }
 
     def unload(self) -> None:
@@ -123,7 +125,8 @@ class Game:
 
     def add_explosion(self, position: Vector2):
         textures = self.textures["explosion"]
-        self.explosions.append(Explosion2(textures, position))
+        sound = self.sounds["explosion"]
+        self.explosions.append(Explosion2(textures, position, sound))
 
     def close(self) -> None:
         for entity in self.entities():
@@ -139,6 +142,7 @@ class Game:
         self.handle_player_meteor_collisions()
         self.handle_remove_lasers_out_of_screen()
         self.handle_remove_meteors_out_of_screen()
+        self.handle_remove_explosions_out_of_screen()
 
         self.meteor_timer.update()
 
@@ -174,7 +178,7 @@ class Game:
             if check_collision_circles(
                 self.player.center(), self.player.radius, meteor.center(), meteor.radius
             ):
-                close_window()
+                pass
 
     def handle_remove_lasers_out_of_screen(self):
         self.lasers = [laser for laser in self.lasers if laser.position.y >= 0]
@@ -182,6 +186,13 @@ class Game:
     def handle_remove_meteors_out_of_screen(self):
         h = get_screen_height()
         self.meteors = [meteor for meteor in self.meteors if meteor.position.y <= h]
+
+    def handle_remove_explosions_out_of_screen(self):
+        self.explosions = [
+            explosion
+            for explosion in self.explosions
+            if explosion.index < explosion.len
+        ]
 
     def draw(self) -> None:
         begin_drawing()

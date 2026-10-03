@@ -16,4 +16,5 @@ class Laser(Sprite):
             speed=LASER_SPEED,
             direction=Vector2(0, -1),
         )
+
         play_sound(sound)

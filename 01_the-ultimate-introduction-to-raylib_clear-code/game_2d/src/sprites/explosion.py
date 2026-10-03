@@ -1,10 +1,12 @@
-from pyray import WHITE, Texture, Vector2, draw_texture_v
+from pyray import WHITE, Sound, Texture, Vector2, draw_texture_v, play_sound
 
 from core.entity import Entity
 
 
 class Explosion2(Entity):
-    def __init__(self, textures: list[Texture], position: Vector2) -> None:
+    def __init__(
+        self, textures: list[Texture], position: Vector2, sound: Sound
+    ) -> None:
         super().__init__()
 
         self.textures = textures
@@ -14,7 +16,16 @@ class Explosion2(Entity):
             position.x - self.size.x / 2, position.y - self.size.y / 2
         )
         self.index = 0
+        self.len = len(textures)
+        self.speed = 50
+
+        play_sound(sound)
+
+    def update(self, delta_time: float) -> None:
+        super().update(delta_time)
+        self.index += self.speed * delta_time
 
     def draw(self) -> None:
         super().draw()
-        draw_texture_v(self.textures[self.index], self.position, WHITE)
+        if self.index < self.len:
+            draw_texture_v(self.textures[int(self.index)], self.position, WHITE)
