@@ -4,8 +4,6 @@ from pyray import (
     Vector2,
     Rectangle,
     draw_texture_v,
-    load_texture,
-    unload_texture,
     vector2_normalize,
 )
 from pyray import get_screen_height, get_screen_width

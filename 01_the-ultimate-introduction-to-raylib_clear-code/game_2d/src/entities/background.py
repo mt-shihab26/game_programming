@@ -3,20 +3,14 @@ from pyray import (
     Texture,
     Vector2,
     Music,
-    draw_texture,
     draw_texture_ex,
     get_screen_height,
     get_screen_width,
-    load_music_stream,
-    load_texture,
     play_music_stream,
-    unload_music_stream,
-    unload_texture,
     update_music_stream,
 )
 from random import randint, uniform
 
-from core.paths import music_sound_path, star_image_path
 from core.entity import Entity
 
 

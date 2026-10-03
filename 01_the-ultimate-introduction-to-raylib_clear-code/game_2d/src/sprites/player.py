@@ -1,5 +1,4 @@
 from pyray import get_screen_height, get_screen_width, is_key_down, is_key_pressed
-from core.paths import spaceship_image_path
 
 from pyray import KeyboardKey, Texture, Vector2
 from core.sprite import Sprite
