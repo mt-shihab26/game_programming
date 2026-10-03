@@ -34,7 +34,7 @@ class Meteor(Sprite):
         draw_texture_pro(
             self.texture,
             self.source,
-            self.rec(),
+            self.rectangle(),
             Vector2(self.size.x / 2, self.size.y / 2),
             self.rotation,
             WHITE,

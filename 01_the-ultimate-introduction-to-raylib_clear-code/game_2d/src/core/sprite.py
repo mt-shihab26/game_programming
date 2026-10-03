@@ -26,6 +26,7 @@ class Sprite(Entity):
         self.speed = speed
         self.direction = direction
         self.size = Vector2(texture.width, texture.height)
+        self.radius = self.size.y / 2
 
     def close(self) -> None:
         super().close()
@@ -41,12 +42,17 @@ class Sprite(Entity):
         super().draw()
         draw_texture_v(self.texture, self.position, WHITE)
 
-    def rec(self):
-        return Rectangle(self.position.x, self.position.y, self.size.x, self.size.y)
-
     def constraint(self) -> Vector2:
         width = get_screen_width()
         height = get_screen_height()
         x = max(0, min(self.position.x, width - self.size.x))
         y = max(0, min(self.position.y, height - self.size.y))
         return Vector2(x, y)
+
+    def rectangle(self):
+        return Rectangle(self.position.x, self.position.y, self.size.x, self.size.y)
+
+    def center(self) -> Vector2:
+        return Vector2(
+            self.position.x + (self.size.x / 2), self.position.y + (self.size.y / 2)
+        )

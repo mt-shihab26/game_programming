@@ -1,5 +1,6 @@
 from pyray import (
     Vector2,
+    check_collision_circles,
     check_collision_recs,
     clear_background,
     close_audio_device,
@@ -133,7 +134,7 @@ class Game:
             for meteor_index, meteor in enumerate(self.meteors):
                 if meteor_index in remove_meteors_indexs:
                     continue
-                if check_collision_recs(laser.rec(), meteor.rec()):
+                if check_collision_recs(laser.rectangle(), meteor.rectangle()):
                     self.on_laser_hit_meteor(meteor.position)
                     remove_lasers_indexs.append(laser_index)
                     remove_meteors_indexs.append(meteor_index)
@@ -170,8 +171,10 @@ class Game:
 
     def handle_player_meteor_collisions(self):
         for meteor in self.meteors:
-            if check_collision_recs(self.player.rec(), meteor.rec()):
-                pass
+            if check_collision_circles(
+                self.player.center(), self.player.radius, meteor.center(), meteor.radius
+            ):
+                close_window()
 
     def handle_remove_lasers_out_of_screen(self):
         self.lasers = [laser for laser in self.lasers if laser.position.y >= 0]
