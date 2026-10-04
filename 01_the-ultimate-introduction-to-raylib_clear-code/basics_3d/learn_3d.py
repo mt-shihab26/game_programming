@@ -240,6 +240,7 @@ camera = Camera3D()
 
 while not window_should_close():
     dt = get_frame_time()
+    screen_w, screen_h = get_screen_width(), get_screen_height()
 
     # lesson switching
     if is_key_pressed(KEY_RIGHT):
@@ -345,7 +346,7 @@ while not window_should_close():
         (f"camera.up = {fmt(cam_up())}", 5),
         (f"draw_model(model, {fmt(cube_pos)}, {cube_scale:.1f}, ORANGE)", 6),
     ]
-    code_y = WINDOW_H - 60 - len(code) * 24
+    code_y = screen_h - 60 - len(code) * 24
     for i, (text, owner) in enumerate(code):
         active = owner == lesson or (owner == 3 and lesson == 4)
         draw_text(text, 20, code_y + i * 24, 20, RED if active else GRAY)
@@ -353,13 +354,13 @@ while not window_should_close():
     draw_text(
         "LEFT/RIGHT: lesson    drag mouse: look around    wheel: zoom    R: reset",
         20,
-        WINDOW_H - 30,
+        screen_h - 30,
         18,
         DARKGRAY,
     )
 
     if show_camera:
-        inset_x, inset_y = WINDOW_W - INSET_W - 20, 44
+        inset_x, inset_y = screen_w - INSET_W - 20, 44
         draw_text("What this camera sees", inset_x, inset_y - 24, 18, BLACK)
         draw_text("top", inset_x + INSET_W - 34, inset_y - 24, 18, DARKGREEN)
         draw_texture_rec(
