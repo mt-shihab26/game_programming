@@ -71,8 +71,11 @@ LESSONS = [
     (
         "camera.up",
         [
-            "Which way is the top of the picture.",
-            "Tilt it and the picture rolls, like tilting your head.",
+            "Up does not move the camera or change where it looks.",
+            "It only says which side of the picture is the top.",
+            "The green stick on the camera is up. The green edge is the",
+            "top of the picture. Lean the stick and the picture leans too,",
+            "like tilting your head sideways.",
         ],
         "A/D: tilt",
     ),
@@ -199,8 +202,12 @@ def draw_camera_gizmo():
 
     for i in range(4):
         draw_line_3d(V(near[i]), V(far[i]), SKYBLUE)
-        draw_line_3d(V(far[i]), V(far[(i + 1) % 4]), SKYBLUE)
+        # far[0] -> far[1] is the top edge of the picture
+        draw_line_3d(V(far[i]), V(far[(i + 1) % 4]), LIME if i == 0 else SKYBLUE)
         draw_line_3d(V(near[i]), V(near[(i + 1) % 4]), SKYBLUE)
+
+    global picture_top
+    picture_top = scale(add(far[0], far[1]), 0.5)
 
     draw_line_3d(V(cam_pos), V(cam_target), DARKGRAY)
     draw_line_3d(V(cam_pos), V(add(cam_pos, scale(cam_up(), 2))), LIME)
@@ -312,6 +319,7 @@ while not window_should_close():
         label("camera.position", cam_pos, BLACK)
         label("camera.target", cam_target, MAROON)
         label("up", add(cam_pos, scale(cam_up(), 2)), DARKGREEN)
+        label("top of picture", picture_top, DARKGREEN)
     else:
         label(fmt(point), point, PURPLE)
 
@@ -351,8 +359,9 @@ while not window_should_close():
     )
 
     if show_camera:
-        inset_x, inset_y = WINDOW_W - INSET_W - 20, WINDOW_H - INSET_H - 20
+        inset_x, inset_y = WINDOW_W - INSET_W - 20, 44
         draw_text("What this camera sees", inset_x, inset_y - 24, 18, BLACK)
+        draw_text("top", inset_x + INSET_W - 34, inset_y - 24, 18, DARKGREEN)
         draw_texture_rec(
             inset.texture,
             Rectangle(0, 0, INSET_W, -INSET_H),
@@ -360,6 +369,7 @@ while not window_should_close():
             WHITE,
         )
         draw_rectangle_lines(inset_x - 1, inset_y - 1, INSET_W + 2, INSET_H + 2, BLACK)
+        draw_rectangle(inset_x - 1, inset_y - 4, INSET_W + 2, 4, LIME)
 
     end_drawing()
 
