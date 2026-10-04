@@ -1,11 +1,11 @@
-from pyray import draw_model, draw_model_wires, gen_mesh_cube
+from pyray import draw_model_wires, gen_mesh_cube
 from pyray import load_model_from_mesh, unload_model
 
 from pyray import Model
 from core.entity import Entity
 from core.vector import V
 
-from pyray import DARKBROWN, ORANGE
+from pyray import ORANGE
 
 
 class Cube(Entity):
@@ -44,5 +44,4 @@ class Cube(Entity):
         unload_model(self.model)
 
     def draw(self) -> None:
-        draw_model(self.model, V(self.pos), self.scale, ORANGE)
-        draw_model_wires(self.model, V(self.pos), self.scale, DARKBROWN)
+        draw_model_wires(self.model, V(self.pos), self.scale, ORANGE)

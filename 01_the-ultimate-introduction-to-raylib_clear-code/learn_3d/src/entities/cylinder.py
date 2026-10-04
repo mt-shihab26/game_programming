@@ -1,11 +1,11 @@
-from pyray import draw_model, draw_model_wires, gen_mesh_cylinder
+from pyray import draw_model_wires, gen_mesh_cylinder
 from pyray import load_model_from_mesh, unload_model
 
 from pyray import Model
 from core.entity import Entity
 from core.vector import V
 
-from pyray import MAROON, RED
+from pyray import RED
 
 
 class Cylinder(Entity):
@@ -44,5 +44,4 @@ class Cylinder(Entity):
         unload_model(self.model)
 
     def draw(self) -> None:
-        draw_model(self.model, V(self.pos), 1, RED)
-        draw_model_wires(self.model, V(self.pos), 1, MAROON)
+        draw_model_wires(self.model, V(self.pos), 1, RED)

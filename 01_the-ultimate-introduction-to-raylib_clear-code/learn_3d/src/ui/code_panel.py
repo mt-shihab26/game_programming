@@ -30,7 +30,7 @@ class CodePanel:
             "camera.up": f"camera.up = {fmt(cam.up)}",
             "draw_line_3d": f"draw_line_3d({fmt(line.start)}, {fmt(line.end)}, MAROON)",
             "gen_mesh_cube": f"mesh = gen_mesh_cube({cube.size[0]:.1f}, {cube.size[1]:.1f}, {cube.size[2]:.1f})",
-            "draw_model": f"draw_model(model, {fmt(cube.pos)}, {cube.scale:.1f}, ORANGE)",
+            "draw_model_wires": f"draw_model_wires(model, {fmt(cube.pos)}, {cube.scale:.1f}, ORANGE)",
             "gen_mesh_cylinder": f"cylinder_mesh = gen_mesh_cylinder({cylinder.radius:.1f}, {cylinder.height:.1f}, {cylinder.slices})",
         }
 
