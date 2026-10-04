@@ -36,6 +36,9 @@ class CodePanel:
 
     def draw(self, lesson: Lesson) -> None:
         code = self.code()
+        if not lesson.show_objects:
+            # the other lines belong to things this lesson hides
+            code = {name: code[name] for name in lesson.highlights}
         screen_h = get_screen_height()
         code_y = screen_h - 60 - len(code) * 24
         for i, (name, text) in enumerate(code.items()):

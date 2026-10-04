@@ -58,8 +58,9 @@ class App:
 
     def draw_world(self) -> None:
         begin_mode_3d(self.observer.camera)
-        self.scene.draw()
-        self.lesson().draw()
+        lesson = self.lesson()
+        self.scene.draw(lesson.show_objects)
+        lesson.draw()
         end_mode_3d()
 
     def draw_labels(self) -> None:

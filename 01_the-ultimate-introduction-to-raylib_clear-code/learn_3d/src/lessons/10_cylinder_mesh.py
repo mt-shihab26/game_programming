@@ -19,6 +19,7 @@ class CylinderMeshLesson(Lesson):
     keys = "A/D: radius    W/S: height    Z/X: slices"
     highlights = ("gen_mesh_cylinder",)
     show_camera = False
+    show_objects = False
 
     def update(self, delta_time: float) -> None:
         radius = axis(KeyboardKey.KEY_D, KeyboardKey.KEY_A)

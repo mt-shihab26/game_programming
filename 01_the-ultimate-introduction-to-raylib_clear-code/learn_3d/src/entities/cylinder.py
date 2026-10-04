@@ -10,7 +10,7 @@ from pyray import MAROON, RED
 
 class Cylinder(Entity):
     def __init__(self) -> None:
-        self.pos = [-3.0, 0.0, 3.0]
+        self.pos = [0.0, 0.0, 0.0]
         self.set_defaults()
         self.model = self.build()
 

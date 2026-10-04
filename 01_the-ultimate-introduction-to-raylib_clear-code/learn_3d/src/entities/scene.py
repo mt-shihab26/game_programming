@@ -34,8 +34,9 @@ class Scene(Entity):
     def update(self, delta_time: float) -> None:
         self.cam.update(delta_time)
 
-    def draw(self) -> None:
+    def draw(self, objects: bool = True) -> None:
         draw_grid(10, 1)
         self.axes.draw()
-        self.cube.draw()
-        self.line.draw()
+        if objects:
+            self.cube.draw()
+            self.line.draw()
