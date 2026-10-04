@@ -23,7 +23,8 @@ while not window_should_close():
 
     draw_grid(10, 1)
 
-    draw_model(model, Vector3(0, 0, 0), 50, RED)
+    draw_model(model, Vector3(0, 0, 0), 1, RED)
+    draw_line_3d(Vector3(-4, 0, -2), Vector3(5, 2, 3), RED)
 
     end_mode_3d()
 
