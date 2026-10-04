@@ -55,7 +55,7 @@ class LessonCamera(Entity):
     def draw(self) -> None:
         forward = norm(sub(self.target, self.pos))
         right = cross(forward, self.up)
-        right = norm(right) if length(right) > 0.0001 else [1, 0, 0]
+        right = norm(right) if length(right) > 0.0001 else [1.0, 0.0, 0.0]
         up = cross(right, forward)
 
         depth = max(length(sub(self.target, self.pos)), 1)
