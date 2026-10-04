@@ -76,8 +76,9 @@ LESSONS = [
             "The green stick on the camera is up. The green edge is the",
             "top of the picture. Lean the stick and the picture leans too,",
             "like tilting your head sideways.",
+            "Only the direction counts: (0, 1, 0) and (0, 10, 0) are the same.",
         ],
-        "A/D: tilt",
+        MOVE_KEYS,
     ),
     (
         "draw_model(model, position, scale, tint)",
@@ -127,252 +128,311 @@ def fmt(v):
     return f"Vector3({v[0]:.1f}, {v[1]:.1f}, {v[2]:.1f})"
 
 
-def reset():
-    global point, cam_pos, cam_target, cam_roll, cam_fovy, cam_projection
-    global cube_pos, cube_scale
-    point = [3.0, 2.0, 2.0]
-    cam_pos = [0.0, 10.0, 5.0]
-    cam_target = [0.0, 0.0, 0.0]
-    cam_roll = 0.0
-    cam_fovy = 45.0
-    cam_projection = CAMERA_PERSPECTIVE
-    cube_pos = [0.0, 0.0, 0.0]
-    cube_scale = 1.0
-
-
-def move(v, dt):
-    speed = 4 * dt
+def move(v, dt, speed=4):
+    speed = speed * dt
     v[0] += (is_key_down(KEY_D) - is_key_down(KEY_A)) * speed
     v[1] += (is_key_down(KEY_E) - is_key_down(KEY_Q)) * speed
     v[2] += (is_key_down(KEY_S) - is_key_down(KEY_W)) * speed
 
 
-def cam_up():
-    return [sin(cam_roll), cos(cam_roll), 0.0]
+class Point:
+    """Lesson 1: a single position, drawn with the path that builds it."""
+
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self.pos = [3.0, 2.0, 2.0]
+
+    def draw(self):
+        x, y, z = self.pos
+        draw_line_3d(V([0, 0, 0]), V([x, 0, 0]), RED)
+        draw_line_3d(V([x, 0, 0]), V([x, 0, z]), BLUE)
+        draw_line_3d(V([x, 0, z]), V([x, y, z]), GREEN)
+        draw_sphere(V(self.pos), 0.15, PURPLE)
 
 
-def draw_axes():
-    draw_line_3d(V([0, 0, 0]), V([6, 0, 0]), RED)
-    draw_line_3d(V([0, 0, 0]), V([0, 6, 0]), GREEN)
-    draw_line_3d(V([0, 0, 0]), V([0, 0, 6]), BLUE)
-    draw_sphere(V([6, 0, 0]), 0.1, RED)
-    draw_sphere(V([0, 6, 0]), 0.1, GREEN)
-    draw_sphere(V([0, 0, 6]), 0.1, BLUE)
+class Cube:
+    def __init__(self):
+        self.model = load_model_from_mesh(gen_mesh_cube(1, 1, 1))
+        self.reset()
+
+    def reset(self):
+        self.pos = [0.0, 0.0, 0.0]
+        self.scale = 1.0
+
+    def resize(self, amount):
+        self.scale = max(0.1, min(self.scale + amount, 5))
+
+    def draw(self):
+        draw_model(self.model, V(self.pos), self.scale, ORANGE)
+        draw_model_wires(self.model, V(self.pos), self.scale, DARKBROWN)
 
 
-def draw_scene():
-    draw_grid(10, 1)
-    draw_axes()
-    draw_model(model, V(cube_pos), cube_scale, ORANGE)
-    draw_model_wires(model, V(cube_pos), cube_scale, DARKBROWN)
-    draw_line_3d(Vector3(-4, 0, -2), Vector3(5, 2, 3), MAROON)
+class LessonCamera:
+    """The camera being taught. Drawn in the world as a gizmo."""
 
+    def __init__(self):
+        self.camera = Camera3D()
+        self.reset()
 
-def draw_point_path():
-    x, y, z = point
-    draw_line_3d(V([0, 0, 0]), V([x, 0, 0]), RED)
-    draw_line_3d(V([x, 0, 0]), V([x, 0, z]), BLUE)
-    draw_line_3d(V([x, 0, z]), V([x, y, z]), GREEN)
-    draw_sphere(V(point), 0.15, PURPLE)
+    def reset(self):
+        self.pos = [0.0, 10.0, 5.0]
+        self.target = [0.0, 0.0, 0.0]
+        self.up = [0.0, 1.0, 0.0]
+        self.fovy = 45.0
+        self.projection = CAMERA_PERSPECTIVE
+        self.picture_top = [0.0, 0.0, 0.0]
 
+    @property
+    def up_tip(self):
+        return add(self.pos, scale(norm(self.up), 2))
 
-def draw_camera_gizmo():
-    forward = norm(sub(cam_target, cam_pos))
-    right = cross(forward, cam_up())
-    right = norm(right) if length(right) > 0.0001 else [1, 0, 0]
-    up = cross(right, forward)
+    @property
+    def projection_name(self):
+        if self.projection == CAMERA_PERSPECTIVE:
+            return "CAMERA_PERSPECTIVE"
+        return "CAMERA_ORTHOGRAPHIC"
 
-    depth = max(length(sub(cam_target, cam_pos)), 1)
-    aspect = INSET_W / INSET_H
-    if cam_projection == CAMERA_PERSPECTIVE:
-        half_h = depth * tan(radians(cam_fovy) / 2)
-    else:
-        half_h = cam_fovy / 2
-    half_w = half_h * aspect
+    def change_fovy(self, amount):
+        self.fovy = max(1, min(self.fovy + amount, 120))
 
-    far_center = add(cam_pos, scale(forward, depth))
-    far, near = [], []
-    for sx, sy in ((-1, 1), (1, 1), (1, -1), (-1, -1)):
-        offset = add(scale(right, sx * half_w), scale(up, sy * half_h))
-        far.append(add(far_center, offset))
-        if cam_projection == CAMERA_PERSPECTIVE:
-            near.append(cam_pos)
+    def toggle_projection(self):
+        if self.projection == CAMERA_PERSPECTIVE:
+            self.projection, self.fovy = CAMERA_ORTHOGRAPHIC, 10.0
         else:
-            near.append(add(cam_pos, offset))
+            self.projection, self.fovy = CAMERA_PERSPECTIVE, 45.0
 
-    for i in range(4):
-        draw_line_3d(V(near[i]), V(far[i]), SKYBLUE)
-        # far[0] -> far[1] is the top edge of the picture
-        draw_line_3d(V(far[i]), V(far[(i + 1) % 4]), LIME if i == 0 else SKYBLUE)
-        draw_line_3d(V(near[i]), V(near[(i + 1) % 4]), SKYBLUE)
+    def update(self):
+        self.camera.position = V(self.pos)
+        self.camera.target = V(self.target)
+        # a zero-length up has no direction, so fall back to the sky
+        self.camera.up = V(self.up if length(self.up) > 0.01 else [0, 1, 0])
+        self.camera.fovy = self.fovy
+        self.camera.projection = self.projection
 
-    global picture_top
-    picture_top = scale(add(far[0], far[1]), 0.5)
+    def draw_gizmo(self):
+        forward = norm(sub(self.target, self.pos))
+        right = cross(forward, self.up)
+        right = norm(right) if length(right) > 0.0001 else [1, 0, 0]
+        up = cross(right, forward)
 
-    draw_line_3d(V(cam_pos), V(cam_target), DARKGRAY)
-    draw_line_3d(V(cam_pos), V(add(cam_pos, scale(cam_up(), 2))), LIME)
-    draw_sphere(V(cam_pos), 0.25, BLACK)
-    draw_sphere(V(cam_target), 0.15, PINK)
+        depth = max(length(sub(self.target, self.pos)), 1)
+        aspect = INSET_W / INSET_H
+        if self.projection == CAMERA_PERSPECTIVE:
+            half_h = depth * tan(radians(self.fovy) / 2)
+        else:
+            half_h = self.fovy / 2
+        half_w = half_h * aspect
 
-
-def label(text, world_pos, color):
-    p = get_world_to_screen(V(world_pos), observer)
-    draw_text(text, int(p.x) + 10, int(p.y) - 8, 18, color)
-
-
-init_window(WINDOW_W, WINDOW_H, "Learn 3D")
-
-mesh = gen_mesh_cube(1, 1, 1)
-model = load_model_from_mesh(mesh)
-inset = load_render_texture(INSET_W, INSET_H)
-
-lesson = 0
-reset()
-
-orbit_yaw, orbit_pitch, orbit_dist = 0.7, 0.5, 24.0
-observer = Camera3D()
-observer.target = Vector3(0, 1, 0)
-observer.up = Vector3(0, 1, 0)
-observer.fovy = 45.0
-observer.projection = CAMERA_PERSPECTIVE
-
-camera = Camera3D()
-
-while not window_should_close():
-    dt = get_frame_time()
-    screen_w, screen_h = get_screen_width(), get_screen_height()
-
-    # lesson switching
-    if is_key_pressed(KEY_RIGHT):
-        lesson = min(lesson + 1, len(LESSONS) - 1)
-    if is_key_pressed(KEY_LEFT):
-        lesson = max(lesson - 1, 0)
-    if is_key_pressed(KEY_R):
-        reset()
-
-    # lesson controls
-    if lesson == 0:
-        move(point, dt)
-    elif lesson == 1:
-        move(cam_pos, dt)
-    elif lesson == 2:
-        move(cam_target, dt)
-    elif lesson in (3, 4):
-        cam_fovy += (is_key_down(KEY_W) - is_key_down(KEY_S)) * 30 * dt
-        cam_fovy = max(1, min(cam_fovy, 120))
-        if lesson == 4 and is_key_pressed(KEY_SPACE):
-            if cam_projection == CAMERA_PERSPECTIVE:
-                cam_projection, cam_fovy = CAMERA_ORTHOGRAPHIC, 10.0
+        far_center = add(self.pos, scale(forward, depth))
+        far, near = [], []
+        for sx, sy in ((-1, 1), (1, 1), (1, -1), (-1, -1)):
+            offset = add(scale(right, sx * half_w), scale(up, sy * half_h))
+            far.append(add(far_center, offset))
+            if self.projection == CAMERA_PERSPECTIVE:
+                near.append(self.pos)
             else:
-                cam_projection, cam_fovy = CAMERA_PERSPECTIVE, 45.0
-    elif lesson == 5:
-        cam_roll += (is_key_down(KEY_D) - is_key_down(KEY_A)) * 1.5 * dt
-    elif lesson == 6:
-        move(cube_pos, dt)
-        cube_scale += (is_key_down(KEY_X) - is_key_down(KEY_Z)) * 1.5 * dt
-        cube_scale = max(0.1, min(cube_scale, 5))
+                near.append(add(self.pos, offset))
 
-    # the camera being taught
-    camera.position = V(cam_pos)
-    camera.target = V(cam_target)
-    camera.up = V(cam_up())
-    camera.fovy = cam_fovy
-    camera.projection = cam_projection
+        for i in range(4):
+            draw_line_3d(V(near[i]), V(far[i]), SKYBLUE)
+            # far[0] -> far[1] is the top edge of the picture
+            draw_line_3d(V(far[i]), V(far[(i + 1) % 4]), LIME if i == 0 else SKYBLUE)
+            draw_line_3d(V(near[i]), V(near[(i + 1) % 4]), SKYBLUE)
+        self.picture_top = scale(add(far[0], far[1]), 0.5)
 
-    # the outside view: drag to orbit, wheel to zoom
-    if is_mouse_button_down(MOUSE_BUTTON_LEFT):
-        delta = get_mouse_delta()
-        orbit_yaw -= delta.x * 0.005
-        orbit_pitch = max(-1.5, min(orbit_pitch + delta.y * 0.005, 1.5))
-    orbit_dist = max(5, min(orbit_dist - get_mouse_wheel_move() * 1.5, 60))
-    observer.position = Vector3(
-        orbit_dist * cos(orbit_pitch) * sin(orbit_yaw),
-        orbit_dist * sin(orbit_pitch) + 1,
-        orbit_dist * cos(orbit_pitch) * cos(orbit_yaw),
-    )
+        draw_line_3d(V(self.pos), V(self.target), DARKGRAY)
+        draw_line_3d(V(self.pos), V(self.up_tip), LIME)
+        draw_sphere(V(self.pos), 0.25, BLACK)
+        draw_sphere(V(self.target), 0.15, PINK)
 
-    show_camera = lesson > 0
 
-    # what the taught camera sees
-    if show_camera:
-        begin_texture_mode(inset)
+class Observer:
+    """The outside view: drag to orbit, wheel to zoom."""
+
+    def __init__(self):
+        self.yaw, self.pitch, self.dist = 0.7, 0.5, 24.0
+        self.camera = Camera3D()
+        self.camera.target = Vector3(0, 1, 0)
+        self.camera.up = Vector3(0, 1, 0)
+        self.camera.fovy = 45.0
+        self.camera.projection = CAMERA_PERSPECTIVE
+
+    def update(self):
+        if is_mouse_button_down(MOUSE_BUTTON_LEFT):
+            delta = get_mouse_delta()
+            self.yaw -= delta.x * 0.005
+            self.pitch = max(-1.5, min(self.pitch + delta.y * 0.005, 1.5))
+        self.dist = max(5, min(self.dist - get_mouse_wheel_move() * 1.5, 60))
+        self.camera.position = Vector3(
+            self.dist * cos(self.pitch) * sin(self.yaw),
+            self.dist * sin(self.pitch) + 1,
+            self.dist * cos(self.pitch) * cos(self.yaw),
+        )
+
+    def label(self, text, world_pos, color):
+        p = get_world_to_screen(V(world_pos), self.camera)
+        draw_text(text, int(p.x) + 10, int(p.y) - 8, 18, color)
+
+
+class App:
+    def __init__(self):
+        init_window(WINDOW_W, WINDOW_H, "Learn 3D")
+        self.inset = load_render_texture(INSET_W, INSET_H)
+        self.lesson = 0
+        self.point = Point()
+        self.cube = Cube()
+        self.cam = LessonCamera()
+        self.observer = Observer()
+
+    @property
+    def show_camera(self):
+        return self.lesson > 0
+
+    def reset(self):
+        self.point.reset()
+        self.cube.reset()
+        self.cam.reset()
+
+    def update(self, dt):
+        if is_key_pressed(KEY_RIGHT):
+            self.lesson = min(self.lesson + 1, len(LESSONS) - 1)
+        if is_key_pressed(KEY_LEFT):
+            self.lesson = max(self.lesson - 1, 0)
+        if is_key_pressed(KEY_R):
+            self.reset()
+
+        self.update_lesson(dt)
+        self.cam.update()
+        self.observer.update()
+
+    def update_lesson(self, dt):
+        if self.lesson == 0:
+            move(self.point.pos, dt)
+        elif self.lesson == 1:
+            move(self.cam.pos, dt)
+        elif self.lesson == 2:
+            move(self.cam.target, dt)
+        elif self.lesson in (3, 4):
+            self.cam.change_fovy((is_key_down(KEY_W) - is_key_down(KEY_S)) * 30 * dt)
+            if self.lesson == 4 and is_key_pressed(KEY_SPACE):
+                self.cam.toggle_projection()
+        elif self.lesson == 5:
+            move(self.cam.up, dt, 1)
+        elif self.lesson == 6:
+            move(self.cube.pos, dt)
+            self.cube.resize((is_key_down(KEY_X) - is_key_down(KEY_Z)) * 1.5 * dt)
+
+    def draw_scene(self):
+        draw_grid(10, 1)
+        draw_line_3d(V([0, 0, 0]), V([6, 0, 0]), RED)
+        draw_line_3d(V([0, 0, 0]), V([0, 6, 0]), GREEN)
+        draw_line_3d(V([0, 0, 0]), V([0, 0, 6]), BLUE)
+        draw_sphere(V([6, 0, 0]), 0.1, RED)
+        draw_sphere(V([0, 6, 0]), 0.1, GREEN)
+        draw_sphere(V([0, 0, 6]), 0.1, BLUE)
+        self.cube.draw()
+        draw_line_3d(Vector3(-4, 0, -2), Vector3(5, 2, 3), MAROON)
+
+    def render_inset(self):
+        # what the taught camera sees
+        begin_texture_mode(self.inset)
         clear_background(WHITE)
-        begin_mode_3d(camera)
-        draw_scene()
+        begin_mode_3d(self.cam.camera)
+        self.draw_scene()
         end_mode_3d()
         end_texture_mode()
 
-    begin_drawing()
-    clear_background(RAYWHITE)
+    def draw_world(self):
+        begin_mode_3d(self.observer.camera)
+        self.draw_scene()
+        if self.show_camera:
+            self.cam.draw_gizmo()
+        else:
+            self.point.draw()
+        end_mode_3d()
 
-    begin_mode_3d(observer)
-    draw_scene()
-    if show_camera:
-        draw_camera_gizmo()
-    else:
-        draw_point_path()
-    end_mode_3d()
+    def draw_labels(self):
+        label = self.observer.label
+        label("X", [6, 0, 0], RED)
+        label("Y", [0, 6, 0], DARKGREEN)
+        label("Z", [0, 0, 6], BLUE)
+        if self.show_camera:
+            label("camera.position", self.cam.pos, BLACK)
+            label("camera.target", self.cam.target, MAROON)
+            label("up", self.cam.up_tip, DARKGREEN)
+            label("top of picture", self.cam.picture_top, DARKGREEN)
+        else:
+            label(fmt(self.point.pos), self.point.pos, PURPLE)
 
-    label("X", [6, 0, 0], RED)
-    label("Y", [0, 6, 0], DARKGREEN)
-    label("Z", [0, 0, 6], BLUE)
-    if show_camera:
-        label("camera.position", cam_pos, BLACK)
-        label("camera.target", cam_target, MAROON)
-        label("up", add(cam_pos, scale(cam_up(), 2)), DARKGREEN)
-        label("top of picture", picture_top, DARKGREEN)
-    else:
-        label(fmt(point), point, PURPLE)
+    def draw_lesson_text(self):
+        title, lines, keys = LESSONS[self.lesson]
+        draw_text(f"{self.lesson + 1}/{len(LESSONS)}  {title}", 20, 20, 30, BLACK)
+        for i, line in enumerate(lines):
+            draw_text(line, 20, 64 + i * 26, 20, DARKGRAY)
+        draw_text(keys, 20, 76 + len(lines) * 26, 20, DARKBLUE)
 
-    # lesson text
-    title, lines, keys = LESSONS[lesson]
-    draw_text(f"{lesson + 1}/{len(LESSONS)}  {title}", 20, 20, 30, BLACK)
-    for i, line in enumerate(lines):
-        draw_text(line, 20, 64 + i * 26, 20, DARKGRAY)
-    draw_text(keys, 20, 76 + len(lines) * 26, 20, DARKBLUE)
+    def draw_code(self):
+        # live code: the line this lesson changes is highlighted
+        cam, cube = self.cam, self.cube
+        code = [
+            (f"point = {fmt(self.point.pos)}", 0),
+            (f"camera.position = {fmt(cam.pos)}", 1),
+            (f"camera.target = {fmt(cam.target)}", 2),
+            (f"camera.fovy = {cam.fovy:.1f}", 3),
+            (f"camera.projection = {cam.projection_name}", 4),
+            (f"camera.up = {fmt(cam.up)}", 5),
+            (f"draw_model(model, {fmt(cube.pos)}, {cube.scale:.1f}, ORANGE)", 6),
+        ]
+        screen_h = get_screen_height()
+        code_y = screen_h - 60 - len(code) * 24
+        for i, (text, owner) in enumerate(code):
+            active = owner == self.lesson or (owner == 3 and self.lesson == 4)
+            draw_text(text, 20, code_y + i * 24, 20, RED if active else GRAY)
 
-    # live code: the line this lesson changes is highlighted
-    projection_name = (
-        "CAMERA_PERSPECTIVE"
-        if cam_projection == CAMERA_PERSPECTIVE
-        else "CAMERA_ORTHOGRAPHIC"
-    )
-    code = [
-        (f"point = {fmt(point)}", 0),
-        (f"camera.position = {fmt(cam_pos)}", 1),
-        (f"camera.target = {fmt(cam_target)}", 2),
-        (f"camera.fovy = {cam_fovy:.1f}", 3),
-        (f"camera.projection = {projection_name}", 4),
-        (f"camera.up = {fmt(cam_up())}", 5),
-        (f"draw_model(model, {fmt(cube_pos)}, {cube_scale:.1f}, ORANGE)", 6),
-    ]
-    code_y = screen_h - 60 - len(code) * 24
-    for i, (text, owner) in enumerate(code):
-        active = owner == lesson or (owner == 3 and lesson == 4)
-        draw_text(text, 20, code_y + i * 24, 20, RED if active else GRAY)
+        draw_text(
+            "LEFT/RIGHT: lesson    drag mouse: look around    wheel: zoom    R: reset",
+            20,
+            screen_h - 30,
+            18,
+            DARKGRAY,
+        )
 
-    draw_text(
-        "LEFT/RIGHT: lesson    drag mouse: look around    wheel: zoom    R: reset",
-        20,
-        screen_h - 30,
-        18,
-        DARKGRAY,
-    )
-
-    if show_camera:
-        inset_x, inset_y = screen_w - INSET_W - 20, 44
-        draw_text("What this camera sees", inset_x, inset_y - 24, 18, BLACK)
-        draw_text("top", inset_x + INSET_W - 34, inset_y - 24, 18, DARKGREEN)
+    def draw_inset(self):
+        x, y = get_screen_width() - INSET_W - 20, 44
+        draw_text("What this camera sees", x, y - 24, 18, BLACK)
+        draw_text("top", x + INSET_W - 34, y - 24, 18, DARKGREEN)
         draw_texture_rec(
-            inset.texture,
+            self.inset.texture,
             Rectangle(0, 0, INSET_W, -INSET_H),
-            Vector2(inset_x, inset_y),
+            Vector2(x, y),
             WHITE,
         )
-        draw_rectangle_lines(inset_x - 1, inset_y - 1, INSET_W + 2, INSET_H + 2, BLACK)
-        draw_rectangle(inset_x - 1, inset_y - 4, INSET_W + 2, 4, LIME)
+        draw_rectangle_lines(x - 1, y - 1, INSET_W + 2, INSET_H + 2, BLACK)
+        draw_rectangle(x - 1, y - 4, INSET_W + 2, 4, LIME)
 
-    end_drawing()
+    def draw(self):
+        if self.show_camera:
+            self.render_inset()
 
-unload_render_texture(inset)
-close_window()
+        begin_drawing()
+        clear_background(RAYWHITE)
+        self.draw_world()
+        self.draw_labels()
+        self.draw_lesson_text()
+        self.draw_code()
+        if self.show_camera:
+            self.draw_inset()
+        end_drawing()
+
+    def run(self):
+        while not window_should_close():
+            self.update(get_frame_time())
+            self.draw()
+        unload_render_texture(self.inset)
+        close_window()
+
+
+if __name__ == "__main__":
+    App().run()
