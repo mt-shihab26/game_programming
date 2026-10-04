@@ -2,6 +2,7 @@ from pyray import begin_drawing, begin_mode_3d, clear_background, close_window
 from pyray import end_drawing, end_mode_3d, get_frame_time, init_window
 from pyray import is_key_pressed, window_should_close
 from core.controls import pressed_or_held
+from core.font import unload_fonts
 from core.lesson_loader import load_lessons
 from core.window import wait_for_window_size
 
@@ -38,6 +39,7 @@ class App:
     def close(self) -> None:
         self.scene.close()
         self.inset.close()
+        unload_fonts()
         close_window()
 
     def update(self, delta_time: float) -> None:

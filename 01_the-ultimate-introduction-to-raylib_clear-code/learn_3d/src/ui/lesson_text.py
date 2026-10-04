@@ -1,5 +1,4 @@
-from pyray import draw_text
-
+from core.font import draw_text
 from core.lesson import Lesson
 
 from pyray import BLACK, DARKBLUE, DARKGRAY

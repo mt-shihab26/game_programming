@@ -1,5 +1,6 @@
-from pyray import draw_text, get_screen_height
+from pyray import get_screen_height
 
+from core.font import draw_text
 from core.lesson import Lesson
 from core.vector import fmt
 from entities.scene import Scene

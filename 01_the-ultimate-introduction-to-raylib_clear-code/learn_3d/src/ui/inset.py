@@ -1,5 +1,5 @@
 from pyray import begin_mode_3d, begin_texture_mode, clear_background
-from pyray import draw_rectangle, draw_rectangle_lines, draw_text, draw_texture_rec
+from pyray import draw_rectangle, draw_rectangle_lines, draw_texture_rec
 from pyray import end_mode_3d, end_texture_mode, get_screen_width
 from pyray import load_render_texture, unload_render_texture
 
@@ -7,6 +7,7 @@ from pyray import Camera3D, Rectangle, Vector2
 from typing import Callable
 
 from pyray import BLACK, DARKGREEN, LIME, WHITE
+from core.font import draw_text
 from core.config import INSET_HEIGHT, INSET_WIDTH
 
 

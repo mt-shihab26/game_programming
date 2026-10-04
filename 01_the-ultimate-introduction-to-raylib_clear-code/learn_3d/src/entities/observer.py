@@ -1,8 +1,9 @@
 from math import cos, sin
-from pyray import draw_text, get_mouse_delta, get_mouse_wheel_move
+from pyray import get_mouse_delta, get_mouse_wheel_move
 from pyray import get_world_to_screen, is_mouse_button_down
 
 from pyray import Camera3D, CameraProjection, Color, MouseButton, Vector3
+from core.font import draw_text
 from core.entity import Entity
 from core.vector import V, Vec
 
