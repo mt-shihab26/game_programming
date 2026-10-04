@@ -1,28 +1,10 @@
-from pyray import (
-    Vector2,
-    check_collision_circle_rec,
-    check_collision_circles,
-    clear_background,
-    close_audio_device,
-    draw_fps,
-    end_drawing,
-    get_frame_time,
-    get_screen_height,
-    init_audio_device,
-    init_window,
-    close_window,
-    window_should_close,
-    begin_drawing,
-)
+from pyray import check_collision_circle_rec, check_collision_circles, clear_background
+from pyray import close_audio_device, draw_fps, end_drawing, get_frame_time
+from pyray import get_screen_height, init_audio_device, init_window, close_window
+from pyray import window_should_close, begin_drawing
 from core.window import wait_for_window_size
 
-from core.config import (
-    BG_COLOR,
-    MAX_METEOR_DURATION,
-    MIN_METEOR_DURATION,
-    WINDOW_WIDTH,
-    WINDOW_HEIGHT,
-)
+from pyray import Vector2
 from core.entity import Entity
 from core.loader import Loader
 from core.timer import Timer
@@ -32,6 +14,9 @@ from entities.explosion import Explosion
 from sprites.laser import Laser
 from sprites.meteor import Meteor
 from sprites.player import Player
+
+from core.config import BG_COLOR, MAX_METEOR_DURATION, MIN_METEOR_DURATION
+from core.config import WINDOW_WIDTH, WINDOW_HEIGHT
 
 
 class Game(Loader):
