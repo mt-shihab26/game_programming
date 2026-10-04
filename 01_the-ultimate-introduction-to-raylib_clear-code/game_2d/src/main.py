@@ -2,50 +2,28 @@ from pyray import (
     Vector2,
     check_collision_circle_rec,
     check_collision_circles,
-    check_collision_recs,
     clear_background,
     close_audio_device,
     draw_fps,
     end_drawing,
-    ffi,
     get_frame_time,
     get_screen_height,
     init_audio_device,
     init_window,
     close_window,
-    load_font,
-    load_font_ex,
-    load_music_stream,
-    load_sound,
-    load_texture,
-    unload_font,
-    unload_music_stream,
-    unload_sound,
-    unload_texture,
     window_should_close,
     begin_drawing,
 )
 
 from core.config import (
     BG_COLOR,
-    FONT_SIZE,
     MAX_METEOR_DURATION,
     MIN_METEOR_DURATION,
     WINDOW_WIDTH,
     WINDOW_HEIGHT,
 )
 from core.entity import Entity
-from core.paths import (
-    explosion_image_paths,
-    explosion_sound_path,
-    laser_image_path,
-    laser_sound_path,
-    meteor_image_path,
-    music_sound_path,
-    spaceship_image_path,
-    star_image_path,
-    stormfaze_font_path,
-)
+from core.loader import Loader
 from core.timer import Timer
 from core.window import wait_for_window_size
 from entities.counter import Counter
@@ -56,40 +34,7 @@ from sprites.meteor import Meteor
 from sprites.player import Player
 
 
-class Game:
-    def load(self) -> None:
-        self.textures = {
-            "player": load_texture(spaceship_image_path()),
-            "star": load_texture(star_image_path()),
-            "laser": load_texture(laser_image_path()),
-            "meteor": load_texture(meteor_image_path()),
-            "explosion": [load_texture(path) for path in explosion_image_paths()],
-        }
-        self.musics = {
-            "background": load_music_stream(music_sound_path()),
-        }
-        self.sounds = {
-            "laser": load_sound(laser_sound_path()),
-            "explosion": load_sound(explosion_sound_path()),
-        }
-        self.fonts = {
-            "stormfaze": load_font_ex(stormfaze_font_path(), FONT_SIZE, ffi.NULL, 0),
-        }
-
-    def unload(self) -> None:
-        for texture in self.textures.values():
-            if isinstance(texture, list):
-                for frame in texture:
-                    unload_texture(frame)
-            else:
-                unload_texture(texture)
-        for music in self.musics.values():
-            unload_music_stream(music)
-        for sound in self.sounds.values():
-            unload_sound(sound)
-        for font in self.fonts.values():
-            unload_font(font)
-
+class Game(Loader):
     def __init__(self) -> None:
         init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Space shooter")
         init_audio_device()

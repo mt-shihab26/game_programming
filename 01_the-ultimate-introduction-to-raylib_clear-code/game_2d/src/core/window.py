@@ -1,10 +1,6 @@
-from pyray import (
-    RED,
-    begin_drawing,
-    clear_background,
-    end_drawing,
-    is_window_resized,
-)
+from pyray import begin_drawing, clear_background, end_drawing, is_window_resized
+
+from pyray import RED
 
 
 def wait_for_window_size() -> None:

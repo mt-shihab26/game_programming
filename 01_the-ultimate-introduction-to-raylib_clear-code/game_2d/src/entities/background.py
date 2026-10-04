@@ -1,17 +1,11 @@
-from pyray import (
-    WHITE,
-    Texture,
-    Vector2,
-    Music,
-    draw_texture_ex,
-    get_screen_height,
-    get_screen_width,
-    play_music_stream,
-    update_music_stream,
-)
 from random import randint, uniform
+from pyray import draw_texture_ex, get_screen_height, get_screen_width
+from pyray import play_music_stream, update_music_stream
 
+from pyray import Texture, Vector2, Music
 from core.entity import Entity
+
+from pyray import WHITE
 
 
 class Background(Entity):

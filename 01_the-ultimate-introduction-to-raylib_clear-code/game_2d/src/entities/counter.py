@@ -5,13 +5,10 @@ from pyray import (
     draw_text_ex,
     get_screen_height,
     get_screen_width,
-    load_font_ex,
     measure_text_ex,
-    unload_font,
 )
 
 from core.config import FONT_SIZE
-from core.paths import stormfaze_font_path
 from core.entity import Entity
 
 

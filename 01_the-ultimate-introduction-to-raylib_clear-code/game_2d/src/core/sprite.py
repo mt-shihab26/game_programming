@@ -1,14 +1,9 @@
-from pyray import (
-    WHITE,
-    Texture,
-    Vector2,
-    Rectangle,
-    draw_texture_v,
-    vector2_normalize,
-)
-from pyray import get_screen_height, get_screen_width
+from pyray import get_screen_height, get_screen_width, draw_texture_v, vector2_normalize
 
 from core.entity import Entity
+from pyray import Texture, Vector2, Rectangle
+
+from pyray import WHITE
 
 
 class Sprite(Entity):
