@@ -15,7 +15,7 @@ def lesson_number(file: Path) -> int:
 
 
 def load_lessons(scene: "Scene") -> list[Lesson]:
-    # File names start with the lesson number (1_point.py), which sets the order.
+    # File names start with the lesson number (01_point.py), which sets the order.
     # A leading digit can't be written in an import statement, so load by name.
     lessons: list[Lesson] = []
     for file in sorted(LESSONS_DIR.glob("[0-9]*_*.py"), key=lesson_number):
