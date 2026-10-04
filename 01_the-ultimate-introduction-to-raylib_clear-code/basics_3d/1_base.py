@@ -21,8 +21,18 @@ image_texture = load_texture_from_image(image)
 
 set_material_texture(cylinder_model.materials[0], MATERIAL_MAP_ALBEDO, image_texture)
 
+position = Vector3(0, 0, 0)
+rotation = 0
 while not window_should_close():
     dt = get_frame_time()
+
+    # position.x += dt * 1
+    # position.y += dt * 1
+    # position.z += dt * 1
+
+    rotation += dt * 4
+
+    cylinder_model.transform = matrix_rotate_x(rotation)
 
     clear_background(WHITE)
     begin_drawing()
@@ -31,7 +41,7 @@ while not window_should_close():
 
     draw_grid(10, 1)
 
-    draw_model(cylinder_model, Vector3(0, 0, 0), 1, WHITE)
+    draw_model(cylinder_model, position, 1, WHITE)
 
     end_mode_3d()
 
