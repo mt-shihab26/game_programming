@@ -4,11 +4,14 @@ from raylib import CAMERA_PERSPECTIVE
 init_window(1220, 680, "3D base")
 
 camera = Camera3D()
-camera.position = Vector3(0, 5.0, 5.0)
-camera.target = Vector3(0, 0, 0)
-camera.up = Vector3(0, 1, 0)
+camera.position = Vector3(0.0, 5.0, 5.0)
+camera.target = Vector3(0.0, 0.0, 0.0)
+camera.up = Vector3(0.0, 10.0, 0.0)
 camera.fovy = 45.0
 camera.projection = CAMERA_PERSPECTIVE
+
+mesh = gen_mesh_cube(1, 1, 1)
+model = load_model_from_mesh(mesh)
 
 while not window_should_close():
     dt = get_frame_time()
@@ -19,6 +22,8 @@ while not window_should_close():
     begin_mode_3d(camera)
 
     draw_grid(10, 1)
+
+    draw_model(model, Vector3(0, 0, 0), 50, RED)
 
     end_mode_3d()
 
