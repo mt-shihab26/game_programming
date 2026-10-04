@@ -5,6 +5,8 @@ from core.vector import Vec
 
 from core.config import MOVE_SPEED
 
+MOVE_KEYS = "A/D: x    Q/E: y    W/S: z"
+
 
 def axis(positive: int, negative: int) -> int:
     return is_key_down(positive) - is_key_down(negative)

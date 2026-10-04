@@ -1,13 +1,13 @@
 from pyray import draw_text
 
+from core.lesson import Lesson
+
 from pyray import BLACK, DARKBLUE, DARKGRAY
-from core.lessons import LESSONS
 
 
 class LessonText:
-    def draw(self, lesson: int) -> None:
-        title, lines, keys = LESSONS[lesson]
-        draw_text(f"{lesson + 1}/{len(LESSONS)}  {title}", 20, 20, 30, BLACK)
-        for i, line in enumerate(lines):
+    def draw(self, lesson: Lesson, number: int, total: int) -> None:
+        draw_text(f"{number}/{total}  {lesson.title}", 20, 20, 30, BLACK)
+        for i, line in enumerate(lesson.lines):
             draw_text(line, 20, 64 + i * 26, 20, DARKGRAY)
-        draw_text(keys, 20, 76 + len(lines) * 26, 20, DARKBLUE)
+        draw_text(lesson.keys, 20, 76 + len(lesson.lines) * 26, 20, DARKBLUE)
