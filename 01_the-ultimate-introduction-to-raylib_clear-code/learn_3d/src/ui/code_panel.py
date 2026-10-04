@@ -19,6 +19,7 @@ class CodePanel:
         # name (matched against Lesson.highlights) -> the code line shown
         point, cam = self.scene.point, self.scene.cam
         cube, line = self.scene.cube, self.scene.line
+        cylinder = self.scene.cylinder
         return {
             "point": f"point = {fmt(point.pos)}",
             "camera.position": f"camera.position = {fmt(cam.pos)}",
@@ -28,6 +29,7 @@ class CodePanel:
             "camera.up": f"camera.up = {fmt(cam.up)}",
             "draw_model": f"draw_model(model, {fmt(cube.pos)}, {cube.scale:.1f}, ORANGE)",
             "draw_line_3d": f"draw_line_3d({fmt(line.start)}, {fmt(line.end)}, MAROON)",
+            "gen_mesh_cylinder": f"mesh = gen_mesh_cylinder({cylinder.radius:.1f}, {cylinder.height:.1f}, {cylinder.slices})",
         }
 
     def draw(self, lesson: Lesson) -> None:
