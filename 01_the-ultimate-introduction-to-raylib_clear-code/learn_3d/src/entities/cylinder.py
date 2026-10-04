@@ -17,7 +17,7 @@ class Cylinder(Entity):
     def set_defaults(self) -> None:
         self.radius = 1.0
         self.height = 2.0
-        self.slices = 4
+        self.slices = 10
 
     def build(self) -> Model:
         mesh = gen_mesh_cylinder(self.radius, self.height, self.slices)
