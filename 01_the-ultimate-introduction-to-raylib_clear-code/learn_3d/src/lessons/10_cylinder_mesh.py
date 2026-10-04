@@ -17,9 +17,8 @@ class CylinderMeshLesson(Lesson):
         "The bottom sits at y = 0, not the centre like the cube.",
     ]
     keys = "A/D: radius    W/S: height    Z/X: slices"
-    highlights = ("gen_mesh_cylinder",)
-    show_camera = False
-    show_objects = False
+    code = ("gen_mesh_cylinder",)
+    objects = ("cylinder",)
 
     def update(self, delta_time: float) -> None:
         radius = axis(KeyboardKey.KEY_D, KeyboardKey.KEY_A)
@@ -28,6 +27,3 @@ class CylinderMeshLesson(Lesson):
         self.scene.cylinder.resize(
             radius * MESH_SPEED * delta_time, height * MESH_SPEED * delta_time, slices
         )
-
-    def draw(self) -> None:
-        self.scene.cylinder.draw()

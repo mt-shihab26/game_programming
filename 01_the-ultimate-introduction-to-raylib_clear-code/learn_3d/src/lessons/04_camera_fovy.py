@@ -14,7 +14,9 @@ class CameraFovyLesson(Lesson):
         "Wider angle: you see more, so things look smaller.",
     ]
     keys = "W/S: fovy"
-    highlights = ("camera.fovy",)
+    code = ("camera.fovy",)
+    objects = ("cube",)
+    show_camera = True
 
     def update(self, delta_time: float) -> None:
         amount = axis(KeyboardKey.KEY_W, KeyboardKey.KEY_S)

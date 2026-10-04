@@ -13,7 +13,8 @@ class ModelLesson(Lesson):
         "At y = 0 half the cube is under the floor. y = 0.5 sits on it.",
     ]
     keys = MOVE_KEYS + "    Z/X: scale"
-    highlights = ("draw_model",)
+    code = ("draw_model",)
+    objects = ("cube",)
 
     def update(self, delta_time: float) -> None:
         cube = self.scene.cube

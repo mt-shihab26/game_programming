@@ -15,7 +15,9 @@ class CameraProjectionLesson(Lesson):
         "In orthographic, fovy is the view height in world units.",
     ]
     keys = "SPACE: switch    W/S: fovy"
-    highlights = ("camera.fovy", "camera.projection")
+    code = ("camera.fovy", "camera.projection")
+    objects = ("cube",)
+    show_camera = True
 
     def update(self, delta_time: float) -> None:
         cam = self.scene.cam

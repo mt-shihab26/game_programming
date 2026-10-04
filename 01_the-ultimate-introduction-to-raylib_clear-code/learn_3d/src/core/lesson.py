@@ -14,13 +14,12 @@ class Lesson:
     title: str = ""
     lines: list[str] = []
     keys: str = ""
-    # names of the code panel lines this lesson changes
-    highlights: tuple[str, ...] = ()
+    # names of the code panel lines this lesson is about
+    code: tuple[str, ...] = ()
+    # names of the scene objects this lesson needs on the floor
+    objects: tuple[str, ...] = ()
     # show the taught camera in the world and the picture it sees
-    show_camera: bool = True
-    # show the cube and the line, and their code. Off when a lesson wants
-    # the floor to itself
-    show_objects: bool = True
+    show_camera: bool = False
 
     def __init__(self, scene: "Scene") -> None:
         self.scene = scene

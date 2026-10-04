@@ -59,7 +59,7 @@ class App:
     def draw_world(self) -> None:
         begin_mode_3d(self.observer.camera)
         lesson = self.lesson()
-        self.scene.draw(lesson.show_objects)
+        self.scene.draw_for(lesson)
         lesson.draw()
         end_mode_3d()
 
@@ -73,7 +73,9 @@ class App:
     def draw(self) -> None:
         lesson = self.lesson()
         if lesson.show_camera:
-            self.inset.render(self.scene.cam.camera, self.scene.draw)
+            self.inset.render(
+                self.scene.cam.camera, lambda: self.scene.draw_for(lesson)
+            )
 
         begin_drawing()
         clear_background(RAYWHITE)

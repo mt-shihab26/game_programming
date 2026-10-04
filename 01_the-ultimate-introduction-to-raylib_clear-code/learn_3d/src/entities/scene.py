@@ -1,6 +1,7 @@
 from pyray import draw_grid
 
 from core.entity import Entity
+from core.lesson import Lesson
 from entities.axes import Axes
 from entities.cube import Cube
 from entities.cylinder import Cylinder
@@ -19,6 +20,13 @@ class Scene(Entity):
         self.cylinder = Cylinder()
         self.line = Line()
         self.cam = LessonCamera()
+        # name (matched against Lesson.objects) -> the object drawn
+        self.objects: dict[str, Entity] = {
+            "point": self.point,
+            "cube": self.cube,
+            "line": self.line,
+            "cylinder": self.cylinder,
+        }
 
     def reset(self) -> None:
         self.point.reset()
@@ -34,9 +42,9 @@ class Scene(Entity):
     def update(self, delta_time: float) -> None:
         self.cam.update(delta_time)
 
-    def draw(self, objects: bool = True) -> None:
+    def draw_for(self, lesson: Lesson) -> None:
+        # only the floor and what the lesson is about
         draw_grid(10, 1)
         self.axes.draw()
-        if objects:
-            self.cube.draw()
-            self.line.draw()
+        for name in lesson.objects:
+            self.objects[name].draw()

@@ -16,7 +16,9 @@ class CameraUpLesson(Lesson):
         "Only the direction counts: (0, 1, 0) and (0, 10, 0) are the same.",
     ]
     keys = MOVE_KEYS
-    highlights = ("camera.up",)
+    code = ("camera.up",)
+    objects = ("cube",)
+    show_camera = True
 
     def update(self, delta_time: float) -> None:
         move(self.scene.cam.up, delta_time, UP_SPEED)

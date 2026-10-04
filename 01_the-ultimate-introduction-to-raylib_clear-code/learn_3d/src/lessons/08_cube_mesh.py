@@ -16,8 +16,8 @@ class CubeMeshLesson(Lesson):
         "The mesh is built around its centre, so it grows both ways.",
     ]
     keys = "A/D: width    Q/E: height    W/S: length"
-    highlights = ("gen_mesh_cube",)
-    show_camera = False
+    code = ("gen_mesh_cube",)
+    objects = ("cube",)
 
     def update(self, delta_time: float) -> None:
         step = MESH_SPEED * delta_time

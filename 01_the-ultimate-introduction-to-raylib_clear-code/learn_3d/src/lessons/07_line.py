@@ -21,7 +21,8 @@ class LineLesson(Lesson):
         "so moving one end swings and stretches the whole line.",
     ]
     keys = MOVE_KEYS + "    SPACE: start/end"
-    highlights = ("draw_line_3d",)
+    code = ("draw_line_3d",)
+    objects = ("line",)
 
     def __init__(self, scene: "Scene") -> None:
         super().__init__(scene)

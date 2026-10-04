@@ -14,14 +14,11 @@ class PointLesson(Lesson):
         "Follow the path: walk x along red, z along blue, then climb y.",
     ]
     keys = MOVE_KEYS
-    highlights = ("point",)
-    show_camera = False
+    code = ("point",)
+    objects = ("point",)
 
     def update(self, delta_time: float) -> None:
         move(self.scene.point.pos, delta_time)
-
-    def draw(self) -> None:
-        self.scene.point.draw()
 
     def draw_labels(self, label: Label) -> None:
         point = self.scene.point

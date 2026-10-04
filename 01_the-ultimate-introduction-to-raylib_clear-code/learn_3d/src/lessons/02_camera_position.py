@@ -11,7 +11,9 @@ class CameraPositionLesson(Lesson):
         "Move it and watch both views change.",
     ]
     keys = MOVE_KEYS
-    highlights = ("camera.position",)
+    code = ("camera.position",)
+    objects = ("cube",)
+    show_camera = True
 
     def update(self, delta_time: float) -> None:
         move(self.scene.cam.pos, delta_time)

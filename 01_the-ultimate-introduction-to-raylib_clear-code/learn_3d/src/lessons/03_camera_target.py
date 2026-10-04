@@ -10,7 +10,9 @@ class CameraTargetLesson(Lesson):
         "The camera stays where it is and turns to face it.",
     ]
     keys = MOVE_KEYS
-    highlights = ("camera.target",)
+    code = ("camera.target",)
+    objects = ("cube",)
+    show_camera = True
 
     def update(self, delta_time: float) -> None:
         move(self.scene.cam.target, delta_time)

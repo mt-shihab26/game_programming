@@ -5,19 +5,19 @@ from core.lesson import Lesson
 from core.vector import fmt
 from entities.scene import Scene
 
-from pyray import DARKGRAY, GRAY, RED
+from pyray import DARKGRAY, RED
 
 HINT = "LEFT/RIGHT: lesson    drag mouse: look around    wheel: zoom    R: reset lesson values    C: reset view"
 
 
 class CodePanel:
-    """Live code: the lines the current lesson changes are highlighted."""
+    """Live code: the lines the current lesson is about."""
 
     def __init__(self, scene: Scene) -> None:
         self.scene = scene
 
     def code(self) -> dict[str, str]:
-        # name (matched against Lesson.highlights) -> the code line shown
+        # name (matched against Lesson.code) -> the code line shown
         point, cam = self.scene.point, self.scene.cam
         cube, line = self.scene.cube, self.scene.line
         cylinder = self.scene.cylinder
@@ -36,12 +36,8 @@ class CodePanel:
 
     def draw(self, lesson: Lesson) -> None:
         code = self.code()
-        if not lesson.show_objects:
-            # the other lines belong to things this lesson hides
-            code = {name: code[name] for name in lesson.highlights}
         screen_h = get_screen_height()
-        code_y = screen_h - 60 - len(code) * 24
-        for i, (name, text) in enumerate(code.items()):
-            color = RED if name in lesson.highlights else GRAY
-            draw_text(text, 20, code_y + i * 24, 20, color)
+        code_y = screen_h - 60 - len(lesson.code) * 24
+        for i, name in enumerate(lesson.code):
+            draw_text(code[name], 20, code_y + i * 24, 20, RED)
         draw_text(HINT, 20, screen_h - 30, 18, DARKGRAY)
