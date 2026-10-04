@@ -1,15 +1,10 @@
-from pyray import (
-    WHITE,
-    Font,
-    Vector2,
-    draw_text_ex,
-    get_screen_height,
-    get_screen_width,
-    measure_text_ex,
-)
+from pyray import draw_text_ex, get_screen_height, get_screen_width, measure_text_ex
 
-from core.config import FONT_SIZE
 from core.entity import Entity
+from pyray import Font, Vector2
+
+from pyray import WHITE
+from core.config import FONT_SIZE
 
 
 class Counter(Entity):

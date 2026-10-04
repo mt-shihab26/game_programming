@@ -14,6 +14,7 @@ from pyray import (
     window_should_close,
     begin_drawing,
 )
+from core.window import wait_for_window_size
 
 from core.config import (
     BG_COLOR,
@@ -25,7 +26,6 @@ from core.config import (
 from core.entity import Entity
 from core.loader import Loader
 from core.timer import Timer
-from core.window import wait_for_window_size
 from entities.counter import Counter
 from entities.background import Background
 from entities.explosion import Explosion

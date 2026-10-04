@@ -1,6 +1,9 @@
-from pyray import WHITE, Sound, Texture, Vector2, draw_texture_v, play_sound
+from pyray import draw_texture_v, play_sound
 
 from core.entity import Entity
+from pyray import Sound, Texture, Vector2
+
+from pyray import WHITE
 
 
 class Explosion(Entity):
