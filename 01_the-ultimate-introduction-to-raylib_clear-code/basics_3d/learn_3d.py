@@ -21,7 +21,7 @@ from raylib import (
 
 WINDOW_W, WINDOW_H = 1280, 720
 INSET_W, INSET_H = 416, 234
-MOVE_KEYS = "A/D: x    W/S: z    Q/E: y"
+MOVE_KEYS = "A/D: x    Q/E: y    W/S: z"
 
 LESSONS = [
     (
