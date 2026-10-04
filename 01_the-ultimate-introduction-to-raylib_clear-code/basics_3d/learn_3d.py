@@ -89,6 +89,24 @@ LESSONS = [
         ],
         MOVE_KEYS + "    Z/X: scale",
     ),
+    (
+        "draw_line_3d(start, end, color): start",
+        [
+            "A line is just two points joined together.",
+            "This lesson moves the first point (start).",
+            "y = 0 keeps that end on the floor. Raise y and it lifts up.",
+        ],
+        MOVE_KEYS,
+    ),
+    (
+        "draw_line_3d(start, end, color): end",
+        [
+            "Now move the second point (end).",
+            "The line always runs straight between the two points,",
+            "so moving one end swings and stretches the whole line.",
+        ],
+        MOVE_KEYS,
+    ),
 ]
 
 
@@ -168,6 +186,23 @@ class Cube:
     def draw(self):
         draw_model(self.model, V(self.pos), self.scale, ORANGE)
         draw_model_wires(self.model, V(self.pos), self.scale, DARKBROWN)
+
+
+class Line:
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self.start = [-4.0, 0.0, -2.0]
+        self.end = [5.0, 2.0, 3.0]
+
+    def draw(self):
+        draw_line_3d(V(self.start), V(self.end), MAROON)
+
+    def draw_ends(self, active):
+        # the end being moved is drawn bigger
+        draw_sphere(V(self.start), 0.2 if active == "start" else 0.1, MAROON)
+        draw_sphere(V(self.end), 0.2 if active == "end" else 0.1, MAROON)
 
 
 class LessonCamera:
@@ -287,6 +322,7 @@ class App:
         self.lesson = 0
         self.point = Point()
         self.cube = Cube()
+        self.line = Line()
         self.cam = LessonCamera()
         self.observer = Observer()
 
@@ -294,9 +330,15 @@ class App:
     def show_camera(self):
         return self.lesson > 0
 
+    @property
+    def line_end(self):
+        # which end of the line the current lesson moves, if any
+        return {7: "start", 8: "end"}.get(self.lesson)
+
     def reset(self):
         self.point.reset()
         self.cube.reset()
+        self.line.reset()
         self.cam.reset()
 
     def update(self, dt):
@@ -329,6 +371,10 @@ class App:
         elif self.lesson == 6:
             move(self.cube.pos, dt)
             self.cube.resize((is_key_down(KEY_X) - is_key_down(KEY_Z)) * 1.5 * dt)
+        elif self.lesson == 7:
+            move(self.line.start, dt)
+        elif self.lesson == 8:
+            move(self.line.end, dt)
 
     def draw_scene(self):
         draw_grid(10, 1)
@@ -339,7 +385,7 @@ class App:
         draw_sphere(V([0, 6, 0]), 0.1, GREEN)
         draw_sphere(V([0, 0, 6]), 0.1, BLUE)
         self.cube.draw()
-        draw_line_3d(Vector3(-4, 0, -2), Vector3(5, 2, 3), MAROON)
+        self.line.draw()
 
     def render_inset(self):
         # what the taught camera sees
@@ -357,6 +403,8 @@ class App:
             self.cam.draw_gizmo()
         else:
             self.point.draw()
+        if self.line_end:
+            self.line.draw_ends(self.line_end)
         end_mode_3d()
 
     def draw_labels(self):
@@ -371,6 +419,9 @@ class App:
             label("top of picture", self.cam.picture_top, DARKGREEN)
         else:
             label(fmt(self.point.pos), self.point.pos, PURPLE)
+        if self.line_end:
+            label("start", self.line.start, MAROON)
+            label("end", self.line.end, MAROON)
 
     def draw_lesson_text(self):
         title, lines, keys = LESSONS[self.lesson]
@@ -381,20 +432,21 @@ class App:
 
     def draw_code(self):
         # live code: the line this lesson changes is highlighted
-        cam, cube = self.cam, self.cube
+        cam, cube, line = self.cam, self.cube, self.line
         code = [
-            (f"point = {fmt(self.point.pos)}", 0),
-            (f"camera.position = {fmt(cam.pos)}", 1),
-            (f"camera.target = {fmt(cam.target)}", 2),
-            (f"camera.fovy = {cam.fovy:.1f}", 3),
-            (f"camera.projection = {cam.projection_name}", 4),
-            (f"camera.up = {fmt(cam.up)}", 5),
-            (f"draw_model(model, {fmt(cube.pos)}, {cube.scale:.1f}, ORANGE)", 6),
+            (f"point = {fmt(self.point.pos)}", (0,)),
+            (f"camera.position = {fmt(cam.pos)}", (1,)),
+            (f"camera.target = {fmt(cam.target)}", (2,)),
+            (f"camera.fovy = {cam.fovy:.1f}", (3, 4)),
+            (f"camera.projection = {cam.projection_name}", (4,)),
+            (f"camera.up = {fmt(cam.up)}", (5,)),
+            (f"draw_model(model, {fmt(cube.pos)}, {cube.scale:.1f}, ORANGE)", (6,)),
+            (f"draw_line_3d({fmt(line.start)}, {fmt(line.end)}, MAROON)", (7, 8)),
         ]
         screen_h = get_screen_height()
         code_y = screen_h - 60 - len(code) * 24
-        for i, (text, owner) in enumerate(code):
-            active = owner == self.lesson or (owner == 3 and self.lesson == 4)
+        for i, (text, lessons) in enumerate(code):
+            active = self.lesson in lessons
             draw_text(text, 20, code_y + i * 24, 20, RED if active else GRAY)
 
         draw_text(
