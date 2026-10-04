@@ -1,6 +1,7 @@
 from pyray import begin_drawing, begin_mode_3d, clear_background, close_window
 from pyray import end_drawing, end_mode_3d, get_frame_time, init_window
 from pyray import is_key_pressed, window_should_close
+from core.controls import pressed_or_held
 from core.lesson_loader import load_lessons
 from core.window import wait_for_window_size
 
@@ -40,10 +41,10 @@ class App:
         close_window()
 
     def update(self, delta_time: float) -> None:
-        if is_key_pressed(KeyboardKey.KEY_RIGHT):
-            self.index = min(self.index + 1, len(self.lessons) - 1)
-        if is_key_pressed(KeyboardKey.KEY_LEFT):
-            self.index = max(self.index - 1, 0)
+        if pressed_or_held(KeyboardKey.KEY_RIGHT):
+            self.index = (self.index + 1) % len(self.lessons)
+        if pressed_or_held(KeyboardKey.KEY_LEFT):
+            self.index = (self.index - 1) % len(self.lessons)
         if is_key_pressed(KeyboardKey.KEY_R):
             self.scene.reset()
         if is_key_pressed(KeyboardKey.KEY_C):

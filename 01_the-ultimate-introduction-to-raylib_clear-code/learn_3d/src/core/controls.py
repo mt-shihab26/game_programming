@@ -1,4 +1,4 @@
-from pyray import is_key_down
+from pyray import is_key_down, is_key_pressed, is_key_pressed_repeat
 
 from pyray import KeyboardKey
 from core.vector import Vec
@@ -10,6 +10,11 @@ MOVE_KEYS = "A/D: x    Q/E: y    W/S: z"
 
 def axis(positive: int, negative: int) -> int:
     return is_key_down(positive) - is_key_down(negative)
+
+
+def pressed_or_held(key: int) -> bool:
+    # true on the first press, then again and again while the key stays down
+    return is_key_pressed(key) or is_key_pressed_repeat(key)
 
 
 def move(v: Vec, delta_time: float, speed: float = MOVE_SPEED) -> None:
