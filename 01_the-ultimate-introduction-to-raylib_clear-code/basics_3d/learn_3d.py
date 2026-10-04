@@ -5,6 +5,7 @@ from raylib import (
     CAMERA_ORTHOGRAPHIC,
     CAMERA_PERSPECTIVE,
     KEY_A,
+    KEY_C,
     KEY_D,
     KEY_E,
     KEY_LEFT,
@@ -252,12 +253,15 @@ class Observer:
     """The outside view: drag to orbit, wheel to zoom."""
 
     def __init__(self):
-        self.yaw, self.pitch, self.dist = 0.7, 0.5, 24.0
+        self.reset()
         self.camera = Camera3D()
         self.camera.target = Vector3(0, 1, 0)
         self.camera.up = Vector3(0, 1, 0)
         self.camera.fovy = 45.0
         self.camera.projection = CAMERA_PERSPECTIVE
+
+    def reset(self):
+        self.yaw, self.pitch, self.dist = 0.7, 0.5, 24.0
 
     def update(self):
         if is_mouse_button_down(MOUSE_BUTTON_LEFT):
@@ -302,6 +306,8 @@ class App:
             self.lesson = max(self.lesson - 1, 0)
         if is_key_pressed(KEY_R):
             self.reset()
+        if is_key_pressed(KEY_C):
+            self.observer.reset()
 
         self.update_lesson(dt)
         self.cam.update()
@@ -392,7 +398,7 @@ class App:
             draw_text(text, 20, code_y + i * 24, 20, RED if active else GRAY)
 
         draw_text(
-            "LEFT/RIGHT: lesson    drag mouse: look around    wheel: zoom    R: reset",
+            "LEFT/RIGHT: lesson    drag mouse: look around    wheel: zoom    R: reset lesson values    C: reset view",
             20,
             screen_h - 30,
             18,
