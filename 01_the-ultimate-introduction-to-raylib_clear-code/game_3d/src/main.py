@@ -1,7 +1,10 @@
 from pyray import (
+    WHITE,
     begin_drawing,
     begin_mode_3d,
+    clear_background,
     close_window,
+    draw_grid,
     end_drawing,
     end_mode_3d,
     init_window,
@@ -29,6 +32,8 @@ class Game:
     def draw(self):
         begin_drawing()
         begin_mode_3d(self.camera.object)
+        clear_background(WHITE)
+        draw_grid(10, 2)
         end_mode_3d()
         end_drawing()
 
