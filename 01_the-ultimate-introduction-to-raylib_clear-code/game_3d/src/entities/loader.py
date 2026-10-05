@@ -1,4 +1,4 @@
-from pyray import load_model
+from pyray import load_model, unload_model
 from os.path import abspath, dirname, join
 
 from pyray import Model
@@ -14,7 +14,8 @@ class Loader(Entity):
         }
 
     def close(self) -> None:
-        pass
+        for model in self.models.values():
+            unload_model(model)
 
     def get_model(self, name: str) -> Model:
         return self.models[name]
