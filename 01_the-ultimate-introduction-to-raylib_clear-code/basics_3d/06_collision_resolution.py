@@ -16,7 +16,7 @@ player_length = 1
 player_model = load_model_from_mesh(gen_mesh_cube(player_width, 1, player_length))
 player_position = Vector3(0, 0, 3)
 player_direction = Vector3(0, 0, 0)
-player_speed = 1
+player_speed = 5
 
 
 def get_bounding_box(model: Model, position: Vector3) -> BoundingBox:
