@@ -31,6 +31,8 @@ obstacle_length = 2
 obstacle_model = load_model_from_mesh(gen_mesh_cube(obstacle_width, 2, obstacle_length))
 obstacle_position = Vector3(0, 0, 0)
 
+collision_axis = ""
+
 while not window_should_close():
     # input
     player_direction.x = int(is_key_down(KEY_RIGHT)) - int(is_key_down(KEY_LEFT))
@@ -45,23 +47,33 @@ while not window_should_close():
     player_bounding_box = get_bounding_box(player_model, player_position)
     obstacle_bounding_box = get_bounding_box(obstacle_model, obstacle_position)
 
-    if check_collision_boxes(player_bounding_box, obstacle_bounding_box):
-        if 0 < player_direction.x:
-            player_position.x = (
-                obstacle_position.x - obstacle_width / 2 - player_width / 2
-            )
-        if player_direction.x < 0:
-            player_position.x = (
-                obstacle_position.x + obstacle_width / 2 + player_width / 2
-            )
-        if 0 < player_direction.z:
-            player_position.z = (
-                obstacle_position.z - obstacle_length / 2 - player_length / 2
-            )
-        if player_direction.z < 0:
-            player_position.z = (
-                obstacle_position.z + obstacle_length / 2 + player_length / 2
-            )
+    if not check_collision_boxes(player_bounding_box, obstacle_bounding_box):
+        collision_axis = ""
+    else:
+        match collision_axis:
+            case "":
+                if player_direction.x != 0:
+                    collision_axis = "x"
+                if player_direction.z != 0:
+                    collision_axis = "z"
+            case "x":
+                if 0 < player_direction.x:
+                    player_position.x = (
+                        obstacle_position.x - obstacle_width / 2 - player_width / 2
+                    )
+                if player_direction.x < 0:
+                    player_position.x = (
+                        obstacle_position.x + obstacle_width / 2 + player_width / 2
+                    )
+            case "z":
+                if 0 < player_direction.z:
+                    player_position.z = (
+                        obstacle_position.z - obstacle_length / 2 - player_length / 2
+                    )
+                if player_direction.z < 0:
+                    player_position.z = (
+                        obstacle_position.z + obstacle_length / 2 + player_length / 2
+                    )
 
     # drawing
     begin_drawing()
