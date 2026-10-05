@@ -16,7 +16,7 @@ player_length = 1
 player_model = load_model_from_mesh(gen_mesh_cube(player_width, 1, player_length))
 player_position = Vector3(0, 0, 3)
 player_direction = Vector3(0, 0, 0)
-player_speed = 5
+player_speed = 1
 
 
 def get_bounding_box(model: Model, position: Vector3) -> BoundingBox:
@@ -37,6 +37,8 @@ while not window_should_close():
     # input
     player_direction.x = int(is_key_down(KEY_RIGHT)) - int(is_key_down(KEY_LEFT))
     player_direction.z = int(is_key_down(KEY_DOWN)) - int(is_key_down(KEY_UP))
+
+    player_direction = vector3_normalize(player_direction)
 
     # movement & collision
     dt = get_frame_time()
