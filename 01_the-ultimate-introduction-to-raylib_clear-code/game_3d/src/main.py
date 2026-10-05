@@ -7,6 +7,7 @@ from pyray import (
     draw_grid,
     end_drawing,
     end_mode_3d,
+    get_frame_time,
     init_window,
     window_should_close,
 )
@@ -26,8 +27,8 @@ class Game:
     def close(self):
         close_window()
 
-    def update(self):
-        self.camera.update()
+    def update(self, dt: float):
+        self.camera.update(dt)
 
     def draw(self):
         begin_drawing()
@@ -39,7 +40,7 @@ class Game:
 
     def run(self) -> None:
         while not window_should_close():
-            self.update()
+            self.update(get_frame_time())
             self.draw()
         self.close()
 
