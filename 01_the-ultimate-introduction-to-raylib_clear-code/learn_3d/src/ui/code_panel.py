@@ -24,7 +24,14 @@ class CodePanel:
         player_ball, obstacle_ball = self.scene.player_ball, self.scene.obstacle_ball
         player_box, obstacle_box = self.scene.player_box, self.scene.obstacle_box
         box = player_box.bounding_box()
+        overlap = player_box.overlap(obstacle_box)
         return {
+            **{
+                f"overlap_{name}": f"overlap_{name} = ({obstacle_box.size[i]:.1f} / 2 + {player_box.size[i]:.1f} / 2) - abs({player_box.pos[i]:.1f} - {obstacle_box.pos[i]:.1f})  # {overlap[i]:.1f}"
+                for i, name in enumerate("xyz")
+            },
+            "collision_axis": self.collision_axis(),
+            "push_out": self.push_out(),
             "point": f"point = {fmt(point.pos)}",
             "camera.position": f"camera.position = {fmt(cam.pos)}",
             "camera.target": f"camera.target = {fmt(cam.target)}",
@@ -45,6 +52,22 @@ class CodePanel:
             "check_collision_box_sphere": f"check_collision_box_sphere(player_bounding_box, obstacle_position, {obstacle_ball.radius:.1f})  # {player_box.hits_ball(obstacle_ball)}",
             "check_collision_boxes": f"check_collision_boxes(player_bounding_box, obstacle_bounding_box)  # {player_box.hits(obstacle_box)}",
         }
+
+    def collision_axis(self) -> str:
+        axis = self.scene.collision_axis
+        return f'collision_axis = "{"" if axis is None else "xyz"[axis]}"'
+
+    def push_out(self) -> str:
+        axis = self.scene.collision_axis
+        if axis is None:
+            return "# not touching, so there is nothing to push out"
+        player, obstacle = self.scene.player_box, self.scene.obstacle_box
+        sign = "-" if player.pos[axis] < obstacle.pos[axis] else "+"
+        return (
+            f"player_position.{'xyz'[axis]} = {obstacle.pos[axis]:.1f}"
+            f" {sign} {obstacle.size[axis]:.1f} / 2 {sign} {player.size[axis]:.1f} / 2"
+            f"  # {player.pushed_out(obstacle, axis):.1f}"
+        )
 
     def draw(self, lesson: Lesson) -> None:
         code = self.code()

@@ -5,7 +5,7 @@ from pyray import load_model_from_mesh, unload_model, vector3_add, vector3_scale
 from pyray import BoundingBox, Color, Model
 from typing import TYPE_CHECKING, Sequence
 from core.entity import Entity
-from core.vector import V
+from core.vector import V, Vec
 
 from pyray import ORANGE, RED
 
@@ -69,6 +69,29 @@ class Cube(Entity):
 
     def hits_ball(self, ball: "Ball") -> bool:
         return check_collision_box_sphere(self.bounding_box(), V(ball.pos), ball.radius)
+
+    def half(self, axis: int) -> float:
+        return self.size[axis] * self.scale / 2
+
+    def overlap(self, other: "Cube") -> Vec:
+        # how deep the two boxes sit inside each other on x, y and z
+        return [
+            self.half(axis) + other.half(axis) - abs(self.pos[axis] - other.pos[axis])
+            for axis in range(3)
+        ]
+
+    def push_axis(self, other: "Cube") -> int | None:
+        # the axis with the smallest overlap is the one the cube came in on
+        if not self.hits(other):
+            return None
+        overlap = self.overlap(other)
+        return overlap.index(min(overlap))
+
+    def pushed_out(self, other: "Cube", axis: int) -> float:
+        # where this cube sits on that axis when the two only just touch
+        reach = self.half(axis) + other.half(axis)
+        side = -1 if self.pos[axis] < other.pos[axis] else 1
+        return other.pos[axis] + side * reach
 
     def close(self) -> None:
         unload_model(self.model)

@@ -28,6 +28,8 @@ class Scene(Entity):
         self.obstacle_ball = Ball([3.0, 0.0, 0.0], 2.0, GRAY)
         self.player_box = Cube(color=BLUE)
         self.obstacle_box = Cube([3.0, 0.0, 0.0], [2.0, 1.0, 4.0], GRAY)
+        # 0, 1 or 2 (x, y or z): the axis the player box is pushed out on
+        self.collision_axis: int | None = None
         # name (matched against Lesson.objects) -> the object drawn
         self.objects: dict[str, Entity] = {
             "point": self.point,
@@ -50,6 +52,7 @@ class Scene(Entity):
         self.obstacle_ball.reset()
         self.player_box.reset()
         self.obstacle_box.reset()
+        self.collision_axis = None
 
     def close(self) -> None:
         self.cube.close()
