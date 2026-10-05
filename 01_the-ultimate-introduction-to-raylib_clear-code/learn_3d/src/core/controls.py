@@ -5,7 +5,7 @@ from core.vector import Vec
 
 from core.config import MOVE_SPEED
 
-MOVE_KEYS = "A/D: x    Q/E: y    W/S: z"
+MOVE_KEYS = "A/D or H/L: x    Q/E: y    W/S or K/J: z"
 
 
 def axis(positive: int, negative: int) -> int:
@@ -18,6 +18,14 @@ def pressed_or_held(key: int) -> bool:
 
 
 def move(v: Vec, delta_time: float, speed: float = MOVE_SPEED) -> None:
-    v[0] += axis(KeyboardKey.KEY_D, KeyboardKey.KEY_A) * speed * delta_time
-    v[1] += axis(KeyboardKey.KEY_E, KeyboardKey.KEY_Q) * speed * delta_time
-    v[2] += axis(KeyboardKey.KEY_S, KeyboardKey.KEY_W) * speed * delta_time
+    # vim keys work too: H/L is left/right, K/J is away/toward you
+    x = axis(KeyboardKey.KEY_D, KeyboardKey.KEY_A) or axis(
+        KeyboardKey.KEY_L, KeyboardKey.KEY_H
+    )
+    y = axis(KeyboardKey.KEY_E, KeyboardKey.KEY_Q)
+    z = axis(KeyboardKey.KEY_S, KeyboardKey.KEY_W) or axis(
+        KeyboardKey.KEY_J, KeyboardKey.KEY_K
+    )
+    v[0] += x * speed * delta_time
+    v[1] += y * speed * delta_time
+    v[2] += z * speed * delta_time
