@@ -4,9 +4,9 @@ from raylib import CAMERA_PERSPECTIVE
 
 class Camera:
     def __init__(self) -> None:
-        self.position = Vector3(0, 15, 10)
+        self.position = Vector3(0, 20, 20)
         self.target = Vector3(0, 0, 0)
-        self.up = Vector3(0, 0, 0)
+        self.up = Vector3(0, 1, 0)
         self.fovy = 45
         self.object = Camera3D(
             self.position,
@@ -15,3 +15,6 @@ class Camera:
             self.fovy,
             CAMERA_PERSPECTIVE,
         )
+
+    def update(self):
+        pass
