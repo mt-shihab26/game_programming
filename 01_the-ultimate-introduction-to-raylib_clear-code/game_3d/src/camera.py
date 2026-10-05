@@ -15,8 +15,10 @@ from pyray import (
 )
 from raylib import CAMERA_PERSPECTIVE, MOUSE_BUTTON_LEFT
 
+from entity import Entity
 
-class Camera:
+
+class Camera(Entity):
     def __init__(self) -> None:
         position = Vector3(0, 20, 20)
         target = Vector3(0, 0, 0)
