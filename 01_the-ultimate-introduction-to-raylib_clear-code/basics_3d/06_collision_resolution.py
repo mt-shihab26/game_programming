@@ -5,7 +5,7 @@ from raylib import CAMERA_PERSPECTIVE, KEY_RIGHT, KEY_LEFT, KEY_DOWN, KEY_UP
 init_window(1220, 680, "3D collisions")
 
 camera = Camera3D()
-camera.position = Vector3(0.0, 5.0, 5.0)
+camera.position = Vector3(0.0, 10, 10.0)
 camera.target = Vector3(0.0, 0.0, 0.0)
 camera.up = Vector3(0.0, 1.0, 0.0)
 camera.fovy = 45.0
@@ -13,7 +13,7 @@ camera.projection = CAMERA_PERSPECTIVE
 
 player_width = 1
 player_model = load_model_from_mesh(gen_mesh_cube(player_width, 1, 1))
-player_position = Vector3(0, 0, 0)
+player_position = Vector3(0, 0, 3)
 player_direction = Vector3(0, 0, 0)
 player_speed = 5
 
@@ -26,8 +26,8 @@ def get_bounding_box(model: Model, position: Vector3) -> BoundingBox:
 
 
 obstacle_width = 2
-obstacle_model = load_model_from_mesh(gen_mesh_cube(obstacle_width, 1, 4))
-obstacle_position = Vector3(3, 0, 0)
+obstacle_model = load_model_from_mesh(gen_mesh_cube(obstacle_width, 2, 2))
+obstacle_position = Vector3(0, 0, 0)
 
 while not window_should_close():
     # input
@@ -48,8 +48,10 @@ while not window_should_close():
             player_position.x = (
                 obstacle_position.x - obstacle_width / 2 - player_width / 2
             )
-
-        pass
+        if player_direction.x < 0:
+            player_position.x = (
+                obstacle_position.x + obstacle_width / 2 + player_width / 2
+            )
 
     # drawing
     begin_drawing()
