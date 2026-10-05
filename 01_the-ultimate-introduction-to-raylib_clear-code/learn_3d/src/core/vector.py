@@ -40,3 +40,7 @@ def norm(a: Vec) -> Vec:
 
 def fmt(v: Vec) -> str:
     return f"Vector3({v[0]:.1f}, {v[1]:.1f}, {v[2]:.1f})"
+
+
+def vec(v: Vector3) -> Vec:
+    return [v.x, v.y, v.z]

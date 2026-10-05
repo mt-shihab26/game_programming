@@ -1,22 +1,37 @@
-from pyray import draw_model_wires, gen_mesh_cube
-from pyray import load_model_from_mesh, unload_model
+from pyray import check_collision_box_sphere, check_collision_boxes
+from pyray import draw_model_wires, gen_mesh_cube, get_mesh_bounding_box
+from pyray import load_model_from_mesh, unload_model, vector3_add, vector3_scale
 
-from pyray import Model
+from pyray import BoundingBox, Color, Model
+from typing import TYPE_CHECKING, Sequence
 from core.entity import Entity
 from core.vector import V
 
-from pyray import ORANGE
+from pyray import ORANGE, RED
+
+if TYPE_CHECKING:
+    from entities.ball import Ball
 
 
 class Cube(Entity):
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        home: Sequence[float] = (0.0, 0.0, 0.0),
+        size: Sequence[float] = (1.0, 1.0, 1.0),
+        color: Color = ORANGE,
+    ) -> None:
+        self.home = home
+        self.home_size = size
+        self.color = color
+        # set by the lesson: a cube that is hit is drawn red
+        self.hit = False
         self.set_defaults()
         self.model = self.build()
 
     def set_defaults(self) -> None:
-        self.pos = [0.0, 0.0, 0.0]
+        self.pos = list(self.home)
         self.scale = 1.0
-        self.size = [1.0, 1.0, 1.0]
+        self.size = list(self.home_size)
 
     def build(self) -> Model:
         return load_model_from_mesh(gen_mesh_cube(*self.size))
@@ -40,8 +55,24 @@ class Cube(Entity):
             self.size[i] = max(0.1, min(self.size[i] + amount, 5))
         self.rebuild()
 
+    def bounding_box(self) -> BoundingBox:
+        # the mesh's box sits around (0, 0, 0), so carry it to where the model is drawn
+        box = get_mesh_bounding_box(self.model.meshes[0])
+        position = V(self.pos)
+        return BoundingBox(
+            vector3_add(position, vector3_scale(box.min, self.scale)),
+            vector3_add(position, vector3_scale(box.max, self.scale)),
+        )
+
+    def hits(self, other: "Cube") -> bool:
+        return check_collision_boxes(self.bounding_box(), other.bounding_box())
+
+    def hits_ball(self, ball: "Ball") -> bool:
+        return check_collision_box_sphere(self.bounding_box(), V(ball.pos), ball.radius)
+
     def close(self) -> None:
         unload_model(self.model)
 
     def draw(self) -> None:
-        draw_model_wires(self.model, V(self.pos), self.scale, ORANGE)
+        color = RED if self.hit else self.color
+        draw_model_wires(self.model, V(self.pos), self.scale, color)
