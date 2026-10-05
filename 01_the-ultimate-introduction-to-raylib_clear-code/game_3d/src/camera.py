@@ -1,15 +1,19 @@
+from math import asin, atan2, cos, radians, sin
+
 from pyray import (
     Camera3D,
     Vector3,
     clamp,
+    get_mouse_delta,
     get_mouse_wheel_move,
+    is_mouse_button_down,
     vector3_add,
     vector3_length,
     vector3_normalize,
     vector3_scale,
     vector3_subtract,
 )
-from raylib import CAMERA_PERSPECTIVE
+from raylib import CAMERA_PERSPECTIVE, MOUSE_BUTTON_LEFT
 
 
 class Camera:
@@ -26,12 +30,16 @@ class Camera:
             fovy,
             CAMERA_PERSPECTIVE,
         )
+
         self.zoom_speed = 2
         self.min_distance = 2
         self.max_distance = 50
+        self.orbit_speed = 0.005
+        self.max_pitch = radians(89)
 
     def update(self, dt: float) -> None:
         self.zoom()
+        self.orbit()
 
     def zoom(self) -> None:
         wheel = get_mouse_wheel_move()
@@ -52,3 +60,33 @@ class Camera:
         self.object.position = vector3_add(
             self.object.target, vector3_scale(direction, distance)
         )
+
+    def orbit(self) -> None:
+        if not is_mouse_button_down(MOUSE_BUTTON_LEFT):
+            return
+
+        delta = get_mouse_delta()
+
+        if delta.x == 0 and delta.y == 0:
+            return
+
+        offset = vector3_subtract(self.object.position, self.object.target)
+        distance = vector3_length(offset)
+
+        yaw = atan2(offset.x, offset.z)
+        pitch = asin(offset.y / distance)
+
+        yaw -= delta.x * self.orbit_speed
+        pitch = clamp(
+            pitch + delta.y * self.orbit_speed,
+            -self.max_pitch,
+            self.max_pitch,
+        )
+
+        offset = Vector3(
+            distance * cos(pitch) * sin(yaw),
+            distance * sin(pitch),
+            distance * cos(pitch) * cos(yaw),
+        )
+
+        self.object.position = vector3_add(self.object.target, offset)
