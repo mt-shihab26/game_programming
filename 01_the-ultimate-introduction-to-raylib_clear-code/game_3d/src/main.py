@@ -1,4 +1,5 @@
 from pyray import begin_drawing, begin_mode_3d, clear_background, close_window
+from core.window import wait_for_window_size
 from pyray import draw_grid, end_drawing, end_mode_3d, get_frame_time, init_window
 from pyray import window_should_close
 
@@ -12,6 +13,10 @@ from pyray import WHITE
 
 class Game:
     def __init__(self) -> None:
+        init_window(1220, 680, "Game 3D")
+
+        wait_for_window_size()
+
         self.loader = Loader()
         self.camera = Camera()
         self.player = Player(self.loader.get_model("player"))
@@ -21,8 +26,6 @@ class Game:
             self.camera,
             self.player,
         ]
-
-        init_window(1220, 680, "Game 3D")
 
     def close(self) -> None:
         for entity in self.entities:
