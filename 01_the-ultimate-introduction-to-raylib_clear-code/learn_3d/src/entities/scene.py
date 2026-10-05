@@ -9,6 +9,7 @@ from entities.cylinder import Cylinder
 from entities.lesson_camera import LessonCamera
 from entities.line import Line
 from entities.point import Point
+from entities.textured_cylinder import TexturedCylinder
 
 from pyray import BLUE, GRAY
 
@@ -30,6 +31,7 @@ class Scene(Entity):
         self.obstacle_box = Cube([3.0, 0.0, 0.0], [2.0, 1.0, 4.0], GRAY)
         # 0, 1 or 2 (x, y or z): the axis the player box is pushed out on
         self.collision_axis: int | None = None
+        self.textured_cylinder = TexturedCylinder()
         # name (matched against Lesson.objects) -> the object drawn
         self.objects: dict[str, Entity] = {
             "point": self.point,
@@ -40,6 +42,7 @@ class Scene(Entity):
             "obstacle_ball": self.obstacle_ball,
             "player_box": self.player_box,
             "obstacle_box": self.obstacle_box,
+            "textured_cylinder": self.textured_cylinder,
         }
 
     def reset(self) -> None:
@@ -53,6 +56,7 @@ class Scene(Entity):
         self.player_box.reset()
         self.obstacle_box.reset()
         self.collision_axis = None
+        self.textured_cylinder.reset()
 
     def close(self) -> None:
         self.cube.close()
@@ -61,6 +65,7 @@ class Scene(Entity):
         self.obstacle_ball.close()
         self.player_box.close()
         self.obstacle_box.close()
+        self.textured_cylinder.close()
 
     def update(self, delta_time: float) -> None:
         self.cam.update(delta_time)

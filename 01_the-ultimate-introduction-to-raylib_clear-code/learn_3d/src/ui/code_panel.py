@@ -25,6 +25,7 @@ class CodePanel:
         player_box, obstacle_box = self.scene.player_box, self.scene.obstacle_box
         box = player_box.bounding_box()
         overlap = player_box.overlap(obstacle_box)
+        textured = self.scene.textured_cylinder
         return {
             **{
                 f"overlap_{name}": f"overlap_{name} = ({obstacle_box.size[i]:.1f} / 2 + {player_box.size[i]:.1f} / 2) - abs({player_box.pos[i]:.1f} - {obstacle_box.pos[i]:.1f})  # {overlap[i]:.1f}"
@@ -32,6 +33,17 @@ class CodePanel:
             },
             "collision_axis": self.collision_axis(),
             "push_out": self.push_out(),
+            "gen_image_gradient_linear": f"image = gen_image_gradient_linear(100, 100, {textured.direction}, RED, YELLOW)",
+            "set_material_texture": "set_material_texture(model.materials[0], MATERIAL_MAP_ALBEDO, texture)",
+            "load_shader": 'shader = load_shader(ffi.NULL, join("shaders", "grayscale.fs"))',
+            "material.shader": "model.materials[0].shader = shader"
+            if textured.gray
+            else "# model.materials[0].shader = shader    off: raylib's own shader draws it",
+            "grayscale.fs": "finalColor = vec4(gray, gray, gray, texelColor.a);    // grayscale.fs",
+            "get_shader_location": f'flash_location = get_shader_location(shader, "flash")  # {textured.flash_location}',
+            "flash_amount": f'flash_amount = ffi.new("struct Vector2*", [{textured.flash:.1f}, 0])',
+            "set_shader_value": "set_shader_value(shader, flash_location, flash_amount, SHADER_UNIFORM_VEC2)",
+            "flash.fs": f"finalColor = mix(texelColor, white, {textured.flash:.1f});    // flash.fs, where {textured.flash:.1f} is flash.x",
             "point": f"point = {fmt(point.pos)}",
             "camera.position": f"camera.position = {fmt(cam.pos)}",
             "camera.target": f"camera.target = {fmt(cam.target)}",
