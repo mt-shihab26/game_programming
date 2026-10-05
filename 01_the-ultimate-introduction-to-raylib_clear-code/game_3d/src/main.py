@@ -27,7 +27,7 @@ class Game:
         close_window()
 
     def update(self):
-        pass
+        self.camera.update()
 
     def draw(self):
         begin_drawing()
