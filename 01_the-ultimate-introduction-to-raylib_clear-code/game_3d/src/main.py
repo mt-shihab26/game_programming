@@ -1,21 +1,13 @@
-from pyray import (
-    WHITE,
-    begin_drawing,
-    begin_mode_3d,
-    clear_background,
-    close_window,
-    draw_grid,
-    end_drawing,
-    end_mode_3d,
-    get_frame_time,
-    init_window,
-    window_should_close,
-)
+from pyray import begin_drawing, begin_mode_3d, clear_background, close_window
+from pyray import draw_grid, end_drawing, end_mode_3d, get_frame_time, init_window
+from pyray import window_should_close
 
-from camera import Camera
-from entity import Entity
-from loader import Loader
-from player import Player
+from core.entity import Entity
+from entities.camera import Camera
+from entities.loader import Loader
+from entities.player import Player
+
+from pyray import WHITE
 
 
 class Game:

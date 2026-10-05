@@ -1,6 +1,5 @@
 from pyray import Model
-
-from entity import Entity
+from core.entity import Entity
 
 
 class Player(Entity):

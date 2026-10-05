@@ -1,21 +1,12 @@
 from math import asin, atan2, cos, radians, sin
+from pyray import clamp, get_mouse_delta, get_mouse_wheel_move, is_mouse_button_down
+from pyray import vector3_add, vector3_length, vector3_normalize, vector3_scale
+from pyray import vector3_subtract
 
-from pyray import (
-    Camera3D,
-    Vector3,
-    clamp,
-    get_mouse_delta,
-    get_mouse_wheel_move,
-    is_mouse_button_down,
-    vector3_add,
-    vector3_length,
-    vector3_normalize,
-    vector3_scale,
-    vector3_subtract,
-)
+from pyray import Camera3D, Vector3
+from core.entity import Entity
+
 from raylib import CAMERA_PERSPECTIVE, MOUSE_BUTTON_LEFT
-
-from entity import Entity
 
 
 class Camera(Entity):

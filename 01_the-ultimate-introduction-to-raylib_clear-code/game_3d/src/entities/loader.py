@@ -1,8 +1,10 @@
-from pyray import Model, load_model
+from pyray import load_model
 from os.path import abspath, dirname, join
-from entity import Entity
 
-ASSETS_DIR = join(dirname(dirname(abspath(__file__))), "assets")
+from pyray import Model
+from core.entity import Entity
+
+ASSETS_DIR = join(dirname(dirname(dirname(abspath(__file__)))), "assets")
 
 
 class Loader(Entity):
