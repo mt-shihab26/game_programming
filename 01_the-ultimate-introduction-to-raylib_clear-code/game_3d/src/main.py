@@ -13,7 +13,7 @@ from camera import Camera
 
 class Game:
     def __init__(self) -> None:
-        self.camera = Camera
+        self.camera = Camera()
 
         self.init()
 
