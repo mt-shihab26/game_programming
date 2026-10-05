@@ -52,27 +52,32 @@ while not window_should_close():
     if not check_collision_boxes(player_bounding_box, obstacle_bounding_box):
         collision_axis = ""
     else:
+        if collision_axis == "":
+            # the axis with the smaller overlap is the one the player came in on
+            overlap_x = (obstacle_width / 2 + player_width / 2) - abs(
+                player_position.x - obstacle_position.x
+            )
+            overlap_z = (obstacle_length / 2 + player_length / 2) - abs(
+                player_position.z - obstacle_position.z
+            )
+            collision_axis = "x" if overlap_x < overlap_z else "z"
+
         match collision_axis:
-            case "":
-                if player_direction.x != 0:
-                    collision_axis = "x"
-                if player_direction.z != 0:
-                    collision_axis = "z"
             case "x":
-                if 0 < player_direction.x:
+                if player_position.x < obstacle_position.x:
                     player_position.x = (
                         obstacle_position.x - obstacle_width / 2 - player_width / 2
                     )
-                if player_direction.x < 0:
+                else:
                     player_position.x = (
                         obstacle_position.x + obstacle_width / 2 + player_width / 2
                     )
             case "z":
-                if 0 < player_direction.z:
+                if player_position.z < obstacle_position.z:
                     player_position.z = (
                         obstacle_position.z - obstacle_length / 2 - player_length / 2
                     )
-                if player_direction.z < 0:
+                else:
                     player_position.z = (
                         obstacle_position.z + obstacle_length / 2 + player_length / 2
                     )
