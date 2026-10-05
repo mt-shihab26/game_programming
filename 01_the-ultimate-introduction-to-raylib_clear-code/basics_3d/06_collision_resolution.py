@@ -12,7 +12,8 @@ camera.fovy = 45.0
 camera.projection = CAMERA_PERSPECTIVE
 
 player_width = 1
-player_model = load_model_from_mesh(gen_mesh_cube(player_width, 1, 1))
+player_length = 1
+player_model = load_model_from_mesh(gen_mesh_cube(player_width, 1, player_length))
 player_position = Vector3(0, 0, 3)
 player_direction = Vector3(0, 0, 0)
 player_speed = 5
@@ -26,7 +27,8 @@ def get_bounding_box(model: Model, position: Vector3) -> BoundingBox:
 
 
 obstacle_width = 2
-obstacle_model = load_model_from_mesh(gen_mesh_cube(obstacle_width, 2, 2))
+obstacle_length = 2
+obstacle_model = load_model_from_mesh(gen_mesh_cube(obstacle_width, 2, obstacle_length))
 obstacle_position = Vector3(0, 0, 0)
 
 while not window_should_close():
@@ -51,6 +53,14 @@ while not window_should_close():
         if player_direction.x < 0:
             player_position.x = (
                 obstacle_position.x + obstacle_width / 2 + player_width / 2
+            )
+        if 0 < player_direction.z:
+            player_position.z = (
+                obstacle_position.z - obstacle_length / 2 - player_length / 2
+            )
+        if player_direction.z < 0:
+            player_position.z = (
+                obstacle_position.z + obstacle_length / 2 + player_length / 2
             )
 
     # drawing
