@@ -4,7 +4,7 @@ from core.entity import Entity
 
 class Player(Entity):
     def __init__(self, model: Model) -> None:
-        self.position = Vector3(0, 0, 0)
+        self.position = Vector3(0, 0, 7.5)
         self.scale = 1
         self.model = model
 
