@@ -53,7 +53,6 @@ class Camera(Entity):
         self.object.position = vector3_add(
             self.object.target, vector3_scale(direction, distance)
         )
-        print(self)
 
     def orbit(self) -> None:
         if not is_mouse_button_down(MOUSE_BUTTON_LEFT):
@@ -84,7 +83,6 @@ class Camera(Entity):
         )
 
         self.object.position = vector3_add(self.object.target, offset)
-        print(self)
 
     def __repr__(self):
         position = self.object.position
