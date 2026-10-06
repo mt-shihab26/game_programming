@@ -1,0 +1,3 @@
+[submodule "02_opengl_the-cherno/vendor/glfw"]
+	path = 02_opengl_the-cherno/vendor/glfw
+	url = https://github.com/glfw/glfw
