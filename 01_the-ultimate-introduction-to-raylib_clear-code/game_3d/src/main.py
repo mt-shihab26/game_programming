@@ -1,4 +1,5 @@
 from pyray import (
+    Vector3,
     close_audio_device,
     draw_fps,
     begin_drawing,
@@ -31,7 +32,6 @@ class Game:
         wait_for_window_size()
 
         self.obstacle_timer = Timer(duration=1, func=self.add_obstacle)
-        self.laser_timer = Timer(duration=1, func=self.add_laser)
 
         self.obstacles: list[Obstacle] = []
         self.lasers: list[Laser] = []
@@ -39,7 +39,7 @@ class Game:
         self.loader = Loader()
         self.camera = Camera()
         self.background = Background(self.loader.get_music("background"))
-        self.player = Player(self.loader.get_model("player"))
+        self.player = Player(self.loader.get_model("player"), self.add_laser)
 
         self.add_obstacle()
 
@@ -52,7 +52,6 @@ class Game:
     def update(self, dt: float) -> None:
         self.handle_remove_obsticale_out_of_screen()
         self.obstacle_timer.update()
-        self.laser_timer.update()
         for entity in self.entities():
             entity.update(dt)
 
@@ -97,8 +96,8 @@ class Game:
     def add_obstacle(self):
         self.obstacles.append(Obstacle())
 
-    def add_laser(self):
-        self.lasers.append(Laser(self.loader.get_model("laser")))
+    def add_laser(self, position: Vector3):
+        self.lasers.append(Laser(self.loader.get_model("laser"), position))
 
 
 if __name__ == "__main__":

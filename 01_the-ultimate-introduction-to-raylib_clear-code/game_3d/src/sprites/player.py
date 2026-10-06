@@ -1,3 +1,4 @@
+from _typeshed import SupportsLen
 from collections.abc import Callable
 
 from pyray import is_key_down
@@ -42,4 +43,4 @@ class Player(Sprite):
         self.direction.z = int(down) - int(up)
 
         if is_key_down(KEY_SPACE):
-            self.on_shoot(self.position)
+            self.on_shoot(Vector3(self.position.x, self.position.y, self.position.z))
