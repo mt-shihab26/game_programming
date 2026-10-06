@@ -10,7 +10,7 @@ int main() {
     GLFWwindow *window;
 
     if (!glfwInit()) {
-        return -1;
+        return 1;
     }
 
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
@@ -18,17 +18,17 @@ int main() {
     window = glfwCreateWindow(width, height, "Hello World", NULL, NULL);
     if (!window) {
         glfwTerminate();
-        return -1;
+        return 1;
     }
 
     glfwMakeContextCurrent(window);
 
+    wait_for_window_size(window, width, height);
+
     if (glewInit() != GLEW_OK) {
         glfwTerminate();
-        return -1;
+        return 1;
     }
-
-    wait_for_window_size(window, width, height);
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
