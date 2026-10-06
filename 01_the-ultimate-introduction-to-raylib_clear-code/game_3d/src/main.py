@@ -1,4 +1,5 @@
 from pyray import begin_drawing, begin_mode_3d, clear_background, close_window
+from core.timer import Timer
 from core.window import wait_for_window_size
 from pyray import draw_grid, end_drawing, end_mode_3d, get_frame_time, init_window
 from pyray import window_should_close
@@ -8,6 +9,7 @@ from entities.camera import Camera
 from entities.loader import Loader
 from entities.obstacle import Obstacle
 from entities.player import Player
+from core.timer import Timer
 
 from pyray import WHITE
 
@@ -17,6 +19,8 @@ class Game:
         init_window(1220, 680, "Game 3D")
 
         wait_for_window_size()
+
+        self.obstacle_timer = Timer(duration=0.5, func=self.add_obstacle)
 
         self.obstacles: list[Obstacle] = []
 
@@ -33,6 +37,7 @@ class Game:
 
     def update(self, dt: float) -> None:
         print(len(self.obstacles))
+        self.obstacle_timer.update()
         for entity in self.entities():
             entity.update(dt)
 

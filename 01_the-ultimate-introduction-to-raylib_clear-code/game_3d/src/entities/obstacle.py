@@ -3,8 +3,10 @@ from pyray import (
     Vector3,
     gen_mesh_sphere,
     load_model_from_mesh,
+    normalize,
     unload_model,
     draw_model,
+    vector3_normalize,
 )
 
 from core.entity import Entity
@@ -19,11 +21,19 @@ class Obstacle(Entity):
         self.mesh = gen_mesh_sphere(self.radius, self.rings, self.slices)
         self.model = load_model_from_mesh(self.mesh)
 
-        self.position = Vector3(0, 0, 0)
+        self.position = Vector3(0, 0, -35)
         self.scale = 1.0
+        self.direction = Vector3(0, 0, 1)
+        self.speed = 10
 
     def close(self) -> None:
         unload_model(self.model)
+
+    def update(self, dt: float) -> None:
+        self.direction = vector3_normalize(self.direction)
+        self.position.z += self.direction.z * self.speed * dt
+
+        print(self.position.z)
 
     def draw(self) -> None:
         draw_model(self.model, self.position, self.scale, RED)
