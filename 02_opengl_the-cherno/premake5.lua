@@ -1,19 +1,21 @@
--- premake5.lua
-workspace "Demo"
-configurations { "Debug", "Release" }
+-- stop: lsp
 
-project "Demo"
+-- premake5.lua
+workspace "demo"
+configurations { "debug", "release" }
+
+project "demo"
 kind "ConsoleApp"
 language "C++"
 targetdir "bin/%{cfg.buildcfg}"
 
 files { "src/**.h", "src/**.c", "src/**.cpp" }
 
-filter "configurations:Debug"
+filter "configurations:debug"
 defines { "DEBUG" }
 symbols "On"
 
-filter "configurations:Release"
+filter "configurations:release"
 defines { "NDEBUG" }
 optimize "On"
 

@@ -9,4 +9,4 @@ premake5 clean
 premake5 gmake
 make config="$config" -j"$(nproc)"
 
-"./bin/${config^}/OpenGL"
+"./bin/$config/demo"
