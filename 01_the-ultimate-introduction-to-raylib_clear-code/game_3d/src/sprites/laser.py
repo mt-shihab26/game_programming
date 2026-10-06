@@ -1,11 +1,11 @@
-from pyray import Model, Vector3
+from pyray import Model, Sound, Vector3, play_sound
 from core.sprite import Sprite
 
 from pyray import RED
 
 
 class Laser(Sprite):
-    def __init__(self, model: Model, position: Vector3) -> None:
+    def __init__(self, model: Model, position: Vector3, sound: Sound) -> None:
         super().__init__(
             model,
             position=Vector3(position.x, position.y, position.z),
@@ -14,3 +14,4 @@ class Laser(Sprite):
             scale=1,
             color=RED,
         )
+        play_sound(sound)

@@ -102,7 +102,11 @@ class Game:
         self.obstacles.append(Obstacle())
 
     def add_laser(self, position: Vector3):
-        self.lasers.append(Laser(self.loader.get_model("laser"), position))
+        self.lasers.append(
+            Laser(
+                self.loader.get_model("laser"), position, self.loader.get_sound("laser")
+            )
+        )
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-from pyray import load_model, load_music_stream, unload_model
+from pyray import Sound, load_model, load_music_stream, load_sound, unload_model
 from os.path import abspath, dirname, join
 
 from pyray import Model, Music
@@ -16,6 +16,9 @@ class Loader(Entity):
         self.musics: dict[str, Music] = {
             "background": load_music_stream(join(ASSETS_DIR, "audios", "music.wav")),
         }
+        self.sounds: dict[str, Sound] = {
+            "laser": load_sound(join(ASSETS_DIR, "audios", "laser.wav")),
+        }
 
     def close(self) -> None:
         for model in self.models.values():
@@ -26,3 +29,6 @@ class Loader(Entity):
 
     def get_music(self, name: str) -> Music:
         return self.musics[name]
+
+    def get_sound(self, name: str) -> Sound:
+        return self.sounds[name]
