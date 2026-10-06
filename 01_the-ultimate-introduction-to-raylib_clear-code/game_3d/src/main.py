@@ -50,12 +50,13 @@ class Game:
         close_window()
 
     def update(self, dt: float) -> None:
-        self.handle_remove_obsticale_out_of_screen()
+        self.handle_remove_obsticales_out_of_screen()
+        self.handle_remove_lasers_out_of_screen()
         self.obstacle_timer.update()
         for entity in self.entities():
             entity.update(dt)
 
-    def handle_remove_obsticale_out_of_screen(self):
+    def handle_remove_obsticales_out_of_screen(self):
         obstacles: list[Obstacle] = []
         for obstacle in self.obstacles:
             if obstacle.position.z > 30:
@@ -63,6 +64,15 @@ class Game:
             else:
                 obstacles.append(obstacle)
         self.obstacles = obstacles
+
+    def handle_remove_lasers_out_of_screen(self):
+        lasers: list[Laser] = []
+        for laser in self.lasers:
+            if laser.position.z < -30:
+                laser.close()
+            else:
+                lasers.append(laser)
+        self.lasers = lasers
 
     def draw(self) -> None:
         begin_drawing()
