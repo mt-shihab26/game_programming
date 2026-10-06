@@ -9,7 +9,6 @@ from entities.camera import Camera
 from entities.loader import Loader
 from sprites.player import Player
 from sprites.obstacle import Obstacle
-from core.timer import Timer
 
 from pyray import WHITE
 

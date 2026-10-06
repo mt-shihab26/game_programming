@@ -1,18 +1,12 @@
 from pyray import (
-    RED,
     Model,
     Vector3,
-    gen_mesh_sphere,
-    load_model_from_mesh,
-    normalize,
-    unload_model,
     draw_model,
     vector3_normalize,
 )
 
 
 from core.entity import Entity
-from pyray import Texture, Vector2, Rectangle
 
 from pyray import WHITE
 
