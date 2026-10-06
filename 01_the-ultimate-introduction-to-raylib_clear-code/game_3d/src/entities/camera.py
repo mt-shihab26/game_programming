@@ -11,7 +11,7 @@ from raylib import CAMERA_PERSPECTIVE, MOUSE_BUTTON_LEFT
 
 class Camera(Entity):
     def __init__(self) -> None:
-        position = Vector3(0, 20, 20)
+        position = Vector3(-15, 15, 18)
         target = Vector3(0, 0, 0)
         up = Vector3(0, 1, 0)
         fovy = 45
@@ -53,6 +53,7 @@ class Camera(Entity):
         self.object.position = vector3_add(
             self.object.target, vector3_scale(direction, distance)
         )
+        print(self)
 
     def orbit(self) -> None:
         if not is_mouse_button_down(MOUSE_BUTTON_LEFT):
@@ -83,3 +84,13 @@ class Camera(Entity):
         )
 
         self.object.position = vector3_add(self.object.target, offset)
+        print(self)
+
+    def __repr__(self):
+        position = self.object.position
+        target = self.object.target
+        return (
+            f"Camera(position=({position.x:.2f}, {position.y:.2f}, {position.z:.2f}), "
+            f"target=({target.x:.2f}, {target.y:.2f}, {target.z:.2f}), "
+            f"fovy={self.object.fovy})"
+        )
