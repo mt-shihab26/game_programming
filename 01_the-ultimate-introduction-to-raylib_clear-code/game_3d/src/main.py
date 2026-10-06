@@ -36,7 +36,6 @@ class Game:
         close_window()
 
     def update(self, dt: float) -> None:
-        print(len(self.obstacles))
         self.obstacle_timer.update()
         for entity in self.entities():
             entity.update(dt)

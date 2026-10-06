@@ -9,6 +9,7 @@ from pyray import (
     vector3_normalize,
 )
 
+from random import uniform
 from core.entity import Entity
 
 
@@ -21,9 +22,9 @@ class Obstacle(Entity):
         self.mesh = gen_mesh_sphere(self.radius, self.rings, self.slices)
         self.model = load_model_from_mesh(self.mesh)
 
-        self.position = Vector3(0, 0, -35)
+        self.position = Vector3(uniform(-10, 10), 0, -35)
         self.scale = 1.0
-        self.direction = Vector3(0, 0, 1)
+        self.direction = Vector3(uniform(-0.4, 0.4), 0, 1)
         self.speed = 10
 
     def close(self) -> None:
@@ -31,9 +32,9 @@ class Obstacle(Entity):
 
     def update(self, dt: float) -> None:
         self.direction = vector3_normalize(self.direction)
+        self.position.x += self.direction.x * self.speed * dt
+        self.position.y += self.direction.y * self.speed * dt
         self.position.z += self.direction.z * self.speed * dt
-
-        print(self.position.z)
 
     def draw(self) -> None:
         draw_model(self.model, self.position, self.scale, RED)
