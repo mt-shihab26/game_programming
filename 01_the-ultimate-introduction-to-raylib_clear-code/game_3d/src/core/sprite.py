@@ -1,6 +1,6 @@
 from pyray import draw_model, vector3_normalize
 
-from pyray import Model, Vector3
+from pyray import Color, Model, Vector3
 from core.entity import Entity
 
 from pyray import WHITE
@@ -14,12 +14,14 @@ class Sprite(Entity):
         direction: Vector3,
         speed: float,
         scale: float = 1.0,
+        color: Color = WHITE,
     ) -> None:
         self.model = model
         self.position = position
         self.scale = scale
         self.direction = direction
         self.speed = speed
+        self.color = color
 
     def update(self, dt: float) -> None:
         self.direction = vector3_normalize(self.direction)
@@ -28,4 +30,4 @@ class Sprite(Entity):
         self.position.z += self.direction.z * self.speed * dt
 
     def draw(self) -> None:
-        draw_model(self.model, self.position, self.scale, WHITE)
+        draw_model(self.model, self.position, self.scale, self.color)

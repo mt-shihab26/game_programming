@@ -1,10 +1,7 @@
-from pyray import draw_model, vector3_normalize
-
 from pyray import Model, Vector3
 from core.sprite import Sprite
-from core.entity import Entity
 
-from pyray import WHITE
+from pyray import RED
 
 
 class Laser(Sprite):
@@ -15,4 +12,5 @@ class Laser(Sprite):
             direction=Vector3(0, 0, -1),
             speed=5,
             scale=1,
+            color=RED,
         )
