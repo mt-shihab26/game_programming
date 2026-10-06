@@ -1,6 +1,6 @@
 from pyray import play_music_stream, update_music_stream
 
-from pyray import Music, Sound
+from pyray import Music
 from core.entity import Entity
 
 

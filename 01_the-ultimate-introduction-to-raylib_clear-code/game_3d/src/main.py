@@ -1,15 +1,10 @@
-from pyray import (
-    Vector3,
-    close_audio_device,
-    draw_fps,
-    begin_drawing,
-    begin_mode_3d,
-    clear_background,
-)
-from pyray import draw_grid, end_drawing, end_mode_3d, get_frame_time, init_window
-from pyray import window_should_close, set_target_fps, close_window, init_audio_device
+from pyray import begin_drawing, begin_mode_3d, clear_background, close_audio_device
+from pyray import close_window, draw_fps, draw_grid, end_drawing, end_mode_3d
+from pyray import get_frame_time, init_audio_device, init_window, set_target_fps
+from pyray import window_should_close
 from core.window import wait_for_window_size
 
+from pyray import Vector3
 from core.entity import Entity
 from core.timer import Timer
 from entities.background import Background

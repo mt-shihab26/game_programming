@@ -1,7 +1,7 @@
-from pyray import Music, load_model, load_music_stream, unload_model
+from pyray import load_model, load_music_stream, unload_model
 from os.path import abspath, dirname, join
 
-from pyray import Model
+from pyray import Model, Music
 from core.entity import Entity
 
 ASSETS_DIR = join(dirname(dirname(dirname(abspath(__file__)))), "assets")

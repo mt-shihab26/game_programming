@@ -1,21 +1,11 @@
-from collections.abc import Callable
-
 from pyray import is_key_down, is_key_pressed
 
 from pyray import Model, Vector3
 from core.sprite import Sprite
+from collections.abc import Callable
 
-from raylib import (
-    KEY_DOWN,
-    KEY_H,
-    KEY_J,
-    KEY_K,
-    KEY_L,
-    KEY_LEFT,
-    KEY_RIGHT,
-    KEY_SPACE,
-    KEY_UP,
-)
+from raylib import KEY_DOWN, KEY_H, KEY_J, KEY_K, KEY_L, KEY_LEFT, KEY_RIGHT, KEY_SPACE
+from raylib import KEY_UP
 
 
 class Player(Sprite):
