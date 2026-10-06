@@ -20,7 +20,7 @@ class Game:
 
         wait_for_window_size()
 
-        self.obstacle_timer = Timer(duration=0.5, func=self.add_obstacle)
+        self.obstacle_timer = Timer(duration=1, func=self.add_obstacle)
 
         self.obstacles: list[Obstacle] = []
 
@@ -36,9 +36,15 @@ class Game:
         close_window()
 
     def update(self, dt: float) -> None:
+        self.handle_remove_obsticale_out_of_screen()
         self.obstacle_timer.update()
         for entity in self.entities():
             entity.update(dt)
+
+    def handle_remove_obsticale_out_of_screen(self):
+        self.obstacles = [
+            obstacle for obstacle in self.obstacles if obstacle.position.z <= 30
+        ]
 
     def draw(self) -> None:
         begin_drawing()
