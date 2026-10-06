@@ -1,6 +1,31 @@
 -- stop: lsp
 -- stop: format
 
+local function wayland_protocol_commands()
+    local protocols = {
+        "wayland",
+        "viewporter",
+        "xdg-shell",
+        "idle-inhibit-unstable-v1",
+        "pointer-constraints-unstable-v1",
+        "relative-pointer-unstable-v1",
+        "fractional-scale-v1",
+        "xdg-activation-v1",
+        "xdg-decoration-unstable-v1",
+    }
+
+    local commands = { "mkdir -p obj/wayland" }
+    for _, name in ipairs(protocols) do
+        local xml = "vendor/glfw/deps/wayland/" .. name .. ".xml"
+        local header = "obj/wayland/" .. name .. "-client-protocol.h"
+        local code = "obj/wayland/" .. name .. "-client-protocol-code.h"
+        local scan = " || wayland-scanner "
+        table.insert(commands, "[ -f " .. header .. " ]" .. scan .. "client-header " .. xml .. " " .. header)
+        table.insert(commands, "[ -f " .. code .. " ]" .. scan .. "private-code " .. xml .. " " .. code)
+    end
+    return commands
+end
+
 workspace "demo"
     configurations { "debug", "release" }
 
@@ -9,7 +34,7 @@ project "demo"
     language "C++"
     targetdir "bin/%{cfg.buildcfg}"
 
-    files { "src/**.h", "src/**.c", "src/**.cpp" }
+    files { "src/**.h", "src/**.cpp" }
 
     includedirs { "vendor/glfw/include" }
     links { "glfw" }
@@ -93,28 +118,3 @@ newaction {
         os.remove("*.make")
     end
 }
-
-local function wayland_protocol_commands()
-      local protocols = {
-          "wayland",
-          "viewporter",
-          "xdg-shell",
-          "idle-inhibit-unstable-v1",
-          "pointer-constraints-unstable-v1",
-          "relative-pointer-unstable-v1",
-          "fractional-scale-v1",
-          "xdg-activation-v1",
-          "xdg-decoration-unstable-v1",
-      }
-
-      local commands = { "mkdir -p obj/wayland" }
-      for _, name in ipairs(protocols) do
-          local xml = "vendor/glfw/deps/wayland/" .. name .. ".xml"
-          local out = "obj/wayland/" .. name .. "-client-protocol"
-          table.insert(commands, "[ -f " .. out .. ".h ] || wayland-scanner
-  client-header " .. xml .. " " .. out .. ".h")
-          table.insert(commands, "[ -f " .. out .. "-code.h ] ||
-  wayland-scanner private-code " .. xml .. " " .. out .. "-code.h")
-      end
-      return commands
-  end
