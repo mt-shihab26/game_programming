@@ -36,11 +36,12 @@ project "demo"
 
     files { "src/**.h", "src/**.cpp" }
 
-    includedirs { "vendor/glfw/include" }
-    links { "glfw" }
+    includedirs { "vendor/glfw/include", "vendor/glew/include" }
+    defines { "GLEW_STATIC" }
+    links { "glfw", "glew" }
 
     filter "system:linux"
-        links {"GL", "dl", "m", "pthread"}
+        links {"GL", "EGL", "dl", "m", "pthread"}
 
     filter "system:windows"
         links { "opengl32", "gdi32" }
@@ -101,6 +102,24 @@ project "glfw"
           "vendor/glfw/src/posix_module.c",
           "vendor/glfw/src/posix_thread.c",
         }
+
+    filter "configurations:debug"
+        symbols "On"
+
+    filter "configurations:release"
+        optimize "On"
+
+project "glew"
+    kind "StaticLib"
+    language "C"
+    targetdir "bin/%{cfg.buildcfg}"
+
+    files { "vendor/glew/src/glew.c" }
+    includedirs { "vendor/glew/include" }
+    defines { "GLEW_STATIC", "GLEW_NO_GLU" }
+
+    filter "system:linux"
+        defines { "GLEW_EGL" }
 
     filter "configurations:debug"
         symbols "On"

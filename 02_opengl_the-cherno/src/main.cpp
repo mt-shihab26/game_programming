@@ -1,6 +1,7 @@
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "window.cpp"
+#include "window.h"
 
 int main() {
     const int width = 1280;
@@ -21,6 +22,11 @@ int main() {
     }
 
     glfwMakeContextCurrent(window);
+
+    if (glewInit() != GLEW_OK) {
+        glfwTerminate();
+        return -1;
+    }
 
     wait_for_window_size(window, width, height);
 

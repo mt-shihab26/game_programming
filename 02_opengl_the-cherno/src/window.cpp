@@ -1,4 +1,4 @@
-#include <GLFW/glfw3.h>
+#include "window.h"
 
 // Works around two problems when opening a window on Hyprland (Wayland):
 //
