@@ -1,9 +1,9 @@
 from pyray import (
+    draw_fps,
     begin_drawing,
     begin_mode_3d,
     clear_background,
     close_window,
-    draw_fps,
     set_target_fps,
 )
 from pyray import draw_grid, end_drawing, end_mode_3d, get_frame_time, init_window
@@ -23,6 +23,8 @@ from pyray import WHITE
 class Game:
     def __init__(self) -> None:
         init_window(1220, 680, "Game 3D")
+
+        set_target_fps(60)
 
         wait_for_window_size()
 
@@ -60,11 +62,11 @@ class Game:
         begin_drawing()
         begin_mode_3d(self.camera.object)
         clear_background(WHITE)
-        draw_fps(0, 0)
         draw_grid(10, 2)
         for entity in self.entities():
             entity.draw()
         end_mode_3d()
+        draw_fps(0, 0)
         end_drawing()
 
     def run(self) -> None:
