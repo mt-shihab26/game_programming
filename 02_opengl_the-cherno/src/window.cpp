@@ -1,3 +1,8 @@
+#include <cstdio>
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include "window.h"
 
 // Works around two problems when opening a window on Hyprland (Wayland):
@@ -35,4 +40,13 @@ void wait_for_window_size(GLFWwindow *window, int width, int height) {
     }
 
     glViewport(0, 0, framebufferWidth, framebufferHeight);
+}
+
+void print_libaray_versions() {
+    printf("Vendor:   %s\n", glGetString(GL_VENDOR));
+    printf("Renderer: %s\n", glGetString(GL_RENDERER));
+    printf("OpenGL:   %s\n", glGetString(GL_VERSION));
+    printf("GLSL:     %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+    printf("GLEW:     %s\n", glewGetString(GLEW_VERSION));
+    printf("GLFW:     %s\n", glfwGetVersionString());
 }

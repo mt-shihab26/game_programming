@@ -32,12 +32,7 @@ int main() {
         return 1;
     }
 
-    printf("Vendor:   %s\n", glGetString(GL_VENDOR));
-    printf("Renderer: %s\n", glGetString(GL_RENDERER));
-    printf("OpenGL:   %s\n", glGetString(GL_VERSION));
-    printf("GLSL:     %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
-    printf("GLEW:     %s\n", glewGetString(GLEW_VERSION));
-    printf("GLFW:     %s\n", glfwGetVersionString());
+    print_libaray_versions();
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
