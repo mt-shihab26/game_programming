@@ -1,19 +1,32 @@
+from collections.abc import Callable
+
 from pyray import is_key_down
 
 from pyray import Model, Vector3
 from core.sprite import Sprite
 
-from raylib import KEY_DOWN, KEY_H, KEY_J, KEY_K, KEY_L, KEY_LEFT, KEY_RIGHT, KEY_UP
+from raylib import (
+    KEY_DOWN,
+    KEY_H,
+    KEY_J,
+    KEY_K,
+    KEY_L,
+    KEY_LEFT,
+    KEY_RIGHT,
+    KEY_SPACE,
+    KEY_UP,
+)
 
 
 class Player(Sprite):
-    def __init__(self, model: Model) -> None:
+    def __init__(self, model: Model, on_shoot: Callable[[Vector3], None]) -> None:
         super().__init__(
             model=model,
             position=Vector3(0, 0, 7.5),
             direction=Vector3(0, 0, 0),
             speed=15,
         )
+        self.on_shoot = on_shoot
 
     def update(self, dt: float) -> None:
         self.movement()
@@ -27,3 +40,6 @@ class Player(Sprite):
 
         self.direction.x = int(right) - int(left)
         self.direction.z = int(down) - int(up)
+
+        if is_key_down(KEY_SPACE):
+            self.on_shoot(self.position)
