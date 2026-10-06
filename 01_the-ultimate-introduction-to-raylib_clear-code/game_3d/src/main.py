@@ -1,10 +1,17 @@
-from pyray import draw_fps, begin_drawing, begin_mode_3d, clear_background
+from pyray import (
+    close_audio_device,
+    draw_fps,
+    begin_drawing,
+    begin_mode_3d,
+    clear_background,
+)
 from pyray import draw_grid, end_drawing, end_mode_3d, get_frame_time, init_window
-from pyray import window_should_close, set_target_fps, close_window
+from pyray import window_should_close, set_target_fps, close_window, init_audio_device
 from core.window import wait_for_window_size
 
 from core.entity import Entity
 from core.timer import Timer
+from entities.background import Background
 from entities.camera import Camera
 from entities.loader import Loader
 from sprites.player import Player
@@ -16,6 +23,7 @@ from pyray import WHITE
 class Game:
     def __init__(self) -> None:
         init_window(1220, 680, "Game 3D")
+        init_audio_device()
 
         set_target_fps(60)
 
@@ -27,6 +35,7 @@ class Game:
 
         self.loader = Loader()
         self.camera = Camera()
+        self.background = Background(self.loader.get_music("background"))
         self.player = Player(self.loader.get_model("player"))
 
         self.add_obstacle()
@@ -34,6 +43,7 @@ class Game:
     def close(self) -> None:
         for entity in self.entities():
             entity.close()
+        close_audio_device()
         close_window()
 
     def update(self, dt: float) -> None:
@@ -70,6 +80,7 @@ class Game:
 
     def entities(self) -> list[Entity]:
         return [
+            self.background,
             self.loader,
             self.camera,
             self.player,
