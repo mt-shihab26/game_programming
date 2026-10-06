@@ -1,4 +1,4 @@
-from pyray import draw_model, vector3_normalize
+from pyray import draw_model, get_model_bounding_box, vector3_normalize
 
 from pyray import Color, Model, Vector3
 from core.entity import Entity
@@ -31,3 +31,11 @@ class Sprite(Entity):
 
     def draw(self) -> None:
         draw_model(self.model, self.position, self.scale, self.color)
+
+    def size(self) -> dict[str, float]:
+        box = get_model_bounding_box(self.model)
+        return {
+            "width": (box.max.x - box.min.x) * self.scale,
+            "height": (box.max.y - box.min.y) * self.scale,
+            "depth": (box.max.z - box.min.z) * self.scale,
+        }

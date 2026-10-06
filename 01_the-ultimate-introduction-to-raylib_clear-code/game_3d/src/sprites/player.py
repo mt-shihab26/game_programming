@@ -1,7 +1,6 @@
-from _typeshed import SupportsLen
 from collections.abc import Callable
 
-from pyray import is_key_down
+from pyray import is_key_down, is_key_pressed
 
 from pyray import Model, Vector3
 from core.sprite import Sprite
@@ -42,5 +41,13 @@ class Player(Sprite):
         self.direction.x = int(right) - int(left)
         self.direction.z = int(down) - int(up)
 
-        if is_key_down(KEY_SPACE):
-            self.on_shoot(Vector3(self.position.x, self.position.y, self.position.z))
+        if is_key_pressed(KEY_SPACE):
+            size = self.size()
+
+            self.on_shoot(
+                Vector3(
+                    self.position.x,
+                    self.position.y + (size["height"] / 2),
+                    self.position.z - (size["depth"] / 2),
+                )
+            )
