@@ -1,5 +1,7 @@
-from pyray import Model, Vector3
+from pyray import Model, Vector3, is_key_down
 from core.sprite import Sprite
+
+from raylib import KEY_DOWN, KEY_H, KEY_J, KEY_K, KEY_L, KEY_LEFT, KEY_RIGHT, KEY_UP
 
 
 class Player(Sprite):
@@ -8,5 +10,18 @@ class Player(Sprite):
             model=model,
             position=Vector3(0, 0, 7.5),
             direction=Vector3(0, 0, 0),
-            speed=0,
+            speed=15,
         )
+
+    def update(self, dt: float) -> None:
+        self.movement()
+        super().update(dt)
+
+    def movement(self) -> None:
+        left = is_key_down(KEY_LEFT) or is_key_down(KEY_H)
+        right = is_key_down(KEY_RIGHT) or is_key_down(KEY_L)
+        up = is_key_down(KEY_UP) or is_key_down(KEY_K)
+        down = is_key_down(KEY_DOWN) or is_key_down(KEY_J)
+
+        self.direction.x = int(right) - int(left)
+        self.direction.z = int(down) - int(up)
