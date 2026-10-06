@@ -1,4 +1,11 @@
-from pyray import begin_drawing, begin_mode_3d, clear_background, close_window
+from pyray import (
+    begin_drawing,
+    begin_mode_3d,
+    clear_background,
+    close_window,
+    draw_fps,
+    set_target_fps,
+)
 from pyray import draw_grid, end_drawing, end_mode_3d, get_frame_time, init_window
 from pyray import window_should_close
 from core.window import wait_for_window_size
@@ -41,14 +48,19 @@ class Game:
             entity.update(dt)
 
     def handle_remove_obsticale_out_of_screen(self):
-        self.obstacles = [
-            obstacle for obstacle in self.obstacles if obstacle.position.z <= 30
-        ]
+        obstacles: list[Obstacle] = []
+        for obstacle in self.obstacles:
+            if obstacle.position.z > 30:
+                obstacle.close()
+            else:
+                obstacles.append(obstacle)
+        self.obstacles = obstacles
 
     def draw(self) -> None:
         begin_drawing()
         begin_mode_3d(self.camera.object)
         clear_background(WHITE)
+        draw_fps(0, 0)
         draw_grid(10, 2)
         for entity in self.entities():
             entity.draw()
