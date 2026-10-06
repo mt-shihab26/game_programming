@@ -1,29 +1,6 @@
 #include <GLFW/glfw3.h>
 
-void wait_for_window_size(GLFWwindow *window, int width, int height) {
-    // Hyprland sizes the window as a tile before floating it, so ask for the size again
-    glfwSetWindowSize(window, width, height);
-
-    int initialWidth, initialHeight;
-    glfwGetFramebufferSize(window, &initialWidth, &initialHeight);
-
-    int framebufferWidth = initialWidth;
-    int framebufferHeight = initialHeight;
-
-    // Tiling WMs (Hyprland) resize the framebuffer only after the first frames are drawn
-    for (int i = 0; i < 10; i++) {
-        glClear(GL_COLOR_BUFFER_BIT);
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-
-        glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
-        if (framebufferWidth != initialWidth || framebufferHeight != initialHeight) {
-            break;
-        }
-    }
-
-    glViewport(0, 0, framebufferWidth, framebufferHeight);
-}
+#include "window.cpp"
 
 int main() {
     const int width = 1280;
