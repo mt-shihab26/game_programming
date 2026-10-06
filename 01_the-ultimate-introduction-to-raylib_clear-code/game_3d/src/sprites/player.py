@@ -1,4 +1,6 @@
-from pyray import Model, Vector3, is_key_down
+from pyray import is_key_down
+
+from pyray import Model, Vector3
 from core.sprite import Sprite
 
 from raylib import KEY_DOWN, KEY_H, KEY_J, KEY_K, KEY_L, KEY_LEFT, KEY_RIGHT, KEY_UP

@@ -1,10 +1,11 @@
 from random import uniform
+from pyray import gen_mesh_sphere, load_model_from_mesh, unload_model
 
-from pyray import RED, Vector3, gen_mesh_sphere, load_model_from_mesh, unload_model
-
+from pyray import Vector3
 from core.sprite import Sprite
 
 from raylib import MATERIAL_MAP_ALBEDO
+from pyray import RED
 
 
 class Obstacle(Sprite):

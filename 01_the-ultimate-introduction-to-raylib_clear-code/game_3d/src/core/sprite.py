@@ -1,11 +1,6 @@
-from pyray import (
-    Model,
-    Vector3,
-    draw_model,
-    vector3_normalize,
-)
+from pyray import draw_model, vector3_normalize
 
-
+from pyray import Model, Vector3
 from core.entity import Entity
 
 from pyray import WHITE
