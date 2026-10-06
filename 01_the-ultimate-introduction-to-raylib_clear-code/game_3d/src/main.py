@@ -1,13 +1,6 @@
-from pyray import (
-    draw_fps,
-    begin_drawing,
-    begin_mode_3d,
-    clear_background,
-    close_window,
-    set_target_fps,
-)
+from pyray import draw_fps, begin_drawing, begin_mode_3d, clear_background
 from pyray import draw_grid, end_drawing, end_mode_3d, get_frame_time, init_window
-from pyray import window_should_close
+from pyray import window_should_close, set_target_fps, close_window
 from core.window import wait_for_window_size
 
 from core.entity import Entity
