@@ -7,7 +7,7 @@ from pyray import window_should_close
 from core.entity import Entity
 from entities.camera import Camera
 from entities.loader import Loader
-from entities.player import Player
+from sprites.player import Player
 from sprites.obstacle import Obstacle
 from core.timer import Timer
 
