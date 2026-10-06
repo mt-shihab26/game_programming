@@ -14,6 +14,7 @@ from core.timer import Timer
 from entities.background import Background
 from entities.camera import Camera
 from entities.loader import Loader
+from sprites.laser import Laser
 from sprites.player import Player
 from sprites.obstacle import Obstacle
 
@@ -30,8 +31,10 @@ class Game:
         wait_for_window_size()
 
         self.obstacle_timer = Timer(duration=1, func=self.add_obstacle)
+        self.laser_timer = Timer(duration=1, func=self.add_laser)
 
         self.obstacles: list[Obstacle] = []
+        self.lasers: list[Laser] = []
 
         self.loader = Loader()
         self.camera = Camera()
@@ -49,6 +52,7 @@ class Game:
     def update(self, dt: float) -> None:
         self.handle_remove_obsticale_out_of_screen()
         self.obstacle_timer.update()
+        self.laser_timer.update()
         for entity in self.entities():
             entity.update(dt)
 
@@ -79,15 +83,22 @@ class Game:
         self.close()
 
     def entities(self) -> list[Entity]:
-        return [
-            self.background,
-            self.loader,
-            self.camera,
-            self.player,
-        ] + self.obstacles
+        return (
+            [
+                self.background,
+                self.loader,
+                self.camera,
+                self.player,
+            ]
+            + self.obstacles
+            + self.lasers
+        )
 
     def add_obstacle(self):
         self.obstacles.append(Obstacle())
+
+    def add_laser(self):
+        self.lasers.append(Laser(self.loader.get_model("laser")))
 
 
 if __name__ == "__main__":

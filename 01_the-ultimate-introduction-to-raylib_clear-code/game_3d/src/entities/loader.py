@@ -11,6 +11,7 @@ class Loader(Entity):
     def __init__(self) -> None:
         self.models: dict[str, Model] = {
             "player": load_model(join(ASSETS_DIR, "models", "ship.glb")),
+            "laser": load_model(join(ASSETS_DIR, "models", "laser.glb")),
         }
         self.musics: dict[str, Music] = {
             "background": load_music_stream(join(ASSETS_DIR, "audios", "music.wav")),
