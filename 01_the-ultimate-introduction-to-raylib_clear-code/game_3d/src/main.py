@@ -1,7 +1,7 @@
 from pyray import begin_drawing, begin_mode_3d, clear_background, close_audio_device
 from pyray import close_window, draw_fps, draw_grid, end_drawing, end_mode_3d
 from pyray import get_frame_time, init_audio_device, init_window, set_target_fps
-from pyray import window_should_close
+from pyray import window_should_close, check_collision_box_sphere
 from core.window import wait_for_window_size
 
 from pyray import Vector3
@@ -48,6 +48,14 @@ class Game:
         self.handle_remove_obsticales_out_of_screen()
         self.handle_remove_lasers_out_of_screen()
         self.obstacle_timer.update()
+
+        for obstacle in self.obstacles:
+            collision = check_collision_box_sphere(
+                self.player.get_bounding_box(), obstacle.position, obstacle.radius
+            )
+            if collision:
+                print(collision)
+
         for entity in self.entities():
             entity.update(dt)
 

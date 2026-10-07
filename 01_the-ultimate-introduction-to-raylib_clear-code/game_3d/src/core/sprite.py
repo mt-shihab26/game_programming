@@ -1,6 +1,8 @@
 from pyray import draw_model, get_model_bounding_box, vector3_normalize
+from pyray import get_mesh_bounding_box, vector3_add
 
-from pyray import Color, Model, Vector3
+from pyray import Color, Model, Vector3, BoundingBox
+
 from core.entity import Entity
 
 from pyray import WHITE
@@ -31,6 +33,12 @@ class Sprite(Entity):
 
     def draw(self) -> None:
         draw_model(self.model, self.position, self.scale, self.color)
+
+    def get_bounding_box(self) -> BoundingBox:
+        bounding_box = get_mesh_bounding_box(self.model.meshes[0])
+        min_boundary = vector3_add(self.position, bounding_box.min)
+        max_boundary = vector3_add(self.position, bounding_box.max)
+        return BoundingBox(min_boundary, max_boundary)
 
     def size(self) -> dict[str, float]:
         box = get_model_bounding_box(self.model)
