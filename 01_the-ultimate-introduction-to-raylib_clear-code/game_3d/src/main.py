@@ -70,13 +70,15 @@ class Game:
                 pass
 
     def handle_collision_lasers_obstacles(self):
-        for laser in self.lasers:
+        for laser in self.lasers[:]:
             for obstacle in self.obstacles:
                 collision = check_collision_boxes(
                     obstacle.get_bounding_box(), laser.get_bounding_box()
                 )
                 if collision:
-                    print("Laser Hit")
+                    self.lasers.remove(laser)
+                    self.obstacles.remove(obstacle)
+                    break
 
     def handle_remove_obsticales_out_of_screen(self):
         obstacles: list[Obstacle] = []
