@@ -1,9 +1,53 @@
+#include <alloca.h>
 #include <cstdio>
+#include <iostream>
+#include <string>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 #include "window.h"
+
+static unsigned int compile_shader(unsigned int type, const std::string &source) {
+    const char *src = source.c_str();
+
+    unsigned int id = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(id, 1, &src, nullptr);
+    glCompileShader(id);
+
+    // error handling
+    int result;
+    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+    if (!result) {
+        int length;
+        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+        char *message = (char *)alloca(length * sizeof(char));
+        glGetShaderInfoLog(id, length, &length, message);
+        std::cout << "Failed to compile" << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << " shader!" << std::endl;
+        std::cout << message << std::endl;
+        glDeleteShader(id);
+        return 0;
+    }
+
+    return id;
+}
+
+static unsigned int create_shader(std::string &vertex_shader, std::string &fragment_shader) {
+    unsigned int program = glCreateProgram();
+    unsigned int vs = compile_shader(GL_VERTEX_SHADER, vertex_shader);
+    unsigned int fs = compile_shader(GL_FRAGMENT_SHADER, fragment_shader);
+
+    glAttachShader(program, vs);
+    glAttachShader(program, fs);
+
+    glLinkProgram(program);
+    glValidateProgram(program);
+
+    glDeleteShader(vs);
+    glDeleteShader(fs);
+
+    return program;
+}
 
 int main() {
     const int width = 1280;
@@ -52,6 +96,30 @@ int main() {
     // Vertex attributes and layouts
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
     glEnableVertexAttribArray(0);
+
+    // Writing shaders
+    std::string vertex_shader =
+        "#version 330 core\n"
+        "\n"
+        "layout(location = 0) in vec4 position;\n"
+        "\n"
+        "void main()\n"
+        "{\n"
+        "   gl_Position = position;\n"
+        "}\n";
+
+    std::string fragment_shader =
+        "#version 330 core\n"
+        "\n"
+        "layout(location = 0) out vec4 color;\n"
+        "\n"
+        "void main()\n"
+        "{\n"
+        "   color = vec4(1.0, 0,0, 0.0, 1.0);\n"
+        "}\n";
+    ;
+    unsigned int shader = create_shader(vertex_shader, fragment_shader);
+    glUseProgram(shader);
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
