@@ -2,7 +2,6 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <memory>
 
 #include "window.h"
 
@@ -44,6 +43,7 @@ int main() {
         -0.5f,
     };
 
+    // Vertex buffer
     unsigned int buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
