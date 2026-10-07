@@ -115,7 +115,7 @@ int main() {
         "\n"
         "void main()\n"
         "{\n"
-        "   color = vec4(1.0, 0,0, 0.0, 1.0);\n"
+        "   color = vec4(1.0, 0.0, 0.0, 1.0);\n"
         "}\n";
     ;
     unsigned int shader = create_shader(vertex_shader, fragment_shader);
@@ -123,11 +123,8 @@ int main() {
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
-        glBegin(GL_TRIANGLES);
-
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        glEnd();
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
