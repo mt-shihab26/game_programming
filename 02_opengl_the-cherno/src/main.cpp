@@ -33,12 +33,19 @@ int main() {
 
     print_libaray_versions();
 
-    float positions[6] = {
+    float positions[] = {
         -0.5f,
         -0.5f,
-        0.0f,
+        0.5f,
+        -0.5f,
         0.5f,
         0.5f,
+
+        0.5f,
+        0.5f,
+        -0.5f,
+        0.5f,
+        -0.5f,
         -0.5f,
     };
 
@@ -46,7 +53,7 @@ int main() {
     unsigned int buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 6 * 2 * sizeof(float), positions, GL_STATIC_DRAW);
 
     // Vertex attributes and layouts
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
@@ -57,7 +64,7 @@ int main() {
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
