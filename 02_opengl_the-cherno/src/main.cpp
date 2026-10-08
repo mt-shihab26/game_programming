@@ -52,9 +52,7 @@ int main() {
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
     glEnableVertexAttribArray(0);
 
-    ShaderSource shader_source = parse_shader("assets/shaders/basic.glsl");
-
-    unsigned int shader = create_shader(shader_source);
+    unsigned int shader = create_shader("assets/shaders/basic.glsl");
     glUseProgram(shader);
 
     while (!glfwWindowShouldClose(window)) {
