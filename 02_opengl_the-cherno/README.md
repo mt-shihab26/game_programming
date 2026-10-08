@@ -32,5 +32,6 @@ The scripts use bash and make, so they only work on Linux:
 ```bash
 ./scripts/generate.sh   # generate the makefiles (rerun after editing premake5.lua or adding source files)
 ./scripts/dev.sh        # build and run in debug configuration
+./scripts/release.sh    # build in release configuration (bin/release, with the assets folder copied next to the binary)
 ./scripts/clean.sh      # remove all generated and built files
 ```
