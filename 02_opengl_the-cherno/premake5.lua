@@ -56,6 +56,10 @@ project "demo"
     filter "configurations:release"
         defines { "NDEBUG" }
         optimize "On"
+        postbuildcommands {
+            "{RMDIR} %{cfg.targetdir}/assets",
+            "{COPYDIR} assets %{cfg.targetdir}/assets",
+        }
 
 project "glfw"
     kind "StaticLib"
