@@ -33,21 +33,21 @@ int main() {
 
     print_libaray_versions();
 
+    // clang-format off
+    
     float positions[] = {
-        -0.5f,
-        -0.5f,
-        0.5f,
-        -0.5f,
-        0.5f,
-        0.5f,
-
-        0.5f,
-        0.5f,
-        -0.5f,
-        0.5f,
-        -0.5f,
-        -0.5f,
+        -0.5f, -0.5f, // 0
+         0.5f, -0.5f, // 1
+         0.5f,  0.5f, // 2
+        -0.5f,  0.5f, // 3
     };
+
+    unsigned int indices[] = {
+        0, 1, 2,
+        2, 3, 0
+    };
+
+    // clang-format on
 
     // Vertex buffer
     unsigned int buffer;
@@ -59,12 +59,19 @@ int main() {
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
     glEnableVertexAttribArray(0);
 
+    // Index buffer object
+    unsigned int ibo;
+    glGenBuffers(1, &ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+
     unsigned int shader = create_shader("assets/shaders/basic.glsl");
     glUseProgram(shader);
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
