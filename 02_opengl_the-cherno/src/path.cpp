@@ -1,6 +1,7 @@
 #include <filesystem>
 #include <string>
-#include "path.h"
+
+#include "path.hpp"
 
 std::string project_dir() {
     // this file lives in <project>/src

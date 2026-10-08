@@ -3,8 +3,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "shader.h"
-#include "window.h"
+#include "shader.hpp"
+#include "window.hpp"
 
 static unsigned int compile_shader(unsigned int type, const std::string &source) {
     const char *src = source.c_str();

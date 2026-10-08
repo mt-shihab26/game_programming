@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "window.h"
+#include "window.hpp"
 
 // Works around two problems when opening a window on Hyprland (Wayland):
 //

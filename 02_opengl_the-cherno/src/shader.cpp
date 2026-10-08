@@ -1,8 +1,9 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include "path.h"
-#include "shader.h"
+
+#include "path.hpp"
+#include "shader.hpp"
 
 ShaderSource parse_shader(std::string filepath) {
     std::ifstream stream(project_path(filepath));
