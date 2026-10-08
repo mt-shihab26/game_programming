@@ -3,7 +3,7 @@
 
 local build_dir = "build/%{cfg.system}-%{cfg.architecture}"
 local bin_dir = build_dir .. "/bin/%{cfg.buildcfg}"
-local obj_dir = build_dir .. "/%{cfg.buildcfg}/obj/%{prj.name}"
+local obj_dir = build_dir .. "/obj/%{cfg.buildcfg}/%{prj.name}"
 local wayland_dir = build_dir .. "/obj/wayland"
 
 local function wayland_protocol_commands()
