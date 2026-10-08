@@ -1,10 +1,11 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include "path.h"
 #include "shader.h"
 
 ShaderSource parse_shader(std::string filepath) {
-    std::ifstream stream(filepath);
+    std::ifstream stream(project_path(filepath));
 
     std::string line;
     std::stringstream ss[2];
