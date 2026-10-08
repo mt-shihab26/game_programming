@@ -59,6 +59,9 @@ project "demo"
         postbuildcommands {
             "{RMDIR} %{cfg.targetdir}/assets",
             "{COPYDIR} assets %{cfg.targetdir}/assets",
+            -- the static libraries are linked into the binary, so they are not needed to run it
+            "{DELETE} %{cfg.targetdir}/libglfw.a",
+            "{DELETE} %{cfg.targetdir}/libglew.a",
         }
 
 project "glfw"
