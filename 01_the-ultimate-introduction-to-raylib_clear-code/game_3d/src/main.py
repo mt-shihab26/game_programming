@@ -21,11 +21,12 @@ from sprites.player import Player
 from sprites.obstacle import Obstacle
 
 from pyray import WHITE
+from core.config import WINDOW_HEIGHT, WINDOW_WIDTH
 
 
 class Game:
     def __init__(self) -> None:
-        init_window(1220, 680, "Game 3D")
+        init_window(WINDOW_WIDTH, WINDOW_HEIGHT, "Game 3D")
         init_audio_device()
 
         set_target_fps(60)
