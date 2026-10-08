@@ -1,4 +1,15 @@
-from pyray import Sound, load_model, load_music_stream, load_sound, unload_model
+from pyray import (
+    Sound,
+    Texture,
+    load_model,
+    load_music_stream,
+    load_sound,
+    load_texture,
+    unload_model,
+    unload_music_stream,
+    unload_sound,
+    unload_texture,
+)
 from os.path import abspath, dirname, join
 
 from pyray import Model, Music
@@ -19,10 +30,24 @@ class Loader(Entity):
         self.sounds: dict[str, Sound] = {
             "laser": load_sound(join(ASSETS_DIR, "audios", "laser.wav")),
         }
+        self.textures: dict[str, Texture] = {
+            "dark": load_texture(join(ASSETS_DIR, "textures", "dark.png")),
+            "green": load_texture(join(ASSETS_DIR, "textures", "green.png")),
+            "light": load_texture(join(ASSETS_DIR, "textures", "light.png")),
+            "orange": load_texture(join(ASSETS_DIR, "textures", "orange.png")),
+            "purple": load_texture(join(ASSETS_DIR, "textures", "purple.png")),
+            "red": load_texture(join(ASSETS_DIR, "textures", "red.png")),
+        }
 
     def close(self) -> None:
         for model in self.models.values():
             unload_model(model)
+        for music in self.musics.values():
+            unload_music_stream(music)
+        for sound in self.sounds.values():
+            unload_sound(sound)
+        for texture in self.textures.values():
+            unload_texture(texture)
 
     def get_model(self, name: str) -> Model:
         return self.models[name]
@@ -32,3 +57,6 @@ class Loader(Entity):
 
     def get_sound(self, name: str) -> Sound:
         return self.sounds[name]
+
+    def get_texture(self, name: str) -> Texture:
+        return self.textures[name]

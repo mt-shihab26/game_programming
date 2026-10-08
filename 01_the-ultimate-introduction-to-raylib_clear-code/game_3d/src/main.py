@@ -40,7 +40,9 @@ class Game:
 
         self.loader = Loader()
         self.camera = Camera()
-        self.background = Background(self.loader.get_music("background"))
+        self.background = Background(
+            self.loader.get_texture("dark"), self.loader.get_music("background")
+        )
         self.player = Player(self.loader.get_model("player"), self.add_laser)
 
         self.add_obstacle()

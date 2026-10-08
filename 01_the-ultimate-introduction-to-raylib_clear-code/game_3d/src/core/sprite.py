@@ -12,9 +12,9 @@ class Sprite(Entity):
     def __init__(
         self,
         model: Model,
-        position: Vector3,
-        direction: Vector3,
-        speed: float,
+        position: Vector3 = Vector3(0, 0, 0),
+        direction: Vector3 = Vector3(0, 0, 0),
+        speed: float = 0,
         scale: float = 1.0,
         color: Color = WHITE,
     ) -> None:
