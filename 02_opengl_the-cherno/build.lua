@@ -14,11 +14,11 @@ local function wayland_protocol_commands()
         "xdg-decoration-unstable-v1",
     }
 
-    local commands = { "mkdir -p obj/wayland" }
+    local commands = { "mkdir -p build/obj/wayland" }
     for _, name in ipairs(protocols) do
         local xml = "vendor/glfw/deps/wayland/" .. name .. ".xml"
-        local header = "obj/wayland/" .. name .. "-client-protocol.h"
-        local code = "obj/wayland/" .. name .. "-client-protocol-code.h"
+        local header = "build/obj/wayland/" .. name .. "-client-protocol.h"
+        local code = "build/obj/wayland/" .. name .. "-client-protocol-code.h"
         local scan = " || wayland-scanner "
         table.insert(commands, "[ -f " .. header .. " ]" .. scan .. "client-header " .. xml .. " " .. header)
         table.insert(commands, "[ -f " .. code .. " ]" .. scan .. "private-code " .. xml .. " " .. code)
@@ -28,11 +28,12 @@ end
 
 workspace "demo"
     configurations { "debug", "release" }
+    targetdir "build/bin/%{cfg.buildcfg}"
+    objdir "build/obj/%{cfg.buildcfg}/%{prj.name}"
 
 project "demo"
     kind "ConsoleApp"
     language "C++"
-    targetdir "bin/%{cfg.buildcfg}"
 
     files { "src/**.h", "src/**.cpp" }
 
@@ -67,7 +68,6 @@ project "demo"
 project "glfw"
     kind "StaticLib"
     language "C"
-    targetdir "bin/%{cfg.buildcfg}"
 
     files {
         "vendor/glfw/src/context.c",
@@ -84,7 +84,7 @@ project "glfw"
 
     filter "system:linux"
         defines { "_GLFW_WAYLAND", "HAVE_MEMFD_CREATE" }
-        includedirs { "obj/wayland" }
+        includedirs { "build/obj/wayland" }
         prebuildcommands(wayland_protocol_commands())
         files {
           "vendor/glfw/src/wl_*.c",
@@ -119,7 +119,6 @@ project "glfw"
 project "glew"
     kind "StaticLib"
     language "C"
-    targetdir "bin/%{cfg.buildcfg}"
 
     files { "vendor/glew/src/glew.c" }
     includedirs { "vendor/glew/include" }
@@ -138,8 +137,7 @@ newaction {
     trigger = "clean",
     description = "Remove generated build files",
     execute = function()
-        os.rmdir("bin")
-        os.rmdir("obj")
+        os.rmdir("build")
         os.remove("Makefile")
         os.remove("*.make")
     end
