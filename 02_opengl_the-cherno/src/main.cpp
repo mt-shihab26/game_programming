@@ -1,11 +1,9 @@
-#include <alloca.h>
-#include <cstdio>
 #include <iostream>
-#include <string>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "shader.h"
 #include "window.h"
 
 static unsigned int compile_shader(unsigned int type, const std::string &source) {
@@ -97,28 +95,9 @@ int main() {
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
     glEnableVertexAttribArray(0);
 
-    // Writing shaders
-    std::string vertex_shader =
-        "#version 330 core\n"
-        "\n"
-        "layout(location = 0) in vec4 position;\n"
-        "\n"
-        "void main()\n"
-        "{\n"
-        "   gl_Position = position;\n"
-        "}\n";
+    ShaderSource shader_source = parse_shader("assets/shaders/basic.glsl");
 
-    std::string fragment_shader =
-        "#version 330 core\n"
-        "\n"
-        "layout(location = 0) out vec4 color;\n"
-        "\n"
-        "void main()\n"
-        "{\n"
-        "   color = vec4(1.0, 0.0, 0.0, 1.0);\n"
-        "}\n";
-    ;
-    unsigned int shader = create_shader(vertex_shader, fragment_shader);
+    unsigned int shader = create_shader(shader_source.vertex, shader_source.fragment);
     glUseProgram(shader);
 
     while (!glfwWindowShouldClose(window)) {
