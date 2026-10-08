@@ -13,4 +13,6 @@ struct ShaderSource {
     std::string fragment;
 };
 
+static unsigned int create_shader(ShaderSource &shader_source);
+static unsigned int compile_shader(unsigned int type, const std::string &source);
 ShaderSource parse_shader(std::string $filepath);
