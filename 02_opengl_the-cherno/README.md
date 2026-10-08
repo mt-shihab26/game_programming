@@ -30,7 +30,7 @@ premake5 --version
 The scripts use bash and make, so they only work on Linux:
 
 ```bash
-./scripts/generate.sh   # generate the makefiles (rerun after editing premake5.lua or adding source files)
+./scripts/generate.sh   # generate the makefiles (rerun after editing build.lua or adding source files)
 ./scripts/dev.sh        # build and run in debug configuration
 ./scripts/release.sh    # build in release configuration (bin/release holds only the binary and its assets folder)
 ./scripts/clean.sh      # remove all generated and built files

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+
 cd "$(dirname "$0")/.."
 
-premake5 gmake
+premake5 --file=build.lua gmake
