@@ -1,6 +1,11 @@
 -- stop: lsp
 -- stop: format
 
+local build_dir = "build/%{cfg.system}-%{cfg.architecture}"
+local bin_dir = build_dir .. "/bin/%{cfg.buildcfg}"
+local obj_dir = build_dir .. "/%{cfg.buildcfg}/obj/%{prj.name}"
+local wayland_dir = build_dir .. "/obj/wayland"
+
 local function wayland_protocol_commands()
     local protocols = {
         "wayland",
@@ -14,11 +19,11 @@ local function wayland_protocol_commands()
         "xdg-decoration-unstable-v1",
     }
 
-    local commands = { "mkdir -p build/obj/wayland" }
+    local commands = { "mkdir -p " .. wayland_dir }
     for _, name in ipairs(protocols) do
         local xml = "vendor/glfw/deps/wayland/" .. name .. ".xml"
-        local header = "build/obj/wayland/" .. name .. "-client-protocol.h"
-        local code = "build/obj/wayland/" .. name .. "-client-protocol-code.h"
+        local header = wayland_dir .. "/" .. name .. "-client-protocol.h"
+        local code = wayland_dir .. "/" .. name .. "-client-protocol-code.h"
         local scan = " || wayland-scanner "
         table.insert(commands, "[ -f " .. header .. " ]" .. scan .. "client-header " .. xml .. " " .. header)
         table.insert(commands, "[ -f " .. code .. " ]" .. scan .. "private-code " .. xml .. " " .. code)
@@ -28,8 +33,9 @@ end
 
 workspace "demo"
     configurations { "debug", "release" }
-    targetdir "build/bin/%{cfg.buildcfg}"
-    objdir "build/obj/%{cfg.buildcfg}/%{prj.name}"
+    architecture "x86_64"
+    targetdir(bin_dir)
+    objdir(obj_dir)
 
 project "demo"
     kind "ConsoleApp"
@@ -84,7 +90,7 @@ project "glfw"
 
     filter "system:linux"
         defines { "_GLFW_WAYLAND", "HAVE_MEMFD_CREATE" }
-        includedirs { "build/obj/wayland" }
+        includedirs { wayland_dir }
         prebuildcommands(wayland_protocol_commands())
         files {
           "vendor/glfw/src/wl_*.c",

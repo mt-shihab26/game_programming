@@ -6,4 +6,4 @@ cd "$(dirname "$0")/.."
 
 make config=debug -j"$(nproc)"
 
-./build/bin/debug/demo
+./build/linux-x86_64/bin/debug/demo
