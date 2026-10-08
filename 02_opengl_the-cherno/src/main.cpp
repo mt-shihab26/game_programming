@@ -30,10 +30,11 @@ static unsigned int compile_shader(unsigned int type, const std::string &source)
     return id;
 }
 
-static unsigned int create_shader(std::string &vertex_shader, std::string &fragment_shader) {
+static unsigned int create_shader(ShaderSource &shader_source) {
     unsigned int program = glCreateProgram();
-    unsigned int vs = compile_shader(GL_VERTEX_SHADER, vertex_shader);
-    unsigned int fs = compile_shader(GL_FRAGMENT_SHADER, fragment_shader);
+
+    unsigned int vs = compile_shader(GL_VERTEX_SHADER, shader_source.vertex);
+    unsigned int fs = compile_shader(GL_FRAGMENT_SHADER, shader_source.fragment);
 
     glAttachShader(program, vs);
     glAttachShader(program, fs);
@@ -97,7 +98,7 @@ int main() {
 
     ShaderSource shader_source = parse_shader("assets/shaders/basic.glsl");
 
-    unsigned int shader = create_shader(shader_source.vertex, shader_source.fragment);
+    unsigned int shader = create_shader(shader_source);
     glUseProgram(shader);
 
     while (!glfwWindowShouldClose(window)) {
