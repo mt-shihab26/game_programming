@@ -61,6 +61,10 @@ int main() {
 
     // clang-format on
 
+    unsigned int vao;
+    GL_CALL(glGenVertexArrays(1, &vao));
+    GL_CALL(glBindVertexArray(vao));
+
     // Vertex buffer
     unsigned int buffer;
     GL_CALL(glGenBuffers(1, &buffer));
@@ -68,8 +72,8 @@ int main() {
     GL_CALL(glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW));
 
     // Vertex attributes and layouts
-    GL_CALL(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0));
     GL_CALL(glEnableVertexAttribArray(0));
+    GL_CALL(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0));
 
     // Index buffer object
     unsigned int ibo;
