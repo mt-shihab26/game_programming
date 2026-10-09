@@ -92,6 +92,7 @@ int main() {
     GL_CALL(glUniform4f(location, 0.8f, 0.3f, 0.8f, 1.0f));
 
     // reset
+    GL_CALL(glBindVertexArray(0));
     GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
     GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
     GL_CALL(glUseProgram(0));
@@ -103,10 +104,7 @@ int main() {
     while (!glfwWindowShouldClose(window)) {
         GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 
-        GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, buffer));
-        GL_CALL(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0));
-        GL_CALL(glEnableVertexAttribArray(0));
-
+        GL_CALL(glBindVertexArray(vao));
         GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
 
         GL_CALL(glUseProgram(shader));
