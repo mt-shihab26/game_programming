@@ -74,7 +74,7 @@ int main() {
 
         gl_clear_error();
         glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr);
-        gl_log_call();
+        ASSERT(gl_log_call());
 
         glfwSwapBuffers(window);
         glfwPollEvents();
