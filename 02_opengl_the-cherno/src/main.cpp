@@ -27,6 +27,8 @@ int main() {
 
     wait_for_window_size(window, width, height);
 
+    glfwSwapInterval(1);
+
     if (glewInit() != GLEW_OK) {
         glfwTerminate();
         return 1;
