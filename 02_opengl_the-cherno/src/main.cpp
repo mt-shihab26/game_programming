@@ -67,12 +67,31 @@ int main() {
     GL_CALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));
 
     unsigned int shader = create_shader("assets/shaders/basic.glsl");
+
     GL_CALL(glUseProgram(shader));
+
+    GL_CALL(int location = glGetUniformLocation(shader, "u_color"));
+
+    ASSERT(location != -1);
+
+    GL_CALL(glUniform4f(location, 0.8f, 0.3f, 0.8f, 1.0f));
+
+    float r = 0.0f;
+    float increment = 0.05f;
 
     while (!glfwWindowShouldClose(window)) {
         GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 
-        GL_CALL(glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr););
+        GL_CALL(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
+        GL_CALL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr););
+
+        if (r > 1.0f) {
+            increment = -0.05f;
+        } else if (r < 0.0f) {
+            increment = 0.05f;
+        }
+
+        r += increment;
 
         glfwSwapBuffers(window);
         glfwPollEvents();
