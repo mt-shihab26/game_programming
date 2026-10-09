@@ -6,6 +6,8 @@
 #include "shader.hpp"
 #include "window.hpp"
 #include "renderer.hpp"
+#include "vertex_buffer.hpp"
+#include "index_buffer.hpp"
 
 int main() {
     const int width = 1280;
@@ -65,21 +67,13 @@ int main() {
     GL_CALL(glGenVertexArrays(1, &vao));
     GL_CALL(glBindVertexArray(vao));
 
-    // Vertex buffer
-    unsigned int buffer;
-    GL_CALL(glGenBuffers(1, &buffer));
-    GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, buffer));
-    GL_CALL(glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW));
+    VertexBuffer vb(positions, 4 * 2 * sizeof(float));
 
     // Vertex attributes and layouts
     GL_CALL(glEnableVertexAttribArray(0));
     GL_CALL(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0));
 
-    // Index buffer object
-    unsigned int ibo;
-    GL_CALL(glGenBuffers(1, &ibo));
-    GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
-    GL_CALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));
+    IndexBuffer ib(indices, 6);
 
     unsigned int shader = create_shader("assets/shaders/basic.glsl");
 
