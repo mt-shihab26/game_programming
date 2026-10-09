@@ -34,6 +34,7 @@ end
 workspace "demo"
     configurations { "debug", "release" }
     architecture "x86_64"
+    toolset "clang"
     targetdir(bin_dir)
     objdir(obj_dir)
 

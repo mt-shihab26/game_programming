@@ -1,5 +1,27 @@
 # 02_opengl_the-cherno
 
+## Installing the compiler
+
+The project is built with [Clang](https://clang.llvm.org/) (set by `toolset "clang"` in `build.lua`).
+
+Arch Linux:
+
+```bash
+sudo pacman -S clang
+```
+
+macOS: Clang comes with the Xcode command line tools:
+
+```bash
+xcode-select --install
+```
+
+Check that it works:
+
+```bash
+clang++ --version
+```
+
 ## Installing premake
 
 The build files are generated with [premake5](https://premake.github.io/).
