@@ -16,7 +16,12 @@ macOS: Clang comes with the Xcode command line tools:
 xcode-select --install
 ```
 
-Check that it works:
+Windows: install [Visual Studio](https://visualstudio.microsoft.com/) with the
+"Desktop development with C++" workload, and in the Visual Studio Installer also
+tick the **C++ Clang tools for Windows** component. Visual Studio then compiles
+the project with `clang-cl` (its ClangCL toolset).
+
+Check that it works (Linux and macOS):
 
 ```bash
 clang++ --version
