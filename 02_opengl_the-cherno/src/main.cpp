@@ -1,6 +1,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <cstdlib>
+
 #include "shader.hpp"
 #include "window.hpp"
 #include "error.hpp"
@@ -10,6 +12,10 @@ int main() {
     const int height = 780;
 
     GLFWwindow *window;
+
+    // Mesa returns the newest version it has, so pin it to 3.3
+    setenv("MESA_GL_VERSION_OVERRIDE", "3.3", 1);
+    setenv("MESA_GLSL_VERSION_OVERRIDE", "330", 1);
 
     if (!glfwInit()) {
         return 1;
