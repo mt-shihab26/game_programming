@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "error.hpp"
 #include "window.hpp"
 
 // Works around two problems when opening a window on Hyprland (Wayland):
@@ -29,7 +30,7 @@ void wait_for_window_size(GLFWwindow *window, int width, int height) {
 
     // Tiling WMs (Hyprland) resize the framebuffer only after the first frames are drawn
     for (int i = 0; i < 10; i++) {
-        glClear(GL_COLOR_BUFFER_BIT);
+        GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
         glfwSwapBuffers(window);
         glfwPollEvents();
 
@@ -39,14 +40,14 @@ void wait_for_window_size(GLFWwindow *window, int width, int height) {
         }
     }
 
-    glViewport(0, 0, framebufferWidth, framebufferHeight);
+    GL_CALL(glViewport(0, 0, framebufferWidth, framebufferHeight));
 }
 
 void print_libaray_versions() {
-    printf("Vendor:   %s\n", glGetString(GL_VENDOR));
-    printf("Renderer: %s\n", glGetString(GL_RENDERER));
-    printf("OpenGL:   %s\n", glGetString(GL_VERSION));
-    printf("GLSL:     %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+    GL_CALL(printf("Vendor:   %s\n", glGetString(GL_VENDOR)));
+    GL_CALL(printf("Renderer: %s\n", glGetString(GL_RENDERER)));
+    GL_CALL(printf("OpenGL:   %s\n", glGetString(GL_VERSION)));
+    GL_CALL(printf("GLSL:     %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION)));
     printf("GLEW:     %s\n", glewGetString(GLEW_VERSION));
     printf("GLFW:     %s\n", glfwGetVersionString());
 }

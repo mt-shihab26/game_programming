@@ -52,25 +52,25 @@ int main() {
 
     // Vertex buffer
     unsigned int buffer;
-    glGenBuffers(1, &buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW);
+    GL_CALL(glGenBuffers(1, &buffer));
+    GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, buffer));
+    GL_CALL(glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW));
 
     // Vertex attributes and layouts
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
-    glEnableVertexAttribArray(0);
+    GL_CALL(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0));
+    GL_CALL(glEnableVertexAttribArray(0));
 
     // Index buffer object
     unsigned int ibo;
-    glGenBuffers(1, &ibo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+    GL_CALL(glGenBuffers(1, &ibo));
+    GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
+    GL_CALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));
 
     unsigned int shader = create_shader("assets/shaders/basic.glsl");
-    glUseProgram(shader);
+    GL_CALL(glUseProgram(shader));
 
     while (!glfwWindowShouldClose(window)) {
-        glClear(GL_COLOR_BUFFER_BIT);
+        GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 
         GL_CALL(glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr););
 
@@ -78,7 +78,7 @@ int main() {
         glfwPollEvents();
     }
 
-    glDeleteProgram(shader);
+    GL_CALL(glDeleteProgram(shader));
 
     glfwTerminate();
 

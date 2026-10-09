@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 
+#include "error.hpp"
 #include "path.hpp"
 #include "shader.hpp"
 
@@ -12,19 +13,19 @@
 unsigned int create_shader(std::string filepath) {
     ShaderSource shader_source = parse_shader(filepath);
 
-    unsigned int program = glCreateProgram();
+    GL_CALL(unsigned int program = glCreateProgram());
 
     unsigned int vs = compile_shader(GL_VERTEX_SHADER, shader_source.vertex);
     unsigned int fs = compile_shader(GL_FRAGMENT_SHADER, shader_source.fragment);
 
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
+    GL_CALL(glAttachShader(program, vs));
+    GL_CALL(glAttachShader(program, fs));
 
-    glLinkProgram(program);
-    glValidateProgram(program);
+    GL_CALL(glLinkProgram(program));
+    GL_CALL(glValidateProgram(program));
 
-    glDeleteShader(vs);
-    glDeleteShader(fs);
+    GL_CALL(glDeleteShader(vs));
+    GL_CALL(glDeleteShader(fs));
 
     return program;
 }
@@ -55,21 +56,21 @@ ShaderSource parse_shader(std::string filepath) {
 unsigned int compile_shader(unsigned int type, const std::string &source) {
     const char *src = source.c_str();
 
-    unsigned int id = glCreateShader(type);
-    glShaderSource(id, 1, &src, nullptr);
-    glCompileShader(id);
+    GL_CALL(unsigned int id = glCreateShader(type));
+    GL_CALL(glShaderSource(id, 1, &src, nullptr));
+    GL_CALL(glCompileShader(id));
 
     // error handling
     int result;
-    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+    GL_CALL(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
     if (!result) {
         int length;
-        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+        GL_CALL(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
         char *message = (char *)alloca(length * sizeof(char));
-        glGetShaderInfoLog(id, length, &length, message);
+        GL_CALL(glGetShaderInfoLog(id, length, &length, message));
         std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << " shader!" << std::endl;
         std::cout << message << std::endl;
-        glDeleteShader(id);
+        GL_CALL(glDeleteShader(id));
         return 0;
     }
 
