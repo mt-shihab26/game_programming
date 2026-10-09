@@ -4,6 +4,5 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-make config=debug -j"$(nproc)"
-
+./scripts/debug.sh
 ./build/linux-x86_64/bin/debug/demo
