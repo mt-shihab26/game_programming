@@ -99,7 +99,8 @@ int main() {
         GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 
         GL_CALL(glBindVertexArray(vao));
-        GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib.get_renderer_id()));
+
+        ib.bind();
 
         GL_CALL(glUseProgram(shader));
 
