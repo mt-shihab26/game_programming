@@ -16,6 +16,9 @@ int main() {
     }
 
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     window = glfwCreateWindow(width, height, "Hello World", NULL, NULL);
     if (!window) {
@@ -78,13 +81,28 @@ int main() {
 
     GL_CALL(glUniform4f(location, 0.8f, 0.3f, 0.8f, 1.0f));
 
+    // reset
+    GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
+    GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+    GL_CALL(glUseProgram(0));
+
+    // states
     float r = 0.0f;
     float increment = 0.05f;
 
     while (!glfwWindowShouldClose(window)) {
         GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 
+        GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, buffer));
+        GL_CALL(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0));
+        GL_CALL(glEnableVertexAttribArray(0));
+
+        GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
+
+        GL_CALL(glUseProgram(shader));
+
         GL_CALL(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
+
         GL_CALL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr););
 
         if (r > 1.0f) {
