@@ -5,7 +5,7 @@
 
 #include "shader.hpp"
 #include "window.hpp"
-#include "error.hpp"
+#include "renderer.hpp"
 
 int main() {
     const int width = 1280;

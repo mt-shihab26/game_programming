@@ -3,7 +3,7 @@
 #include <sstream>
 #include <string>
 
-#include "error.hpp"
+#include "renderer.hpp"
 #include "path.hpp"
 #include "shader.hpp"
 
