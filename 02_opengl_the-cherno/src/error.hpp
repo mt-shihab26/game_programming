@@ -13,6 +13,11 @@
             DEBUG_BREAK(); \
     } while (0)
 
+#define GL_CALL(x)    \
+    gl_clear_error(); \
+    x;                \
+    ASSERT(gl_log_call())
+
 void gl_clear_error();
 
 bool gl_log_call();

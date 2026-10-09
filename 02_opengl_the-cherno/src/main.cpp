@@ -72,9 +72,7 @@ int main() {
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        gl_clear_error();
-        glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr);
-        ASSERT(gl_log_call());
+        GL_CALL(glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr););
 
         glfwSwapBuffers(window);
         glfwPollEvents();
