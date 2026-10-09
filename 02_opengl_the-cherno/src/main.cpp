@@ -3,6 +3,7 @@
 
 #include "shader.hpp"
 #include "window.hpp"
+#include "error.hpp"
 
 int main() {
     const int width = 1280;
@@ -71,7 +72,9 @@ int main() {
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        gl_clear_error();
+        glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr);
+        gl_log_call();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
