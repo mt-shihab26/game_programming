@@ -44,9 +44,9 @@ project "demo"
 
     files { "src/**.hpp", "src/**.cpp" }
 
-    includedirs { "vendor/glfw/include", "vendor/glew/include" }
+    includedirs { "vendor/glfw/include", "vendor/glew/include", "vendor/stb" }
     defines { "GLEW_STATIC" }
-    links { "glfw", "glew" }
+    links { "glfw", "glew", "stb" }
 
     filter "system:linux"
         links {"GL", "EGL", "dl", "m", "pthread"}
@@ -70,6 +70,7 @@ project "demo"
             -- the static libraries are linked into the binary, so they are not needed to run it
             "{DELETE} %{cfg.targetdir}/libglfw.a",
             "{DELETE} %{cfg.targetdir}/libglew.a",
+            "{DELETE} %{cfg.targetdir}/libstb.a",
         }
 
 project "glfw"
@@ -133,6 +134,18 @@ project "glew"
 
     filter "system:linux"
         defines { "GLEW_EGL" }
+
+    filter "configurations:debug"
+        symbols "On"
+
+    filter "configurations:release"
+        optimize "On"
+
+project "stb"
+    kind "StaticLib"
+    language "C++"
+
+    files { "vendor/stb/stb_image.cpp" }
 
     filter "configurations:debug"
         symbols "On"

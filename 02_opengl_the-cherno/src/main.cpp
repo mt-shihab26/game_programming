@@ -11,6 +11,8 @@
 #include "vertex_array.hpp"
 #include "vertex_buffer_layout.hpp"
 
+#include <stb_image.h>
+
 int main() {
     const int width = 1280;
     const int height = 780;

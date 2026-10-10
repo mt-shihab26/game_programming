@@ -1,0 +1,4 @@
+-Ivendor/glfw/include
+-Ivendor/glew/include
+-Ivendor/stb
+-DGLEW_STATIC
