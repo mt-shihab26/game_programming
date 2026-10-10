@@ -1,0 +1,34 @@
+#include <string>
+
+#include "GL/glew.h"
+#include "stb_image.h"
+
+#include "texture.hpp"
+#include "helper.hpp"
+
+Texture::Texture(const std::string &path) : m_renderer_id(0), m_filepath(path), m_local_buffer(nullptr), m_width(0), m_height(0), m_bpp(0) {
+    stbi_set_flip_vertically_on_load(1);
+    m_local_buffer = stbi_load(path.c_str(), &m_width, &m_height, &m_bpp, 4);
+
+    GL_CALL(glGenTextures(1, &m_renderer_id));
+    GL_CALL(glBindTexture(GL_TEXTURE_2D, m_renderer_id));
+
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP));
+    GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP));
+
+    GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_local_buffer));
+
+    GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+}
+
+Texture::~Texture() {}
+
+void Texture::bind(unsigned int slot) const {
+    GL_CALL(glBindTexture(GL_TEXTURE_2D, m_renderer_id));
+}
+
+void Texture::unbind() const {
+    GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+}
