@@ -1,5 +1,6 @@
-#include <GL/glew.h>
 #include <iostream>
+
+#include <GL/glew.h>
 
 #include "renderer.hpp"
 

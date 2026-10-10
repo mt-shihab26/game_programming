@@ -3,12 +3,12 @@
 #include <sstream>
 #include <string>
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include "renderer.hpp"
 #include "path.hpp"
 #include "shader.hpp"
-
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 unsigned int create_shader(std::string filepath) {
     ShaderSource shader_source = parse_shader(filepath);
