@@ -14,5 +14,5 @@ void VertexBufferLayout::push<unsigned int>(unsigned int count) {
 
 template <>
 void VertexBufferLayout::push<unsigned char>(unsigned int count) {
-    m_elements.push_back({GL_UNSIGNED_INT, count, true});
+    m_elements.push_back({GL_UNSIGNED_BYTE, count, true});
 }
