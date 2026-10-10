@@ -76,23 +76,15 @@ int main() {
 
         IndexBuffer ib(indices, 6);
 
-        unsigned int shader = create_shader("assets/shaders/basic.glsl");
+        Shader shader("assets/shaders/basic.glsl");
+        shader.bind();
+        shader.set_uniform_4f("u_color", 0.8f, 0.3f, 0.8f, 1.0f);
 
-        GL_CALL(glUseProgram(shader));
+        va.unbind();
+        shader.unbind();
+        vb.unbind();
+        ib.unbind();
 
-        GL_CALL(int location = glGetUniformLocation(shader, "u_color"));
-
-        ASSERT(location != -1);
-
-        GL_CALL(glUniform4f(location, 0.8f, 0.3f, 0.8f, 1.0f));
-
-        // reset
-        GL_CALL(glBindVertexArray(0));
-        GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
-        GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-        GL_CALL(glUseProgram(0));
-
-        // states
         float r = 0.0f;
         float increment = 0.05f;
 
@@ -101,10 +93,8 @@ int main() {
 
             va.bind();
             ib.bind();
-
-            GL_CALL(glUseProgram(shader));
-
-            GL_CALL(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
+            shader.bind();
+            shader.set_uniform_4f("u_color", r, 0.3f, 0.8f, 1.0f);
 
             GL_CALL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr););
 
@@ -119,8 +109,6 @@ int main() {
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
-
-        GL_CALL(glDeleteProgram(shader));
     }
     glfwTerminate();
 

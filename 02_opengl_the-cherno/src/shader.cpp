@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <ostream>
 #include <sstream>
 #include <string>
 
@@ -78,23 +79,29 @@ unsigned int Shader::compile_shader(unsigned int type, const std::string &source
 }
 
 unsigned int Shader::get_uniform_location(const std::string &name) {
-    return 0;
+    GL_CALL(int location = glGetUniformLocation(m_renderer_id, name.c_str()));
+    if (location == -1) {
+        std::cout << "Warning: uniform '" << name << "'doesn't exist!" << std::endl;
+    }
+    return location;
 }
 
 Shader::Shader(const std::string &filepath) : m_filepath(filepath), m_renderer_id(0) {
-    create_shader();
+    m_renderer_id = create_shader();
 }
 
 Shader::~Shader() {
-    //
+    GL_CALL(glDeleteProgram(m_renderer_id));
 }
 
 void Shader::bind() const {
-    //
+    GL_CALL(glUseProgram(m_renderer_id));
 }
 
 void Shader::unbind() const {
-    //
+    GL_CALL(glUseProgram(0));
 }
 
-void Shader::set_uniform_4f(const std::string &name, float v0, float v1, float v2, float v4) {}
+void Shader::set_uniform_4f(const std::string &name, float v0, float v1, float v2, float v3) {
+    GL_CALL(glUniform4f(get_uniform_location(name), v0, v1, v2, v3));
+}
