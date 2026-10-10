@@ -3,10 +3,25 @@
 #include <GL/glew.h>
 #include <vector>
 
+#include "renderer.hpp"
+
 struct VertexBufferElement {
     unsigned int type;
     unsigned int count;
-    bool normalized;
+    unsigned char normalized;
+
+    static unsigned int get_type_size(unsigned int type) {
+        switch (type) {
+        case GL_FLOAT:
+            return 4;
+        case GL_UNSIGNED_INT:
+            return 4;
+        case GL_UNSIGNED_BYTE:
+            return 1;
+        }
+        ASSERT(false);
+        return 0;
+    }
 };
 
 class VertexBufferLayout {
@@ -30,5 +45,5 @@ class VertexBufferLayout {
     void push<unsigned char>(unsigned int count);
 
     inline unsigned int get_stride() const { return m_stride; }
-    inline const std::vector<VertexBufferElement> get_elements() { return m_elements; }
+    inline const std::vector<VertexBufferElement> &get_elements() const { return m_elements; }
 };
