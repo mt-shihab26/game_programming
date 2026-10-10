@@ -94,6 +94,7 @@ int main() {
         while (!glfwWindowShouldClose(window)) {
             GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 
+            shader.bind();
             shader.set_uniform_4f("u_color", r, 0.3f, 0.8f, 1.0f);
 
             renderer.draw(va, ib, shader);
