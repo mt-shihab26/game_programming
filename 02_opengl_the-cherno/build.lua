@@ -44,7 +44,7 @@ project "demo"
 
     files { "src/**.hpp", "src/**.cpp" }
 
-    includedirs { "vendor/glfw/include", "vendor/glew/include", "vendor/stb" }
+    includedirs { "vendor/glfw/include", "vendor/glew/include", "vendor/stb/include" }
     defines { "GLEW_STATIC" }
     links { "glfw", "glew", "stb" }
 
@@ -145,7 +145,8 @@ project "stb"
     kind "StaticLib"
     language "C++"
 
-    files { "vendor/stb/stb_image.cpp" }
+    files { "vendor/stb/src/stb_image.cpp" }
+    includedirs { "vendor/stb/include" }
 
     filter "configurations:debug"
         symbols "On"
