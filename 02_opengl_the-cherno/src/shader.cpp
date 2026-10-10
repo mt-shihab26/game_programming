@@ -10,8 +10,8 @@
 #include "path.hpp"
 #include "shader.hpp"
 
-unsigned int create_shader(std::string filepath) {
-    ShaderSource shader_source = parse_shader(filepath);
+unsigned int Shader::create_shader() {
+    ShaderSource shader_source = parse_shader();
 
     GL_CALL(unsigned int program = glCreateProgram());
 
@@ -30,8 +30,8 @@ unsigned int create_shader(std::string filepath) {
     return program;
 }
 
-ShaderSource parse_shader(std::string filepath) {
-    std::ifstream stream(project_path(filepath));
+ShaderSource Shader::parse_shader() {
+    std::ifstream stream(project_path(m_filepath));
 
     std::string line;
     std::stringstream ss[2];
@@ -53,7 +53,7 @@ ShaderSource parse_shader(std::string filepath) {
     return {ss[0].str(), ss[1].str()};
 }
 
-unsigned int compile_shader(unsigned int type, const std::string &source) {
+unsigned int Shader::compile_shader(unsigned int type, const std::string &source) {
     const char *src = source.c_str();
 
     GL_CALL(unsigned int id = glCreateShader(type));
@@ -76,3 +76,25 @@ unsigned int compile_shader(unsigned int type, const std::string &source) {
 
     return id;
 }
+
+unsigned int Shader::get_uniform_location(const std::string &name) {
+    return 0;
+}
+
+Shader::Shader(const std::string &filepath) : m_filepath(filepath), m_renderer_id(0) {
+    create_shader();
+}
+
+Shader::~Shader() {
+    //
+}
+
+void Shader::bind() const {
+    //
+}
+
+void Shader::unbind() const {
+    //
+}
+
+void Shader::set_uniform_4f(const std::string &name, float v0, float v1, float v2, float v4) {}
