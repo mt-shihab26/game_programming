@@ -3,6 +3,10 @@
 #include "helper.hpp"
 #include "renderer.hpp"
 
+void Renderer::clear() const {
+    GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
+}
+
 void Renderer::draw(const VertexArray &va, const IndexBuffer &ib, const Shader &shader) const {
     va.bind();
     ib.bind();

@@ -3,7 +3,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "helper.hpp"
 #include "shader.hpp"
 #include "window.hpp"
 #include "renderer.hpp"
@@ -92,7 +91,7 @@ int main() {
         float increment = 0.05f;
 
         while (!glfwWindowShouldClose(window)) {
-            GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
+            renderer.clear();
 
             shader.bind();
             shader.set_uniform_4f("u_color", r, 0.3f, 0.8f, 1.0f);
