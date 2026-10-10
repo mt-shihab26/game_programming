@@ -42,7 +42,7 @@ project "demo"
     kind "ConsoleApp"
     language "C++"
 
-    files { "src/**.h", "src/**.cpp" }
+    files { "src/**.hpp", "src/**.cpp" }
 
     includedirs { "vendor/glfw/include", "vendor/glew/include" }
     defines { "GLEW_STATIC" }
