@@ -141,25 +141,16 @@ project "glew"
         optimize "On"
 
 newaction {
-    trigger = "clean",
+    trigger = "clean-demo",
     description = "Remove generated build files of the demo project",
     execute = function()
-        -- glfw and glew are left alone, so they are not rebuilt after every clean
-        for _, dir in ipairs(os.matchdirs("build/*/obj/*/demo")) do
-            os.rmdir(dir)
-        end
-        for _, dir in ipairs(os.matchdirs("build/*/bin/*/assets")) do
-            os.rmdir(dir)
-        end
-        for _, file in ipairs(os.matchfiles("build/*/bin/*/demo*")) do
-            os.remove(file)
-        end
+        -- glfw and glew are left alone, so they are not rebuilt after every clean-demo
         os.remove("demo.make")
     end
 }
 
 newaction {
-    trigger = "clean-all",
+    trigger = "clean",
     description = "Remove all generated build files, including glfw and glew",
     execute = function()
         os.rmdir("build")

@@ -12,17 +12,14 @@ Install these for your OS:
 The scripts use bash and make, so they only work on Linux:
 
 ```bash
-./scripts/generate.sh   # clean, then generate the makefiles (rerun after editing build.lua or adding source files)
-./scripts/debug.sh      # build in debug configuration
-./scripts/dev.sh        # build in debug configuration and run it
+./scripts/generate.sh   # remove all generated and built files, then generate the makefiles
+./scripts/debug.sh      # regenerate the demo makefile, then build in debug configuration
+./scripts/dev.sh        # run debug.sh, then run the binary
 ./scripts/release.sh    # regenerate, then build in release configuration (build/linux-x86_64/bin/release holds only the binary and its assets folder)
-./scripts/clean.sh      # remove the generated and built files of the demo project
-./scripts/clean-all.sh  # remove all generated and built files, including GLFW and GLEW
+./scripts/clean.sh      # remove all generated and built files, including GLFW and GLEW
 ```
 
-Run `generate.sh` once before the first `debug.sh` or `dev.sh`; they only call
-make and do not generate the makefiles themselves. `release.sh` does generate,
-so it always rebuilds the demo project and also wipes its debug build.
-
-`clean.sh` leaves the GLFW and GLEW builds alone, so they are not recompiled
-every time. After `clean-all.sh`, run `generate.sh` again before building.
+`debug.sh` and `dev.sh` regenerate the demo makefile on every run, so new source
+files are picked up without running `generate.sh`, and only changed files are
+recompiled. `generate.sh` and `release.sh` remove everything first, so GLFW and
+GLEW are rebuilt from scratch after them.

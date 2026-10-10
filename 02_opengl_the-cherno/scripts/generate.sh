@@ -4,5 +4,6 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-premake5 --file=build.lua clean-all
+./scripts/clean.sh
+
 premake5 --file=build.lua gmake
