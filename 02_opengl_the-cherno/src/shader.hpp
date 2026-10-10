@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 
 enum ShaderType {
     None = -1,
@@ -17,7 +18,7 @@ class Shader {
   private:
     std::string m_filepath;
     unsigned int m_renderer_id;
-    // caching system;
+    std::unordered_map<std::string, unsigned int> m_uniform_location_cache;
 
     unsigned int create_shader();
     ShaderSource parse_shader();

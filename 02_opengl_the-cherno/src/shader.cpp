@@ -79,9 +79,15 @@ unsigned int Shader::compile_shader(unsigned int type, const std::string &source
 }
 
 unsigned int Shader::get_uniform_location(const std::string &name) {
+    if (m_uniform_location_cache.find(name) != m_uniform_location_cache.end()) {
+        return m_uniform_location_cache[name];
+    }
+
     GL_CALL(int location = glGetUniformLocation(m_renderer_id, name.c_str()));
     if (location == -1) {
         std::cout << "Warning: uniform '" << name << "'doesn't exist!" << std::endl;
+    } else {
+        m_uniform_location_cache[name] = location;
     }
     return location;
 }
