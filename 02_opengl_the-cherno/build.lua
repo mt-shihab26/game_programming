@@ -143,9 +143,9 @@ project "glew"
 
 project "stb"
     kind "StaticLib"
-    language "C++"
+    language "C"
 
-    files { "vendor/stb/src/stb_image.cpp" }
+    files { "vendor/stb/src/stb_image.c" }
     includedirs { "vendor/stb/include" }
 
     filter "configurations:debug"
