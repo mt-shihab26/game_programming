@@ -19,7 +19,10 @@ The scripts use bash and make, so they only work on Linux:
 ./scripts/clean.sh      # remove all generated and built files, including GLFW and GLEW
 ```
 
+For day-to-day work `./scripts/dev.sh` is enough, also on a fresh checkout.
 `debug.sh` and `dev.sh` regenerate the demo makefile on every run, so new source
-files are picked up without running `generate.sh`, and only changed files are
-recompiled. `generate.sh` and `release.sh` remove everything first, so GLFW and
-GLEW are rebuilt from scratch after them.
+files are picked up without running `generate.sh`. They do not remove any
+objects or binaries, so only changed files are recompiled.
+
+`generate.sh` and `release.sh` remove everything first, so GLFW and GLEW are
+rebuilt from scratch after them.

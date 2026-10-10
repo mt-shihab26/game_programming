@@ -142,9 +142,9 @@ project "glew"
 
 newaction {
     trigger = "clean-demo",
-    description = "Remove generated build files of the demo project",
+    description = "Remove the generated makefile of the demo project",
     execute = function()
-        -- glfw and glew are left alone, so they are not rebuilt after every clean-demo
+        -- objects and binaries are left alone, so only changed files are rebuilt
         os.remove("demo.make")
     end
 }
