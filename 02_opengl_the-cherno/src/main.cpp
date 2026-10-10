@@ -10,6 +10,7 @@
 #include "vertex_buffer.hpp"
 #include "index_buffer.hpp"
 #include "vertex_array.hpp"
+#include "vertex_buffer_layout.hpp"
 
 int main() {
     const int width = 1280;
