@@ -4,10 +4,12 @@
 #include <cstdlib>
 
 #include "shader.hpp"
+#include "vertex_buffer_layout.hpp"
 #include "window.hpp"
 #include "renderer.hpp"
 #include "vertex_buffer.hpp"
 #include "index_buffer.hpp"
+#include "vertex_array.hpp"
 
 int main() {
     const int width = 1280;
@@ -64,15 +66,13 @@ int main() {
 
         // clang-format on
 
-        unsigned int vao;
-        GL_CALL(glGenVertexArrays(1, &vao));
-        GL_CALL(glBindVertexArray(vao));
+        VertexArray va;
 
         VertexBuffer vb(positions, 4 * 2 * sizeof(float));
 
-        // Vertex attributes and layouts
-        GL_CALL(glEnableVertexAttribArray(0));
-        GL_CALL(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0));
+        VertexBufferLayout layout;
+        layout.push<float>(2);
+        va.add_buffer(vb, layout);
 
         IndexBuffer ib(indices, 6);
 
@@ -99,8 +99,7 @@ int main() {
         while (!glfwWindowShouldClose(window)) {
             GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 
-            GL_CALL(glBindVertexArray(vao));
-
+            va.bind();
             ib.bind();
 
             GL_CALL(glUseProgram(shader));
