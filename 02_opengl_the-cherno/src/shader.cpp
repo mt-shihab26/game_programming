@@ -78,7 +78,7 @@ unsigned int Shader::compile_shader(unsigned int type, const std::string &source
     return id;
 }
 
-unsigned int Shader::get_uniform_location(const std::string &name) {
+int Shader::get_uniform_location(const std::string &name) {
     if (m_uniform_location_cache.find(name) != m_uniform_location_cache.end()) {
         return m_uniform_location_cache[name];
     }
@@ -106,6 +106,10 @@ void Shader::bind() const {
 
 void Shader::unbind() const {
     GL_CALL(glUseProgram(0));
+}
+
+void Shader::set_uniform_1i(const std::string &name, int value) {
+    GL_CALL(glUniform1i(get_uniform_location(name), value));
 }
 
 void Shader::set_uniform_4f(const std::string &name, float v0, float v1, float v2, float v3) {

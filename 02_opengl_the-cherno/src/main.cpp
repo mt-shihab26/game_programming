@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include "shader.hpp"
+#include "texture.hpp"
 #include "window.hpp"
 #include "renderer.hpp"
 #include "vertex_buffer.hpp"
@@ -53,10 +54,10 @@ int main() {
         // clang-format off
 
         float positions[] = {
-            -0.5f, -0.5f, // 0
-             0.5f, -0.5f, // 1
-             0.5f,  0.5f, // 2
-            -0.5f,  0.5f, // 3
+            -0.5f, -0.5f, 0.0f, 0.0f, // 0
+             0.5f, -0.5f, 1.0f, 0.0f, // 1
+             0.5f,  0.5f, 1.0f, 1.0f // 2
+            -0.5f,  0.5f, 0.0f, 1.0f // 3
         };
 
         unsigned int indices[] = {
@@ -68,9 +69,10 @@ int main() {
 
         VertexArray va;
 
-        VertexBuffer vb(positions, 4 * 2 * sizeof(float));
+        VertexBuffer vb(positions, 4 * 4 * sizeof(float));
 
         VertexBufferLayout layout;
+        layout.push<float>(2);
         layout.push<float>(2);
         va.add_buffer(vb, layout);
 
@@ -79,6 +81,10 @@ int main() {
         Shader shader("assets/shaders/basic.glsl");
         shader.bind();
         shader.set_uniform_4f("u_color", 0.8f, 0.3f, 0.8f, 1.0f);
+
+        Texture texture("assets/textures/omarchy-logo-tokyo-night.png");
+        texture.bind();
+        shader.set_uniform_1i("u_texture", 0);
 
         va.unbind();
         shader.unbind();
