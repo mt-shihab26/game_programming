@@ -96,23 +96,10 @@ int main() {
 
         Renderer renderer;
 
-        float r = 0.0f;
-        float increment = 0.05f;
-
         while (!glfwWindowShouldClose(window)) {
             renderer.clear();
-
             shader.bind();
-
             renderer.draw(va, ib, shader);
-
-            if (r > 1.0f) {
-                increment = -0.05f;
-            } else if (r < 0.0f) {
-                increment = 0.05f;
-            }
-
-            r += increment;
 
             glfwSwapBuffers(window);
             glfwPollEvents();
