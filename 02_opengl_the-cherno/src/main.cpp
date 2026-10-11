@@ -84,7 +84,6 @@ int main() {
 
         Shader shader("assets/shaders/basic.glsl");
         shader.bind();
-        shader.set_uniform_4f("u_color", 0.8f, 0.3f, 0.8f, 1.0f);
 
         Texture texture("assets/textures/omarchy-logo-tokyo-night.png");
         texture.bind();
@@ -104,7 +103,6 @@ int main() {
             renderer.clear();
 
             shader.bind();
-            shader.set_uniform_4f("u_color", r, 0.3f, 0.8f, 1.0f);
 
             renderer.draw(va, ib, shader);
 
