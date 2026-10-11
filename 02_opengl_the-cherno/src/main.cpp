@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "helper.hpp"
 #include "shader.hpp"
 #include "texture.hpp"
 #include "window.hpp"
@@ -66,6 +67,9 @@ int main() {
         };
 
         // clang-format on
+
+        GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+        GL_CALL(glEnable(GL_BLEND));
 
         VertexArray va;
 
