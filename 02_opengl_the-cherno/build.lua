@@ -41,7 +41,7 @@ workspace "demo"
 project "demo"
     kind "ConsoleApp"
     language "C++"
-    cppdialect "C++20"
+    cppdialect "C++23"
 
     files { "src/**.hpp", "src/**.cpp" }
 
