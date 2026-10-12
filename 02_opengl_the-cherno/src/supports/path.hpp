@@ -7,7 +7,7 @@
 // Release: the directory containing the executable, where the build
 // copies the assets folder, so the binary runs from any working directory.
 //
-// Debug: derived from the location of path.cpp (which lives in <project>/src).
+// Debug: derived from the location of path.cpp (which lives in <project>/src/supports).
 // The build compiles sources by relative path, so this is an empty string
 // and paths built from it only resolve when running from the project root.
 std::string project_dir();
