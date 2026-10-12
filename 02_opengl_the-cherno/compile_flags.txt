@@ -2,4 +2,5 @@
 -Ivendor/glfw/include
 -Ivendor/glew/include
 -Ivendor/stb/include
+-Ivendor/glm
 -DGLEW_STATIC

@@ -45,7 +45,7 @@ project "demo"
 
     files { "src/**.hpp", "src/**.cpp" }
 
-    includedirs { "vendor/glfw/include", "vendor/glew/include", "vendor/stb/include" }
+    includedirs { "vendor/glfw/include", "vendor/glew/include", "vendor/stb/include", "vendor/glm" }
     defines { "GLEW_STATIC" }
     links { "glfw", "glew", "stb" }
 
