@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 
-#include "helper.hpp"
+#include "supports/helper.hpp"
+
 #include "renderer.hpp"
 
 void Renderer::clear() const {

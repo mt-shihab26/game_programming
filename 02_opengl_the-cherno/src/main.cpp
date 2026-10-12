@@ -3,10 +3,11 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "helper.hpp"
+#include "supports/helper.hpp"
+#include "supports/window.hpp"
+
 #include "shader.hpp"
 #include "texture.hpp"
-#include "window.hpp"
 #include "renderer.hpp"
 #include "vertex_buffer.hpp"
 #include "index_buffer.hpp"

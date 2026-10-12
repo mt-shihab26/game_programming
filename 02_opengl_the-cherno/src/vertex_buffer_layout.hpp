@@ -4,7 +4,7 @@
 
 #include <GL/glew.h>
 
-#include "helper.hpp"
+#include "supports/helper.hpp"
 
 struct VertexBufferElement {
     unsigned int type;

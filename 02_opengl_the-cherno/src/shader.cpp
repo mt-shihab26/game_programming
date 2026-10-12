@@ -7,8 +7,9 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "helper.hpp"
-#include "path.hpp"
+#include "supports/helper.hpp"
+#include "supports/path.hpp"
+
 #include "shader.hpp"
 
 unsigned int Shader::create_shader() {

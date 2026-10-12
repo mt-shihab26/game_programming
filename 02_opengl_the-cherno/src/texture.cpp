@@ -3,9 +3,10 @@
 #include "GL/glew.h"
 #include "stb_image.h"
 
+#include "supports/helper.hpp"
+#include "supports/path.hpp"
+
 #include "texture.hpp"
-#include "helper.hpp"
-#include "path.hpp"
 
 Texture::Texture(const std::string &path) : m_renderer_id(0), m_filepath(path), m_local_buffer(nullptr), m_width(0), m_height(0), m_bpp(0) {
     stbi_set_flip_vertically_on_load(1);
