@@ -57,10 +57,10 @@ int main() {
         // clang-format off
 
         float positions[] = {
-            -0.5f, -0.5f, 0.0f, 0.0f, // 0
-             0.5f, -0.5f, 1.0f, 0.0f, // 1
-             0.5f,  0.5f, 1.0f, 1.0f, // 2
-            -0.5f,  0.5f, 0.0f, 1.0f  // 3
+            100.0f, 100.0f, 0.0f, 0.0f, // 0
+            200.0f, 100.0f, 1.0f, 0.0f, // 1
+            200.0f, 200.5f, 1.0f, 1.0f, // 2
+            100.0f, 200.5f, 0.0f, 1.0f  // 3
         };
 
         unsigned int indices[] = {
@@ -84,7 +84,7 @@ int main() {
 
         IndexBuffer ib(indices, 6);
 
-        glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+        glm::mat4 proj = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
 
         Shader shader("assets/shaders/basic.glsl");
         shader.bind();
