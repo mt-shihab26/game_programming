@@ -11,7 +11,7 @@ uniform mat4 u_mvp;
 
 void main()
 {
-    gl_Position = vec4(position, 0.0, 1.0) * u_mvp;
+    gl_Position = u_mvp * vec4(position, 0.0, 1.0);
     v_tex_coord = tex_coord;
 };
 
@@ -29,4 +29,5 @@ void main()
 {
     vec4 texColor = texture(u_texture, v_tex_coord);
     color = texColor;
+    // color = vec4(1.0, 1.0, 1.0, 1.0);
 };
