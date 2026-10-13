@@ -3,6 +3,8 @@
 #include <string>
 #include <unordered_map>
 
+#include "glm/ext/matrix_float4x4.hpp"
+
 enum ShaderType {
     None = -1,
     Vertex = 0,
@@ -34,4 +36,5 @@ class Shader {
 
     void set_uniform_1i(const std::string &name, int value);
     void set_uniform_4f(const std::string &name, float v0, float v1, float v2, float v4);
+    void set_uniform_mat4f(const std::string &name, const glm::mat4 &matrix);
 };

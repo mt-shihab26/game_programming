@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "glm/ext/matrix_clip_space.hpp"
 
 #include "supports/helper.hpp"
 #include "supports/window.hpp"
@@ -83,12 +84,15 @@ int main() {
 
         IndexBuffer ib(indices, 6);
 
+        glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+
         Shader shader("assets/shaders/basic.glsl");
         shader.bind();
+        shader.set_uniform_1i("u_texture", 0);
+        shader.set_uniform_mat4f("u_mvp", proj);
 
         Texture texture("assets/textures/omarchy-logo-tokyo-night.png");
         texture.bind();
-        shader.set_uniform_1i("u_texture", 0);
 
         va.unbind();
         shader.unbind();
