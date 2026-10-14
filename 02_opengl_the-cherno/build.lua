@@ -178,15 +178,6 @@ project "imgui"
 
 
 newaction {
-    trigger = "clean-demo",
-    description = "Remove the generated makefile of the demo project",
-    execute = function()
-        -- objects and binaries are left alone, so only changed files are rebuilt
-        os.remove("demo.make")
-    end
-}
-
-newaction {
     trigger = "clean",
     description = "Remove all generated build files, including glfw and glew",
     execute = function()

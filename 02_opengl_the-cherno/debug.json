@@ -5,7 +5,7 @@
             "name": "Debug demo",
             "type": "native",
             "request": "launch",
-            "preLaunchCommand": "./scripts/debug.sh",
+            "preLaunchCommand": "scripts/linux/debug.sh",
             "program": "${workspaceFolder}/build/linux-x86_64/bin/debug/demo",
             "cwd": "${workspaceFolder}"
         }
