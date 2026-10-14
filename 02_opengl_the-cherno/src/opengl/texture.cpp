@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 
 #include <glew/GL/glew.h>
@@ -13,6 +14,9 @@
 Texture::Texture(const std::string &path) : m_renderer_id(0), m_filepath(path), m_local_buffer(nullptr), m_width(0), m_height(0), m_bpp(0) {
     stbi_set_flip_vertically_on_load(1);
     m_local_buffer = stbi_load(project_path(path).c_str(), &m_width, &m_height, &m_bpp, 4);
+    if (!m_local_buffer) {
+        std::cout << "Failed to load texture '" << project_path(path) << "': " << stbi_failure_reason() << std::endl;
+    }
 
     GL_CALL(glGenTextures(1, &m_renderer_id));
 

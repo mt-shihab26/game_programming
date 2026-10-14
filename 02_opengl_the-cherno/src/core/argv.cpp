@@ -7,7 +7,8 @@ Argv::Argv(int argc, char *i_argv[]) {
 }
 
 bool Argv::empty() {
-    return argv.size() == 1;
+    // argv[0] is the program path, so arguments start at index 1
+    return argv.size() < 2;
 }
 
 std::string Argv::first() {

@@ -14,7 +14,8 @@
 unsigned int Shader::create_shader() {
     ShaderSource shader_source = parse_shader();
 
-    GL_CALL(unsigned int program = glCreateProgram());
+    unsigned int program;
+    GL_CALL(program = glCreateProgram());
 
     unsigned int vs = compile_shader(GL_VERTEX_SHADER, shader_source.vertex);
     unsigned int fs = compile_shader(GL_FRAGMENT_SHADER, shader_source.fragment);
@@ -23,6 +24,18 @@ unsigned int Shader::create_shader() {
     GL_CALL(glAttachShader(program, fs));
 
     GL_CALL(glLinkProgram(program));
+
+    int linked;
+    GL_CALL(glGetProgramiv(program, GL_LINK_STATUS, &linked));
+    if (!linked) {
+        int length;
+        GL_CALL(glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length));
+        char *message = (char *)alloca(length * sizeof(char));
+        GL_CALL(glGetProgramInfoLog(program, length, &length, message));
+        std::cout << "Failed to link shader program!" << std::endl;
+        std::cout << message << std::endl;
+    }
+
     GL_CALL(glValidateProgram(program));
 
     GL_CALL(glDeleteShader(vs));
@@ -33,6 +46,9 @@ unsigned int Shader::create_shader() {
 
 ShaderSource Shader::parse_shader() {
     std::ifstream stream(project_path(m_filepath));
+    if (!stream) {
+        std::cout << "Failed to open shader '" << project_path(m_filepath) << "'" << std::endl;
+    }
 
     std::string line;
     std::stringstream ss[2];
@@ -46,7 +62,8 @@ ShaderSource Shader::parse_shader() {
             if (line.find("fragment") != std::string::npos) {
                 type = ShaderType::Fragment;
             }
-        } else {
+        } else if (type != ShaderType::None) {
+            // lines before the first #type don't belong to any shader
             ss[(int)type] << line << "\n";
         }
     }
@@ -57,7 +74,8 @@ ShaderSource Shader::parse_shader() {
 unsigned int Shader::compile_shader(unsigned int type, const std::string &source) {
     const char *src = source.c_str();
 
-    GL_CALL(unsigned int id = glCreateShader(type));
+    unsigned int id;
+    GL_CALL(id = glCreateShader(type));
     GL_CALL(glShaderSource(id, 1, &src, nullptr));
     GL_CALL(glCompileShader(id));
 
@@ -83,7 +101,8 @@ int Shader::get_uniform_location(const std::string &name) {
         return m_uniform_location_cache[name];
     }
 
-    GL_CALL(int location = glGetUniformLocation(m_renderer_id, name.c_str()));
+    int location;
+    GL_CALL(location = glGetUniformLocation(m_renderer_id, name.c_str()));
     if (location == -1) {
         std::cout << "Warning: uniform '" << name << "'doesn't exist!" << std::endl;
     } else {
