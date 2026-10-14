@@ -117,6 +117,11 @@ int main() {
             glfwPollEvents();
         }
 
+        delete current_test;
+        if (current_test != menu) {
+            delete menu;
+        }
+
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
