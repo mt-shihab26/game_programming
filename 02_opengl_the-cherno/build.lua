@@ -31,12 +31,14 @@ local function wayland_protocol_commands()
     return commands
 end
 
+
 workspace "demo"
     configurations { "debug", "release" }
     architecture "x86_64"
     toolset "clang"
     targetdir(bin_dir)
     objdir(obj_dir)
+
 
 project "demo"
     kind "ConsoleApp"
@@ -79,6 +81,7 @@ project "demo"
             -- the static libraries are linked into the binary, so they are not needed to run it
             "{DELETE} %{cfg.targetdir}/*.a",
         }
+
 
 project "glfw"
     kind "StaticLib"
@@ -131,6 +134,7 @@ project "glfw"
     filter "configurations:release"
         optimize "On"
 
+
 project "glew"
     kind "StaticLib"
     language "C"
@@ -147,6 +151,7 @@ project "glew"
 
     filter "configurations:release"
         optimize "On"
+
 
 project "imgui"
     kind "StaticLib"
@@ -176,7 +181,6 @@ project "imgui"
         optimize "On"
 
 
-
 newaction {
     trigger = "clean",
     description = "Remove all generated build files, including glfw and glew",
@@ -186,3 +190,4 @@ newaction {
         os.remove("*.make")
     end
 }
+
