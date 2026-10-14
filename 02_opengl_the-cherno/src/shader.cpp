@@ -4,8 +4,8 @@
 #include <sstream>
 #include <string>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include <glew/GL/glew.h>
+#include <glfw/GLFW/glfw3.h>
 
 #include "supports/helper.hpp"
 #include "supports/path.hpp"

@@ -1,7 +1,7 @@
 #include <cstdio>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include <glew/GL/glew.h>
+#include <glfw/GLFW/glfw3.h>
 
 #include "helper.hpp"
 #include "window.hpp"

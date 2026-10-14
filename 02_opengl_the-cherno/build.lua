@@ -21,7 +21,7 @@ local function wayland_protocol_commands()
 
     local commands = { "mkdir -p " .. wayland_dir }
     for _, name in ipairs(protocols) do
-        local xml = "vendor/glfw/deps/wayland/" .. name .. ".xml"
+        local xml = "vendor/src/glfw/deps/wayland/" .. name .. ".xml"
         local header = wayland_dir .. "/" .. name .. "-client-protocol.h"
         local code = wayland_dir .. "/" .. name .. "-client-protocol-code.h"
         local scan = " || wayland-scanner "
@@ -47,13 +47,10 @@ project "demo"
 
     files { "src/**.hpp", "src/**.cpp" }
 
-    includedirs { 
-        "vendor/glfw/include",
-        "vendor/glew/include",
-        "vendor/stb",
-        "vendor/glm",
-        "vendor/imgui",
-        "vendor/imgui/backends"
+    includedirs {
+        "vendor/include",
+        -- the imgui backend headers include "imgui.h" without the imgui/ prefix
+        "vendor/src/imgui"
     }
 
     defines { "GLEW_STATIC" }
@@ -88,16 +85,16 @@ project "glfw"
     language "C"
 
     files {
-        "vendor/glfw/src/context.c",
-        "vendor/glfw/src/init.c",
-        "vendor/glfw/src/input.c",
-        "vendor/glfw/src/monitor.c",
-        "vendor/glfw/src/platform.c",
-        "vendor/glfw/src/vulkan.c",
-        "vendor/glfw/src/window.c",
-        "vendor/glfw/src/egl_context.c",
-        "vendor/glfw/src/osmesa_context.c",
-        "vendor/glfw/src/null_*.c",
+        "vendor/src/glfw/src/context.c",
+        "vendor/src/glfw/src/init.c",
+        "vendor/src/glfw/src/input.c",
+        "vendor/src/glfw/src/monitor.c",
+        "vendor/src/glfw/src/platform.c",
+        "vendor/src/glfw/src/vulkan.c",
+        "vendor/src/glfw/src/window.c",
+        "vendor/src/glfw/src/egl_context.c",
+        "vendor/src/glfw/src/osmesa_context.c",
+        "vendor/src/glfw/src/null_*.c",
     }
 
     filter "system:linux"
@@ -105,27 +102,27 @@ project "glfw"
         includedirs { wayland_dir }
         prebuildcommands(wayland_protocol_commands())
         files {
-          "vendor/glfw/src/wl_*.c",
-          "vendor/glfw/src/xkb_unicode.c",
-          "vendor/glfw/src/posix_*.c",
-          "vendor/glfw/src/linux_joystick.c",
+          "vendor/src/glfw/src/wl_*.c",
+          "vendor/src/glfw/src/xkb_unicode.c",
+          "vendor/src/glfw/src/posix_*.c",
+          "vendor/src/glfw/src/linux_joystick.c",
         }
 
     filter "system:windows"
           defines { "_GLFW_WIN32" }
           files {
-              "vendor/glfw/src/win32_*.c",
-              "vendor/glfw/src/wgl_context.c",
+              "vendor/src/glfw/src/win32_*.c",
+              "vendor/src/glfw/src/wgl_context.c",
           }
 
     filter "system:macosx"
         defines { "_GLFW_COCOA" }
         files {
-          "vendor/glfw/src/cocoa_*.m",
-          "vendor/glfw/src/nsgl_context.m",
-          "vendor/glfw/src/macos_time.c",
-          "vendor/glfw/src/posix_module.c",
-          "vendor/glfw/src/posix_thread.c",
+          "vendor/src/glfw/src/cocoa_*.m",
+          "vendor/src/glfw/src/nsgl_context.m",
+          "vendor/src/glfw/src/macos_time.c",
+          "vendor/src/glfw/src/posix_module.c",
+          "vendor/src/glfw/src/posix_thread.c",
         }
 
     filter "configurations:debug"
@@ -139,8 +136,8 @@ project "glew"
     kind "StaticLib"
     language "C"
 
-    files { "vendor/glew/src/glew.c" }
-    includedirs { "vendor/glew/include" }
+    files { "vendor/src/glew/src/glew.c" }
+    includedirs { "vendor/src/glew/include" }
     defines { "GLEW_STATIC", "GLEW_NO_GLU" }
 
     filter "system:linux"
@@ -159,19 +156,19 @@ project "imgui"
     cppdialect "C++23"
 
     files {
-        "vendor/imgui/imgui.cpp",
-        "vendor/imgui/imgui_draw.cpp",
-        "vendor/imgui/imgui_tables.cpp",
-        "vendor/imgui/imgui_widgets.cpp",
-        "vendor/imgui/imgui_demo.cpp",
-        "vendor/imgui/backends/imgui_impl_glfw.cpp",
-        "vendor/imgui/backends/imgui_impl_opengl3.cpp",
+        "vendor/src/imgui/imgui.cpp",
+        "vendor/src/imgui/imgui_draw.cpp",
+        "vendor/src/imgui/imgui_tables.cpp",
+        "vendor/src/imgui/imgui_widgets.cpp",
+        "vendor/src/imgui/imgui_demo.cpp",
+        "vendor/src/imgui/backends/imgui_impl_glfw.cpp",
+        "vendor/src/imgui/backends/imgui_impl_opengl3.cpp",
     }
 
     includedirs { 
-        "vendor/imgui",
-        "vendor/imgui/backends",
-        "vendor/glfw/include"
+        "vendor/src/imgui",
+        "vendor/src/imgui/backends",
+        "vendor/src/glfw/include"
     }
 
     filter "configurations:debug"

@@ -1,8 +1,4 @@
 -std=c++23
--Ivendor/glfw/include
--Ivendor/glew/include
--Ivendor/stb
--Ivendor/glm
--Ivendor/imgui
--Ivendor/imgui/backends
+-Ivendor/include
+-Ivendor/src/imgui
 -DGLEW_STATIC

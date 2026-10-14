@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include <GL/glew.h>
+#include <glew/GL/glew.h>
 
 #include "helper.hpp"
 

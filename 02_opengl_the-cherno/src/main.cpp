@@ -1,12 +1,12 @@
 #include <cstdlib>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include <glew/GL/glew.h>
+#include <glfw/GLFW/glfw3.h>
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/ext/vector_float3.hpp"
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
+#include <imgui/imgui.h>
+#include <imgui/backends/imgui_impl_glfw.h>
 
 #include "supports/helper.hpp"
 #include "supports/window.hpp"

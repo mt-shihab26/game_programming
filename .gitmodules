@@ -1,15 +1,15 @@
 [submodule "02_opengl_the-cherno/vendor/glfw"]
-	path = 02_opengl_the-cherno/vendor/glfw
+	path = 02_opengl_the-cherno/vendor/src/glfw
 	url = https://github.com/glfw/glfw
 [submodule "02_opengl_the-cherno/vendor/glew"]
-	path = 02_opengl_the-cherno/vendor/glew
+	path = 02_opengl_the-cherno/vendor/src/glew
 	url = https://github.com/Perlmint/glew-cmake
 [submodule "02_opengl_the-cherno/vendor/glm"]
-	path = 02_opengl_the-cherno/vendor/glm
+	path = 02_opengl_the-cherno/vendor/src/glm
 	url = https://github.com/g-truc/glm
 [submodule "02_opengl_the-cherno/vendor/stb"]
-	path = 02_opengl_the-cherno/vendor/stb
+	path = 02_opengl_the-cherno/vendor/src/stb
 	url = https://github.com/nothings/stb
 [submodule "02_opengl_the-cherno/vendor/imgui"]
-	path = 02_opengl_the-cherno/vendor/imgui
+	path = 02_opengl_the-cherno/vendor/src/imgui
 	url = https://github.com/ocornut/imgui

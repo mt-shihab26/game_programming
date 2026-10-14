@@ -1,8 +1,8 @@
 #include <string>
 
-#include "GL/glew.h"
+#include <glew/GL/glew.h>
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include <stb/stb_image.h>
 
 #include "supports/helper.hpp"
 #include "supports/path.hpp"

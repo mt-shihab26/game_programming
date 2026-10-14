@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <GL/glew.h>
+#include <glew/GL/glew.h>
 
 #include "supports/helper.hpp"
 

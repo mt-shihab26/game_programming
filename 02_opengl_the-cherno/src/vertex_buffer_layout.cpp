@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+#include <glew/GL/glew.h>
 
 #include "vertex_buffer_layout.hpp"
 
