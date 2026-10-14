@@ -5,7 +5,6 @@
 namespace test {
 
 TestRunner::TestRunner() : m_current_test(nullptr), m_menu(nullptr) {
-    // the menu switches tests by writing to m_current_test
     m_menu = new Menu(m_current_test);
     m_current_test = m_menu;
 }
@@ -25,19 +24,19 @@ void TestRunner::on_render() {
 
 void TestRunner::on_imgui_render() {
     if (m_current_test == m_menu) {
-        // the menu fills the whole screen, tests get a normal floating window
-        ImGui::SetNextWindowPos(ImVec2(0, 0));
-        ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-        ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove);
-    } else {
-        ImGui::Begin("Test");
-        if (ImGui::Button("<-")) {
-            close_current_test();
-        }
+        m_menu->on_imgui_render();
+        return;
     }
 
+    ImGui::Begin(get_menu()->get_current_test_name().c_str());
+    bool go_back = ImGui::Button("<-");
     m_current_test->on_imgui_render();
     ImGui::End();
+
+    // close after End(), so the test isn't deleted while its window is still being drawn
+    if (go_back) {
+        close_current_test();
+    }
 }
 
 void TestRunner::close_current_test() {

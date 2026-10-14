@@ -11,10 +11,19 @@ Menu::~Menu() {
 }
 
 void Menu::on_imgui_render() {
-    if (m_tests.empty()) {
-        return;
+    // the menu fills the whole screen, tests get a normal floating window
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+    ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove);
+
+    if (!m_tests.empty()) {
+        draw_test_buttons();
     }
 
+    ImGui::End();
+}
+
+void Menu::draw_test_buttons() {
     const ImGuiStyle &style = ImGui::GetStyle();
     ImVec2 available = ImGui::GetContentRegionAvail();
 

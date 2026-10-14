@@ -16,6 +16,11 @@ class Test {
     virtual void on_update(float dt) {}
     virtual void on_render() {}
     virtual void on_imgui_render() {}
+
+    std::string get_name() { return m_name; }
+
+  private:
+    std::string m_name;
 };
 
 class Menu : public Test {
@@ -31,8 +36,12 @@ class Menu : public Test {
         m_tests.push_back(std::make_pair(name, []() { return new T(); }));
     }
 
+    std::string get_current_test_name() { return m_current_test->get_name(); }
+
   private:
     std::vector<std::pair<std::string, std::function<Test *()>>> m_tests;
     Test *&m_current_test;
+
+    void draw_test_buttons();
 };
 } // namespace test

@@ -24,6 +24,8 @@ class TestRunner {
     void on_render();
     void on_imgui_render();
 
+    Menu *get_menu() { return m_menu; }
+
   private:
     Test *m_current_test;
     Menu *m_menu;
