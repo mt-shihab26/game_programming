@@ -39,7 +39,6 @@ void TestMenu::open_from_args(Argv &argv) {
 }
 
 void TestMenu::draw_menu() {
-    // the menu fills the whole screen
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
     ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove);
@@ -52,8 +51,10 @@ void TestMenu::draw_menu() {
         float total_height = m_tests.size() * button_height + (m_tests.size() - 1) * style.ItemSpacing.y;
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (available.y - total_height) / 2.0f);
 
+        int number = 1;
         for (const Entry &test : m_tests) {
-            std::string label = test.name + " (" + test.key + ")";
+            std::string label = std::to_string(number) + ". " + test.name + " (" + test.key + ")";
+            number++;
 
             float button_width = ImGui::CalcTextSize(label.c_str()).x + style.FramePadding.x * 2.0f;
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (available.x - button_width) / 2.0f);
