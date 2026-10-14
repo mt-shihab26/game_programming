@@ -113,6 +113,17 @@ int main() {
         ImGuiIO &io = ImGui::GetIO();
         // window positions and sizes are set in code, so don't save them to imgui.ini
         io.IniFilename = nullptr;
+        // the default pixel font looks jagged at fractional scales (1.25), the vector one stays crisp
+        io.Fonts->AddFontDefaultVector();
+        // scale text and widgets by the monitor scale, otherwise the 13px font is only ~16 real pixels tall
+        // GLFW's content scale reports 1.0 on Wayland fractional scaling, so derive it from the framebuffer
+        int framebuffer_width, window_width;
+        glfwGetFramebufferSize(window, &framebuffer_width, nullptr);
+        glfwGetWindowSize(window, &window_width, nullptr);
+        float content_scale = (float)framebuffer_width / (float)window_width;
+        ImGuiStyle &style = ImGui::GetStyle();
+        style.ScaleAllSizes(content_scale);
+        style.FontScaleDpi = content_scale;
 
         bool show_demo_window = true;
         bool show_another_window = false;
@@ -136,8 +147,8 @@ int main() {
             renderer.draw(va, ib, shader);
 
             {
-                ImGui::SetNextWindowPos(ImVec2(60, 60), ImGuiCond_FirstUseEver);
-                ImGui::SetNextWindowSize(ImVec2(340, 180), ImGuiCond_FirstUseEver);
+                ImGui::SetNextWindowPos(ImVec2(60 * content_scale, 60 * content_scale), ImGuiCond_FirstUseEver);
+                ImGui::SetNextWindowSize(ImVec2(340 * content_scale, 180 * content_scale), ImGuiCond_FirstUseEver);
                 ImGui::Begin("Controls");
 
                 ImGui::SliderFloat3("Translation", &translation.x, 0.0f, (float)width);
