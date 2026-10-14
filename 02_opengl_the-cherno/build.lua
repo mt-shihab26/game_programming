@@ -179,7 +179,7 @@ project "imgui"
 
 newaction {
     trigger = "clean",
-    description = "Remove all generated build files, including glfw and glew",
+    description = "Remove all generated build files",
     execute = function()
         os.rmdir("build")
         os.remove("Makefile")
