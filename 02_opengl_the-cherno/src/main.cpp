@@ -2,9 +2,6 @@
 
 #include <glew/GL/glew.h>
 #include <glfw/GLFW/glfw3.h>
-#include "glm/ext/matrix_clip_space.hpp"
-#include "glm/ext/matrix_transform.hpp"
-#include "glm/ext/vector_float3.hpp"
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
@@ -12,15 +9,9 @@
 #include "supports/helper.hpp"
 #include "supports/window.hpp"
 
-#include "shader.hpp"
 #include "tests/test.hpp"
-#include "texture.hpp"
 #include "renderer.hpp"
 #include "tests/clear_color.hpp"
-#include "vertex_buffer.hpp"
-#include "index_buffer.hpp"
-#include "vertex_array.hpp"
-#include "vertex_buffer_layout.hpp"
 
 int main() {
     const int width = 1280;
@@ -101,8 +92,14 @@ int main() {
             if (current_test) {
                 current_test->on_update(0.0f);
                 current_test->on_render();
-
-                ImGui::Begin("Test");
+                if (current_test == menu) {
+                    // the menu fills the whole screen, tests get a normal floating window
+                    ImGui::SetNextWindowPos(ImVec2(0, 0));
+                    ImGui::SetNextWindowSize(io.DisplaySize);
+                    ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove);
+                } else {
+                    ImGui::Begin("Test");
+                }
                 if (current_test != menu) {
                     if (ImGui::Button("<-")) {
                         delete current_test;
