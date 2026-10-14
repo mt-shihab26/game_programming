@@ -89,6 +89,8 @@ int main() {
         test::Menu *menu = new test::Menu(current_test);
         current_test = menu;
 
+        menu->register_test<test::ClearColor>("Clear Color");
+
         while (!glfwWindowShouldClose(window)) {
 
             renderer.clear();
