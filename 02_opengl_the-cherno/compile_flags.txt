@@ -3,4 +3,6 @@
 -Ivendor/glew/include
 -Ivendor/stb
 -Ivendor/glm
+-Ivendor/imgui
+-Ivendor/imgui/backends
 -DGLEW_STATIC
