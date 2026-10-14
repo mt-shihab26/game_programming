@@ -47,9 +47,18 @@ void TestMenu::draw_menu() {
         const ImGuiStyle &style = ImGui::GetStyle();
         ImVec2 available = ImGui::GetContentRegionAvail();
 
+        const char *title = "Tests";
+
+        // title line + one gap below it + the buttons
+        float title_height = ImGui::GetTextLineHeight() + style.ItemSpacing.y * 2.0f;
         float button_height = ImGui::GetFrameHeight();
-        float total_height = m_tests.size() * button_height + (m_tests.size() - 1) * style.ItemSpacing.y;
+        float total_height = title_height + m_tests.size() * button_height + (m_tests.size() - 1) * style.ItemSpacing.y;
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (available.y - total_height) / 2.0f);
+
+        float title_width = ImGui::CalcTextSize(title).x;
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (available.x - title_width) / 2.0f);
+        ImGui::TextUnformatted(title);
+        ImGui::Dummy(ImVec2(0.0f, style.ItemSpacing.y));
 
         int number = 1;
         for (const Entry &test : m_tests) {
