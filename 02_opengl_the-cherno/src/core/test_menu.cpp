@@ -2,6 +2,9 @@
 
 #include "test_menu.hpp"
 
+TestMenu::TestMenu() {
+}
+
 TestMenu::~TestMenu() {
     delete m_current_test;
 }
@@ -26,6 +29,15 @@ void TestMenu::on_imgui_render() {
     }
 }
 
+void TestMenu::set_current_test(const Entry &entry) {
+    m_current_key = entry.key;
+    m_current_test = entry.create();
+    m_current_name = entry.name;
+}
+
+void TestMenu::open_from_args(Argv &argv) {
+}
+
 void TestMenu::draw_menu() {
     // the menu fills the whole screen
     ImGui::SetNextWindowPos(ImVec2(0, 0));
@@ -36,19 +48,17 @@ void TestMenu::draw_menu() {
         const ImGuiStyle &style = ImGui::GetStyle();
         ImVec2 available = ImGui::GetContentRegionAvail();
 
-        // centre the column of buttons vertically in the window
         float button_height = ImGui::GetFrameHeight();
         float total_height = m_tests.size() * button_height + (m_tests.size() - 1) * style.ItemSpacing.y;
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (available.y - total_height) / 2.0f);
 
         for (const Entry &test : m_tests) {
-            // centre each button horizontally
-            float button_width = ImGui::CalcTextSize(test.name.c_str()).x + style.FramePadding.x * 2.0f;
-            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (available.x - button_width) / 2.0f);
+            std::string label = test.name + " (" + test.key + ")";
 
-            if (ImGui::Button(test.name.c_str())) {
-                m_current_test = test.create();
-                m_current_name = test.name;
+            float button_width = ImGui::CalcTextSize(label.c_str()).x + style.FramePadding.x * 2.0f;
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (available.x - button_width) / 2.0f);
+            if (ImGui::Button(label.c_str())) {
+                set_current_test(test);
             }
         }
     }

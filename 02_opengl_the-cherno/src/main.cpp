@@ -1,6 +1,7 @@
 #include <exception>
 #include <iostream>
 
+#include "core/argv.hpp"
 #include "core/imgui_layer.hpp"
 #include "core/opengl_layer.hpp"
 #include "core/test_menu.hpp"
@@ -10,8 +11,10 @@
 
 class App {
   public:
-    App() : m_window(1280, 780, "OpenGL - The Cherno"), m_imgui_layer(m_window) {
-        m_test_menu.register_test<TestClearColor>("Clear Color");
+    App(Argv &argv) : m_window(1280, 780, "OpenGL - The Cherno"), m_imgui_layer(m_window) {
+        m_test_menu.register_test<TestClearColor>("clear-color", "Clear Color");
+
+        m_test_menu.open_from_args(argv);
     }
 
     void run() {
@@ -36,9 +39,10 @@ class App {
     TestMenu m_test_menu;
 };
 
-int main() {
+int main(int i_argc, char *i_argv[]) {
     try {
-        App app;
+        Argv argv(i_argc, i_argv);
+        App app(argv);
         app.run();
     } catch (const std::exception &error) {
         std::cerr << "error: " << error.what() << std::endl;
