@@ -1,13 +1,11 @@
 #pragma once
 
-#include "test.hpp"
+#include "core/test.hpp"
 
-namespace test {
-
-class ClearColor : public Test {
+class TestClearColor : public Test {
   public:
-    ClearColor();
-    ~ClearColor();
+    TestClearColor();
+    ~TestClearColor();
 
     void on_update(float dt) override;
     void on_render() override;
@@ -16,5 +14,3 @@ class ClearColor : public Test {
   private:
     float m_clear_color[4];
 };
-
-} // namespace test

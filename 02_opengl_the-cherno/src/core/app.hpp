@@ -14,5 +14,5 @@ class App {
     Window m_window;
     OpenGLLayer m_opengl_layer;
     ImGuiLayer m_imgui_layer;
-    test::TestRunner m_test_runner;
+    TestRunner m_test_runner;
 };

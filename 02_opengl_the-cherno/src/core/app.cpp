@@ -1,9 +1,9 @@
-#include "tests/clear_color.hpp"
+#include "tests/test_clear_color.hpp"
 
 #include "app.hpp"
 
 App::App() : m_window(1280, 780, "Hello World"), m_imgui_layer(m_window) {
-    m_test_runner.register_test<test::ClearColor>("Clear Color");
+    m_test_runner.register_test<TestClearColor>("Clear Color");
 }
 
 void App::run() {

@@ -1,9 +1,7 @@
 #include <glew/GL/glew.h>
 
-#include "opengl/helper.hpp"
+#include "helper.hpp"
 
-#include "vertex_buffer.hpp"
-#include "vertex_buffer_layout.hpp"
 #include "vertex_array.hpp"
 
 VertexArray::VertexArray() {

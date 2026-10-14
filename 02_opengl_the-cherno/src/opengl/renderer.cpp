@@ -1,6 +1,6 @@
 #include <glew/GL/glew.h>
 
-#include "opengl/helper.hpp"
+#include "helper.hpp"
 
 #include "renderer.hpp"
 

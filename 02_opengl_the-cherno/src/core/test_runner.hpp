@@ -2,9 +2,7 @@
 
 #include <string>
 
-#include "tests/test.hpp"
-
-namespace test {
+#include "tests/test_menu.hpp"
 
 // Owns the menu and whichever test is open, and draws the one that is active.
 class TestRunner {
@@ -24,13 +22,11 @@ class TestRunner {
     void on_render();
     void on_imgui_render();
 
-    Menu *get_menu() { return m_menu; }
+    TestMenu *get_menu() { return m_menu; }
 
   private:
     Test *m_current_test;
-    Menu *m_menu;
+    TestMenu *m_menu;
 
     void close_current_test();
 };
-
-} // namespace test

@@ -1,7 +1,6 @@
 #include <glew/GL/glew.h>
-#include <glfw/GLFW/glfw3.h>
 
-#include "opengl/helper.hpp"
+#include "helper.hpp"
 
 #include "vertex_buffer.hpp"
 

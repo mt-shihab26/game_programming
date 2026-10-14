@@ -1,16 +1,14 @@
-
-#include "menu.hpp"
 #include <imgui/imgui.h>
 
-namespace test {
+#include "test_menu.hpp"
 
-Menu::Menu(Test *&current_test) : m_current_test(current_test) {
+TestMenu::TestMenu(Test *&current_test) : m_current_test(current_test) {
 }
 
-Menu::~Menu() {
+TestMenu::~TestMenu() {
 }
 
-void Menu::on_imgui_render() {
+void TestMenu::on_imgui_render() {
     // the menu fills the whole screen, tests get a normal floating window
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
@@ -23,7 +21,7 @@ void Menu::on_imgui_render() {
     ImGui::End();
 }
 
-void Menu::draw_test_buttons() {
+void TestMenu::draw_test_buttons() {
     const ImGuiStyle &style = ImGui::GetStyle();
     ImVec2 available = ImGui::GetContentRegionAvail();
 
@@ -43,5 +41,3 @@ void Menu::draw_test_buttons() {
         }
     }
 }
-
-} // namespace test

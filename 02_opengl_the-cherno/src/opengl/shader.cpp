@@ -1,14 +1,13 @@
 #include <fstream>
 #include <iostream>
-#include <ostream>
 #include <sstream>
 #include <string>
 
 #include <glew/GL/glew.h>
-#include <glfw/GLFW/glfw3.h>
 
-#include "opengl/helper.hpp"
 #include "core/path.hpp"
+
+#include "helper.hpp"
 
 #include "shader.hpp"
 

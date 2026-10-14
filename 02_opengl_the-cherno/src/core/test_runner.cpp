@@ -2,10 +2,8 @@
 
 #include "test_runner.hpp"
 
-namespace test {
-
 TestRunner::TestRunner() : m_current_test(nullptr), m_menu(nullptr) {
-    m_menu = new Menu(m_current_test);
+    m_menu = new TestMenu(m_current_test);
     m_current_test = m_menu;
 }
 
@@ -45,5 +43,3 @@ void TestRunner::close_current_test() {
         m_current_test = m_menu;
     }
 }
-
-} // namespace test

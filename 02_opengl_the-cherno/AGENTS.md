@@ -1,0 +1,1 @@
+- Never use Python to edit or generate files. Use Bash (sed, heredocs) or the Edit/Write tools.

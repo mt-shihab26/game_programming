@@ -3,15 +3,15 @@
 #include <functional>
 #include <iostream>
 #include <string>
+#include <utility>
+#include <vector>
 
-#include "test.hpp"
+#include "core/test.hpp"
 
-namespace test {
-
-class Menu : public Test {
+class TestMenu : public Test {
   public:
-    Menu(Test *&current_test);
-    ~Menu();
+    TestMenu(Test *&current_test);
+    ~TestMenu();
 
     void on_imgui_render() override;
 
@@ -29,4 +29,3 @@ class Menu : public Test {
 
     void draw_test_buttons();
 };
-} // namespace test

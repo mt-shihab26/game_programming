@@ -2,8 +2,6 @@
 
 #include <string>
 
-namespace test {
-
 class Test {
   public:
     Test() {}
@@ -19,4 +17,3 @@ class Test {
   private:
     const std::string *m_name = nullptr;
 };
-} // namespace test

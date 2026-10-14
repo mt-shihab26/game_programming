@@ -4,8 +4,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
-#include "opengl/helper.hpp"
 #include "core/path.hpp"
+
+#include "helper.hpp"
 
 #include "texture.hpp"
 
