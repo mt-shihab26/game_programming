@@ -17,7 +17,7 @@ void TestClearColor::on_update(float dt) {
 }
 
 void TestClearColor::on_render() {
-    GL_CALL(glClearColor(m_clear_color[0], m_clear_color[2], m_clear_color[2], m_clear_color[3]));
+    GL_CALL(glClearColor(m_clear_color[0], m_clear_color[1], m_clear_color[2], m_clear_color[3]));
     GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 }
 
