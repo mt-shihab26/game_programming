@@ -11,12 +11,9 @@ ImGuiLayer::ImGuiLayer(const Window &window) {
     ImGui::StyleColorsDark();
 
     ImGuiIO &io = ImGui::GetIO();
-    // window positions and sizes are set in code, so don't save them to imgui.ini
     io.IniFilename = nullptr;
-    // the default pixel font looks jagged at fractional scales (1.25), the vector one stays crisp
     io.Fonts->AddFontDefaultVector();
 
-    // scale text and widgets by the monitor scale, otherwise the 13px font is only ~16 real pixels tall
     float content_scale = window.content_scale();
     ImGuiStyle &style = ImGui::GetStyle();
     style.ScaleAllSizes(content_scale);

@@ -2,19 +2,19 @@
 
 #include <functional>
 #include <iostream>
-#include <memory>
 #include <string>
 #include <vector>
 
 #include "test.hpp"
 
-// Shows a full-screen list of the registered tests. Clicking one opens it in a floating window with a "<-" button.
 class TestMenu {
   public:
+    ~TestMenu();
+
     template <typename T>
     void register_test(const std::string &name) {
         std::cout << "Registering Test '" << name << "'\n";
-        m_tests.push_back({name, []() { return std::make_unique<T>(); }});
+        m_tests.push_back({name, []() { return new T(); }});
     }
 
     void on_update(float dt);
@@ -24,13 +24,12 @@ class TestMenu {
   private:
     struct Entry {
         std::string name;
-        std::function<std::unique_ptr<Test>()> create;
+        std::function<Test *()> create;
     };
 
     std::vector<Entry> m_tests;
 
-    // nullptr while the menu is showing
-    std::unique_ptr<Test> m_current_test;
+    Test *m_current_test = nullptr;
     std::string m_current_name;
 
     void draw_menu();

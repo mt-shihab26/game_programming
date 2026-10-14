@@ -5,7 +5,6 @@
 #include <glfw/GLFW/glfw3.h>
 
 #include "opengl/helper.hpp"
-
 #include "opengl_layer.hpp"
 
 static void print_library_versions() {

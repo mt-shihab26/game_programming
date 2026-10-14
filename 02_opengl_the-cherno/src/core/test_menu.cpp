@@ -2,6 +2,10 @@
 
 #include "test_menu.hpp"
 
+TestMenu::~TestMenu() {
+    delete m_current_test;
+}
+
 void TestMenu::on_update(float dt) {
     if (m_current_test) {
         m_current_test->on_update(dt);
@@ -60,6 +64,7 @@ void TestMenu::draw_current_test() {
 
     // close after End(), so the test isn't deleted while its window is still being drawn
     if (go_back) {
-        m_current_test.reset();
+        delete m_current_test;
+        m_current_test = nullptr;
     }
 }
