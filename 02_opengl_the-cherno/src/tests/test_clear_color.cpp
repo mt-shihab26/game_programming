@@ -1,9 +1,15 @@
 #include <glew/GL/glew.h>
 #include <imgui/imgui.h>
+#include "core/log.hpp"
 #include "opengl/helper.hpp"
 #include "test_clear_color.hpp"
 
 TestClearColor::TestClearColor(const std::string &key, const std::string &name) : Test(key, name), m_clear_color{0.2f, 0.3f, 0.8f, 1.0f} {
+    log_info("Opened test '{}' (key: {})", get_name(), get_key());
+}
+
+TestClearColor::~TestClearColor() {
+    log_info("Closed test '{}' (key: {})", get_name(), get_key());
 }
 
 void TestClearColor::on_render() {
