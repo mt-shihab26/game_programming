@@ -33,9 +33,7 @@ void TestMenu::on_imgui_render() {
 void TestMenu::set_current_test(const Entry &entry) {
     delete m_current_test;
 
-    m_current_key = entry.key;
     m_current_test = entry.create();
-    m_current_name = entry.name;
 }
 
 void TestMenu::open_from_args(Argv &argv) {
@@ -90,7 +88,7 @@ void TestMenu::draw_menu() {
 }
 
 void TestMenu::draw_current_test() {
-    ImGui::Begin(m_current_name.c_str());
+    ImGui::Begin(m_current_test->get_name().c_str());
     bool go_back = ImGui::Button("<-");
     m_current_test->on_imgui_render();
     ImGui::End();

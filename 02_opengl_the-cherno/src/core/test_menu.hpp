@@ -22,7 +22,7 @@ class TestMenu {
     template <typename T>
     void register_test(const std::string &key, const std::string &name) {
         std::cout << "Registering Test '" << name << "' (key: " << key << ")\n";
-        m_entries.push_back({key, name, []() { return new T(); }});
+        m_entries.push_back({key, name, [key, name]() { return new T(key, name); }});
     }
 
     void on_update(float dt);
@@ -36,8 +36,6 @@ class TestMenu {
   private:
     std::vector<Entry> m_entries;
 
-    std::string m_current_key;
-    std::string m_current_name;
     Test *m_current_test = nullptr;
 
     void draw_menu();

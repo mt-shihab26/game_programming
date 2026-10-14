@@ -4,7 +4,7 @@
 
 class TestTexture2D : public Test {
   public:
-    TestTexture2D();
+    TestTexture2D(const std::string &key, const std::string &name);
     ~TestTexture2D();
 
     void on_update(float dt) override;

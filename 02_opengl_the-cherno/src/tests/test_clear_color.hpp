@@ -4,7 +4,7 @@
 
 class TestClearColor : public Test {
   public:
-    TestClearColor();
+    TestClearColor(const std::string &key, const std::string &name);
 
     void on_render() override;
     void on_imgui_render() override;

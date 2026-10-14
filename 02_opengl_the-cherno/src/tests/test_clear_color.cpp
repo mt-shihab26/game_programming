@@ -3,7 +3,7 @@
 #include "opengl/helper.hpp"
 #include "test_clear_color.hpp"
 
-TestClearColor::TestClearColor() : m_clear_color{0.2f, 0.3f, 0.8f, 1.0f} {
+TestClearColor::TestClearColor(const std::string &key, const std::string &name) : Test(key, name), m_clear_color{0.2f, 0.3f, 0.8f, 1.0f} {
 }
 
 void TestClearColor::on_render() {
