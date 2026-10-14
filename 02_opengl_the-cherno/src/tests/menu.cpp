@@ -1,5 +1,5 @@
 
-#include "test.hpp"
+#include "menu.hpp"
 #include <imgui/imgui.h>
 
 namespace test {
@@ -39,6 +39,7 @@ void Menu::draw_test_buttons() {
 
         if (ImGui::Button(test.first.c_str())) {
             m_current_test = test.second();
+            m_current_test->set_name(test.first);
         }
     }
 }
