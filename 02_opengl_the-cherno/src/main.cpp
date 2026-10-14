@@ -92,7 +92,6 @@ int main() {
         menu->register_test<test::ClearColor>("Clear Color");
 
         while (!glfwWindowShouldClose(window)) {
-
             renderer.clear();
 
             ImGui_ImplOpenGL3_NewFrame();
