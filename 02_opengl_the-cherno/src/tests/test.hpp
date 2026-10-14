@@ -18,7 +18,7 @@ class Test {
 
 class Menu : public Test {
   public:
-    Menu();
+    Menu(Test *&current_test);
     ~Menu();
 
     void on_imgui_render() override;

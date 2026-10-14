@@ -85,21 +85,32 @@ int main() {
         style.ScaleAllSizes(content_scale);
         style.FontScaleDpi = content_scale;
 
-        test::ClearColor test;
+        test::Test *current_test = nullptr;
+        test::Menu *menu = new test::Menu(current_test);
+        current_test = menu;
 
         while (!glfwWindowShouldClose(window)) {
 
-            test.on_update(0.0f);
-
             renderer.clear();
-
-            test.on_render();
 
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
 
-            test.on_imgui_render();
+            if (current_test) {
+                current_test->on_update(0.0f);
+                current_test->on_render();
+
+                ImGui::Begin("Test");
+                if (current_test != menu) {
+                    if (ImGui::Button("<-")) {
+                        delete current_test;
+                        current_test = menu;
+                    }
+                }
+                current_test->on_imgui_render();
+                ImGui::End();
+            }
 
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
