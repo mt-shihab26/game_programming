@@ -7,8 +7,8 @@
 #include <glew/GL/glew.h>
 #include <glfw/GLFW/glfw3.h>
 
-#include "supports/helper.hpp"
-#include "supports/path.hpp"
+#include "opengl/helper.hpp"
+#include "core/path.hpp"
 
 #include "shader.hpp"
 

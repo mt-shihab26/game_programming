@@ -12,9 +12,8 @@ class App {
     void run();
 
   private:
-    // members are destroyed in reverse order: tests and ImGui go before the window and its GL context
     Window m_window;
-    ImGuiLayer m_imgui;
+    ImGuiLayer m_imgui_layer;
     Renderer m_renderer;
-    test::TestRunner m_tests;
+    test::TestRunner m_test_runner;
 };

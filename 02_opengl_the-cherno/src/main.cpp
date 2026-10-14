@@ -11,6 +11,5 @@ int main() {
         std::cerr << "error: " << error.what() << std::endl;
         return 1;
     }
-
     return 0;
 }

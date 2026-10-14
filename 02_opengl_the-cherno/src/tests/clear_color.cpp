@@ -1,7 +1,7 @@
 #include <glew/GL/glew.h>
 #include <imgui/imgui.h>
 
-#include "supports/helper.hpp"
+#include "opengl/helper.hpp"
 
 #include "clear_color.hpp"
 

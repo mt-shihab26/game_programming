@@ -29,7 +29,7 @@ std::string project_dir() {
     // release: assets are copied next to the executable
     return executable_path().parent_path().string();
 #else
-    // this file lives in <project>/src/supports
+    // this file lives in <project>/src/core
     return std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().string();
 #endif
 }

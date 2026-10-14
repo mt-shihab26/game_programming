@@ -1,7 +1,7 @@
 #include <glew/GL/glew.h>
 #include <glfw/GLFW/glfw3.h>
 
-#include "supports/helper.hpp"
+#include "opengl/helper.hpp"
 
 #include "index_buffer.hpp"
 
