@@ -1,3 +1,4 @@
 -std=c++23
+-Iinclude
 -Ivendor/include
 -DGLEW_STATIC

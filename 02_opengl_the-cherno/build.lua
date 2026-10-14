@@ -45,9 +45,10 @@ project "demo"
     language "C++"
     cppdialect "C++23"
 
-    files { "src/**.hpp", "src/**.cpp" }
+    files { "include/**.hpp", "src/**.hpp", "src/**.cpp" }
 
     includedirs {
+        "include",
         "vendor/include"
     }
 
