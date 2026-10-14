@@ -90,7 +90,7 @@ int main() {
         IndexBuffer ib(indices, 6);
 
         glm::mat4 proj = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
-        glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
+        glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
 
         Shader shader("assets/shaders/basic.glsl");
         shader.bind();
@@ -129,7 +129,8 @@ int main() {
         bool show_another_window = false;
         ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-        glm::vec3 translation(200, 200, 0);
+        glm::vec3 translation_a(200, 200, 0);
+        glm::vec3 translation_b(400, 200, 0);
 
         while (!glfwWindowShouldClose(window)) {
             renderer.clear();
@@ -138,20 +139,33 @@ int main() {
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
 
-            glm::mat4 model = glm::translate(glm::mat4(1.0), translation);
-            glm::mat4 mvp = proj * view * model;
+            {
+                glm::mat4 model = glm::translate(glm::mat4(1.0), translation_a);
+                glm::mat4 mvp = proj * view * model;
 
-            shader.bind();
-            shader.set_uniform_mat4f("u_mvp", mvp);
+                shader.bind();
+                shader.set_uniform_mat4f("u_mvp", mvp);
 
-            renderer.draw(va, ib, shader);
+                renderer.draw(va, ib, shader);
+            }
+
+            {
+                glm::mat4 model = glm::translate(glm::mat4(1.0), translation_b);
+                glm::mat4 mvp = proj * view * model;
+
+                shader.bind();
+                shader.set_uniform_mat4f("u_mvp", mvp);
+
+                renderer.draw(va, ib, shader);
+            }
 
             {
                 ImGui::SetNextWindowPos(ImVec2(60 * content_scale, 60 * content_scale), ImGuiCond_FirstUseEver);
                 ImGui::SetNextWindowSize(ImVec2(340 * content_scale, 180 * content_scale), ImGuiCond_FirstUseEver);
                 ImGui::Begin("Controls");
 
-                ImGui::SliderFloat3("Translation", &translation.x, 0.0f, (float)width);
+                ImGui::SliderFloat3("Translation A", &translation_a.x, 0.0f, (float)width);
+                ImGui::SliderFloat3("Translation B", &translation_b.x, 0.0f, (float)width);
                 ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 
                 ImGui::End();
