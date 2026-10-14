@@ -4,10 +4,10 @@
 
 namespace test {
 
-class TestClearColor : public Test {
+class ClearColor : public Test {
   public:
-    TestClearColor();
-    ~TestClearColor();
+    ClearColor();
+    ~ClearColor();
 
     void on_update(float dt) override;
     void on_render() override;

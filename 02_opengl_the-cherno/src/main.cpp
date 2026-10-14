@@ -16,7 +16,7 @@
 #include "tests/test.hpp"
 #include "texture.hpp"
 #include "renderer.hpp"
-#include "tests/test_clear_color.hpp"
+#include "tests/clear_color.hpp"
 #include "vertex_buffer.hpp"
 #include "index_buffer.hpp"
 #include "vertex_array.hpp"
@@ -85,7 +85,7 @@ int main() {
         style.ScaleAllSizes(content_scale);
         style.FontScaleDpi = content_scale;
 
-        test::TestClearColor test;
+        test::ClearColor test;
 
         while (!glfwWindowShouldClose(window)) {
 
