@@ -1,8 +1,6 @@
-#include <cstdio>
 #include <cstdlib>
 #include <stdexcept>
 
-#include <glew/GL/glew.h>
 #include <glfw/GLFW/glfw3.h>
 
 #include "opengl/helper.hpp"
@@ -46,15 +44,6 @@ static void wait_for_window_size(GLFWwindow *window, int width, int height) {
     GL_CALL(glViewport(0, 0, framebufferWidth, framebufferHeight));
 }
 
-static void print_libaray_versions() {
-    GL_CALL(printf("Vendor:   %s\n", glGetString(GL_VENDOR)));
-    GL_CALL(printf("Renderer: %s\n", glGetString(GL_RENDERER)));
-    GL_CALL(printf("OpenGL:   %s\n", glGetString(GL_VERSION)));
-    GL_CALL(printf("GLSL:     %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION)));
-    printf("GLEW:     %s\n", glewGetString(GLEW_VERSION));
-    printf("GLFW:     %s\n", glfwGetVersionString());
-}
-
 Window::Window(int width, int height, const std::string &title) : m_window(nullptr) {
     // Mesa returns the newest version it has, so pin it to 3.3
     setenv("MESA_GL_VERSION_OVERRIDE", "3.3", 1);
@@ -80,13 +69,6 @@ Window::Window(int width, int height, const std::string &title) : m_window(nullp
     wait_for_window_size(m_window, width, height);
 
     glfwSwapInterval(1);
-
-    if (glewInit() != GLEW_OK) {
-        glfwTerminate();
-        throw std::runtime_error("failed to initialise GLEW");
-    }
-
-    print_libaray_versions();
 }
 
 Window::~Window() {

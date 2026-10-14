@@ -2,7 +2,6 @@
 
 #include "window.hpp"
 
-// Owns the ImGui context and its GLFW + OpenGL backends.
 class ImGuiLayer {
   public:
     explicit ImGuiLayer(const Window &window);

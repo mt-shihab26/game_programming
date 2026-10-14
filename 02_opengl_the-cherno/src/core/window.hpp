@@ -4,7 +4,7 @@
 
 struct GLFWwindow;
 
-// Owns GLFW, the OpenGL 3.3 core context and GLEW. Throws std::runtime_error if any of them fail to start.
+// Owns GLFW and the OpenGL 3.3 core context. Throws std::runtime_error if either fails to start.
 class Window {
   public:
     Window(int width, int height, const std::string &title);
