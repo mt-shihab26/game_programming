@@ -39,10 +39,10 @@ class App {
     TestMenu m_test_menu;
 };
 
-int main(int i_argc, char *i_argv[]) {
+int main(int argc, char *argv[]) {
     try {
-        Argv argv(i_argc, i_argv);
-        App app(argv);
+        Argv argv_obj(argc, argv);
+        App app(argv_obj);
         app.run();
     } catch (const std::exception &error) {
         std::cerr << "error: " << error.what() << std::endl;
