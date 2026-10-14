@@ -21,8 +21,11 @@
 TestTexture2D::TestTexture2D(const std::string &key, const std::string &name) : Test(key, name) {
     log_info("Opened test '{}' (key: {})", get_name(), get_key());
 
-    const int width = 1280;
-    const int height = 780;
+    ImGuiIO &io = ImGui::GetIO();
+
+    float width = io.DisplaySize.x;                     // 1280, window size
+    float height = io.DisplaySize.y;                    // 780
+    float content_scale = io.DisplayFramebufferScale.x; // 1.25 on your display
 
     // clang-format off
     float positions[] = {
@@ -69,46 +72,9 @@ TestTexture2D::TestTexture2D(const std::string &key, const std::string &name) : 
 
     Renderer renderer;
 
-    glm::vec3 translation_a(200, 200, 0);
-    glm::vec3 translation_b(400, 200, 0);
+    glm::vec3 translation(200, 200, 0);
 
-    while (!glfwWindowShouldClose(window)) {
-        renderer.clear();
-        {
-            glm::mat4 model = glm::translate(glm::mat4(1.0), translation_a);
-            glm::mat4 mvp = proj * view * model;
-
-            shader.bind();
-            shader.set_uniform_mat4f("u_mvp", mvp);
-
-            renderer.draw(va, ib, shader);
-        }
-
-        {
-            glm::mat4 model = glm::translate(glm::mat4(1.0), translation_b);
-            glm::mat4 mvp = proj * view * model;
-
-            shader.bind();
-            shader.set_uniform_mat4f("u_mvp", mvp);
-
-            renderer.draw(va, ib, shader);
-        }
-
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-}
-
-glfwTerminate();
-
-return 0;
+    renderer.clear();
 }
 
 TestTexture2D::~TestTexture2D() {
@@ -119,30 +85,22 @@ void TestTexture2D::on_update(float dt) {
 }
 
 void TestTexture2D::on_render() {
+    glm::mat4 model = glm::translate(glm::mat4(1.0), translation);
+    glm::mat4 mvp = proj * view * model;
+
+    shader.bind();
+    shader.set_uniform_mat4f("u_mvp", mvp);
+
+    renderer.draw(va, ib, shader);
 }
 
 void TestTexture2D::on_imgui_render() {
-    int framebuffer_width, window_width;
-    glfwGetFramebufferSize(window, &framebuffer_width, nullptr);
-    glfwGetWindowSize(window, &window_width, nullptr);
-    float content_scale = (float)framebuffer_width / (float)window_width;
-    ImGuiStyle &style = ImGui::GetStyle();
-    style.ScaleAllSizes(content_scale);
-    style.FontScaleDpi = content_scale;
+    ImGuiIO &io = ImGui::GetIO();
 
-    bool show_demo_window = true;
-    bool show_another_window = false;
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    float content_scale = io.DisplayFramebufferScale.x;
 
-    {
-        ImGui::SetNextWindowPos(ImVec2(60 * content_scale, 60 * content_scale), ImGuiCond_FirstUseEver);
-        ImGui::SetNextWindowSize(ImVec2(340 * content_scale, 180 * content_scale), ImGuiCond_FirstUseEver);
-        ImGui::Begin("Controls");
+    ImGui::SetNextWindowPos(ImVec2(60 * content_scale, 60 * content_scale), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(340 * content_scale, 180 * content_scale), ImGuiCond_FirstUseEver);
 
-        ImGui::SliderFloat3("Translation A", &translation_a.x, 0.0f, (float)width);
-        ImGui::SliderFloat3("Translation B", &translation_b.x, 0.0f, (float)width);
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-
-        ImGui::End();
-    }
+    ImGui::SliderFloat3("Translation", &translation.x, 0.0f, io.DisplaySize.x);
 }
