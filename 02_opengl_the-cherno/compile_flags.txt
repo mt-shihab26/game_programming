@@ -1,5 +1,6 @@
 -xc++
 -std=c++23
+-Isrc
 -Iinclude
 -Ivendor/include
 -DGLEW_STATIC

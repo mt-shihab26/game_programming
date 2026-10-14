@@ -48,8 +48,9 @@ project "demo"
     files { "include/**.hpp", "src/**.hpp", "src/**.cpp" }
 
     includedirs {
+        "src",
         "include",
-        "vendor/include"
+        "vendor/include",
     }
 
     defines { "GLEW_STATIC" }
