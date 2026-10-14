@@ -18,66 +18,41 @@
 
 #include "test_texture_2d.hpp"
 
-TestTexture2D::TestTexture2D(const std::string &key, const std::string &name) : Test(key, name) {
+TestTexture2D::TestTexture2D(const std::string &key, const std::string &name)
+    : Test(key, name),
+      m_vertex_buffer(m_positions, sizeof(m_positions)),
+      m_index_buffer(m_indices, 6),
+      m_shader("assets/shaders/basic.glsl"),
+      m_texture("assets/textures/omarchy-logo-tokyo-night.png") {
+
     log_info("Opened test '{}' (key: {})", get_name(), get_key());
-
-    ImGuiIO &io = ImGui::GetIO();
-
-    float width = io.DisplaySize.x;                     // 1280, window size
-    float height = io.DisplaySize.y;                    // 780
-    float content_scale = io.DisplayFramebufferScale.x; // 1.25 on your display
-
-    // clang-format off
-    float positions[] = {
-        -50.0f, -50.0f, 0.0f, 0.0f, // 0
-         50.0f, -50.0f, 1.0f, 0.0f, // 1
-         50.0f,  50.5f, 1.0f, 1.0f, // 2
-        -50.0f,  50.5f, 0.0f, 1.0f  // 3
-    };
-
-    unsigned int indices[] = {
-        0, 1, 2,
-        2, 3, 0
-    };
-    // clang-format on
 
     GL_CALL(glEnable(GL_BLEND));
     GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-    VertexArray va;
-
-    VertexBuffer vb(positions, 4 * 4 * sizeof(float));
-
     VertexBufferLayout layout;
     layout.push<float>(2);
     layout.push<float>(2);
-    va.add_buffer(vb, layout);
+    m_vertex_array.add_buffer(m_vertex_buffer, layout);
 
-    IndexBuffer ib(indices, 6);
+    m_view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
+    m_translation = glm::vec3(200, 200, 0);
 
-    glm::mat4 proj = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
-    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
+    m_shader.bind();
+    m_shader.set_uniform_1i("u_texture", 0);
 
-    Shader shader("assets/shaders/basic.glsl");
-    shader.bind();
-    shader.set_uniform_1i("u_texture", 0);
+    m_texture.bind();
 
-    Texture texture("assets/textures/omarchy-logo-tokyo-night.png");
-    texture.bind();
-
-    va.unbind();
-    shader.unbind();
-    vb.unbind();
-    ib.unbind();
-
-    Renderer renderer;
-
-    glm::vec3 translation(200, 200, 0);
-
-    renderer.clear();
+    m_vertex_array.unbind();
+    m_shader.unbind();
+    m_vertex_buffer.unbind();
+    m_index_buffer.unbind();
 }
 
 TestTexture2D::~TestTexture2D() {
+    GL_CALL(glBlendFunc(GL_ONE, GL_ZERO));
+    GL_CALL(glDisable(GL_BLEND));
+
     log_info("Closed test '{}' (key: {})", get_name(), get_key());
 }
 
@@ -85,13 +60,17 @@ void TestTexture2D::on_update(float dt) {
 }
 
 void TestTexture2D::on_render() {
-    glm::mat4 model = glm::translate(glm::mat4(1.0), translation);
-    glm::mat4 mvp = proj * view * model;
+    ImGuiIO &io = ImGui::GetIO();
 
-    shader.bind();
-    shader.set_uniform_mat4f("u_mvp", mvp);
+    m_projection = glm::ortho(0.0f, io.DisplaySize.x, 0.0f, io.DisplaySize.y, -1.0f, 1.0f);
 
-    renderer.draw(va, ib, shader);
+    glm::mat4 model = glm::translate(glm::mat4(1.0), m_translation);
+    glm::mat4 mvp = m_projection * m_view * model;
+
+    m_shader.bind();
+    m_shader.set_uniform_mat4f("u_mvp", mvp);
+
+    m_renderer.draw(m_vertex_array, m_index_buffer, m_shader);
 }
 
 void TestTexture2D::on_imgui_render() {
@@ -102,5 +81,5 @@ void TestTexture2D::on_imgui_render() {
     ImGui::SetNextWindowPos(ImVec2(60 * content_scale, 60 * content_scale), ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowSize(ImVec2(340 * content_scale, 180 * content_scale), ImGuiCond_FirstUseEver);
 
-    ImGui::SliderFloat3("Translation", &translation.x, 0.0f, io.DisplaySize.x);
+    ImGui::SliderFloat3("Translation", &m_translation.x, 0.0f, io.DisplaySize.x);
 }
