@@ -10,3 +10,6 @@
 [submodule "02_opengl_the-cherno/vendor/stb"]
 	path = 02_opengl_the-cherno/vendor/stb
 	url = https://github.com/nothings/stb
+[submodule "02_opengl_the-cherno/vendor/imgui"]
+	path = 02_opengl_the-cherno/vendor/imgui
+	url = https://github.com/ocornut/imgui

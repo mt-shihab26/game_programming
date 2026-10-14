@@ -45,9 +45,17 @@ project "demo"
 
     files { "src/**.hpp", "src/**.cpp" }
 
-    includedirs { "vendor/glfw/include", "vendor/glew/include", "vendor/stb", "vendor/glm" }
+    includedirs { 
+        "vendor/glfw/include",
+        "vendor/glew/include",
+        "vendor/stb",
+        "vendor/glm",
+        "vendor/imgui",
+        "vendor/imgui/backends"
+    }
+
     defines { "GLEW_STATIC" }
-    links { "glfw", "glew" }
+    links { "glfw", "glew", "imgui" }
 
     filter "system:linux"
         links {"GL", "EGL", "dl", "m", "pthread"}
@@ -69,8 +77,7 @@ project "demo"
             "{RMDIR} %{cfg.targetdir}/assets",
             "{COPYDIR} assets %{cfg.targetdir}/assets",
             -- the static libraries are linked into the binary, so they are not needed to run it
-            "{DELETE} %{cfg.targetdir}/libglfw.a",
-            "{DELETE} %{cfg.targetdir}/libglew.a",
+            "{DELETE} %{cfg.targetdir}/*.a",
         }
 
 project "glfw"
@@ -140,6 +147,35 @@ project "glew"
 
     filter "configurations:release"
         optimize "On"
+
+project "imgui"
+    kind "StaticLib"
+    language "C++"
+    cppdialect "C++23"
+
+    files {
+        "vendor/imgui/imgui.cpp",
+        "vendor/imgui/imgui_draw.cpp",
+        "vendor/imgui/imgui_tables.cpp",
+        "vendor/imgui/imgui_widgets.cpp",
+        "vendor/imgui/imgui_demo.cpp",
+        "vendor/imgui/backends/imgui_impl_glfw.cpp",
+        "vendor/imgui/backends/imgui_impl_opengl3.cpp",
+    }
+
+    includedirs { 
+        "vendor/imgui",
+        "vendor/imgui/backends",
+        "vendor/glfw/include"
+    }
+
+    filter "configurations:debug"
+        symbols "On"
+
+    filter "configurations:release"
+        optimize "On"
+
+
 
 newaction {
     trigger = "clean-demo",
