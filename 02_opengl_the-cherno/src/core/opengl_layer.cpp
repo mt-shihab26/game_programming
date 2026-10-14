@@ -3,8 +3,6 @@
 #include <glew/GL/glew.h>
 #include <glfw/GLFW/glfw3.h>
 
-#include "opengl/helper.hpp"
-
 #include "log.hpp"
 #include "opengl_layer.hpp"
 
@@ -26,11 +24,7 @@ OpenGLLayer::OpenGLLayer() {
     if (glewInit() != GLEW_OK) {
         throw std::runtime_error("failed to initialise GLEW");
     }
-
     print_library_versions();
-
-    GL_CALL(glEnable(GL_BLEND));
-    GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 }
 
 void OpenGLLayer::begin_frame() const {
