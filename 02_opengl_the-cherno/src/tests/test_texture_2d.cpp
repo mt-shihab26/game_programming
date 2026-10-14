@@ -76,10 +76,5 @@ void TestTexture2D::on_render() {
 void TestTexture2D::on_imgui_render() {
     ImGuiIO &io = ImGui::GetIO();
 
-    float content_scale = io.DisplayFramebufferScale.x;
-
-    ImGui::SetNextWindowPos(ImVec2(60 * content_scale, 60 * content_scale), ImGuiCond_FirstUseEver);
-    ImGui::SetNextWindowSize(ImVec2(340 * content_scale, 180 * content_scale), ImGuiCond_FirstUseEver);
-
     ImGui::SliderFloat3("Translation", &m_translation.x, 0.0f, io.DisplaySize.x);
 }

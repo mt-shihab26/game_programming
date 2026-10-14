@@ -88,6 +88,11 @@ void TestMenu::draw_menu() {
 }
 
 void TestMenu::draw_current_test() {
+    // SetNextWindow* only applies to the next Begin(), so it has to be set here, before the test's window opens
+    float content_scale = ImGui::GetIO().DisplayFramebufferScale.x;
+    ImGui::SetNextWindowPos(ImVec2(60 * content_scale, 60 * content_scale), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(340 * content_scale, 180 * content_scale), ImGuiCond_FirstUseEver);
+
     ImGui::Begin(m_current_test->get_name().c_str());
     bool go_back = ImGui::Button("<-");
     m_current_test->on_imgui_render();
