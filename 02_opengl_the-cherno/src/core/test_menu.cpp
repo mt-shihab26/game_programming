@@ -1,4 +1,5 @@
 #include <imgui/imgui.h>
+#include <algorithm>
 
 #include "test_menu.hpp"
 
@@ -36,6 +37,16 @@ void TestMenu::set_current_test(const Entry &entry) {
 }
 
 void TestMenu::open_from_args(Argv &argv) {
+    if (argv.empty()) {
+        return;
+    }
+    std::string first = argv.first();
+    auto entry = std::find_if(m_entries.begin(), m_entries.end(), [&first](const Entry &entry) {
+        return first == entry.key;
+    });
+    if (entry != m_entries.end()) {
+        set_current_test(*entry);
+    }
 }
 
 void TestMenu::draw_menu() {
@@ -43,7 +54,7 @@ void TestMenu::draw_menu() {
     ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
     ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove);
 
-    if (!m_tests.empty()) {
+    if (!m_entries.empty()) {
         const ImGuiStyle &style = ImGui::GetStyle();
         ImVec2 available = ImGui::GetContentRegionAvail();
 
@@ -52,7 +63,7 @@ void TestMenu::draw_menu() {
         // title line + one gap below it + the buttons
         float title_height = ImGui::GetTextLineHeight() + style.ItemSpacing.y * 2.0f;
         float button_height = ImGui::GetFrameHeight();
-        float total_height = title_height + m_tests.size() * button_height + (m_tests.size() - 1) * style.ItemSpacing.y;
+        float total_height = title_height + m_entries.size() * button_height + (m_entries.size() - 1) * style.ItemSpacing.y;
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (available.y - total_height) / 2.0f);
 
         float title_width = ImGui::CalcTextSize(title).x;
@@ -61,7 +72,7 @@ void TestMenu::draw_menu() {
         ImGui::Dummy(ImVec2(0.0f, style.ItemSpacing.y));
 
         int number = 1;
-        for (const Entry &test : m_tests) {
+        for (const Entry &test : m_entries) {
             std::string label = std::to_string(number) + ". " + test.name + " (" + test.key + ")";
             number++;
 
