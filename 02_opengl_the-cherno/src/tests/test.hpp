@@ -4,8 +4,8 @@ namespace test {
 
 class Test {
   public:
-    Test();
-    virtual ~Test();
+    Test() {}
+    virtual ~Test() {}
 
     virtual void on_update(float dt) {}
     virtual void on_render() {}

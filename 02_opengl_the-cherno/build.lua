@@ -46,12 +46,8 @@ project "demo"
     cppdialect "C++23"
 
     files { "include/**.hpp", "src/**.hpp", "src/**.cpp" }
-
-    includedirs {
-        "src",
-        "include",
-        "vendor/include",
-    }
+    includedirs { "src", "include" }
+    externalincludedirs { "vendor/include" }
 
     defines { "GLEW_STATIC" }
     links { "glfw", "glew", "imgui" }
