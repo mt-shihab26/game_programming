@@ -1,9 +1,9 @@
 #pragma once
 
-#include "imgui_layer.hpp"
-#include "opengl_layer.hpp"
-#include "test_runner.hpp"
-#include "window.hpp"
+#include "core/imgui_layer.hpp"
+#include "core/opengl_layer.hpp"
+#include "core/test_runner.hpp"
+#include "core/window.hpp"
 
 class App {
   public:

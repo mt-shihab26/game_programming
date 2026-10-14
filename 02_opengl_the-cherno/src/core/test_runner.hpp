@@ -2,9 +2,8 @@
 
 #include <string>
 
-#include "tests/test_menu.hpp"
+#include "test_menu.hpp"
 
-// Owns the menu and whichever test is open, and draws the one that is active.
 class TestRunner {
   public:
     TestRunner();

@@ -6,7 +6,7 @@
 #include <utility>
 #include <vector>
 
-#include "core/test.hpp"
+#include "test.hpp"
 
 class TestMenu : public Test {
   public:
