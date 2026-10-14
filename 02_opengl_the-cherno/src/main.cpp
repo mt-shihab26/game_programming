@@ -112,8 +112,11 @@ int main() {
 
         ImGui::CreateContext();
         ImGui_ImplGlfw_InitForOpenGL(window, true);
+        ImGui_ImplOpenGL3_Init("#version 330");
         ImGui::StyleColorsDark();
         ImGuiIO &io = ImGui::GetIO();
+        // window positions and sizes are set in code, so don't save them to imgui.ini
+        io.IniFilename = nullptr;
 
         bool show_demo_window = true;
         bool show_another_window = false;
@@ -133,6 +136,8 @@ int main() {
                 static float f = 0.0f;
                 static int counter = 0;
 
+                ImGui::SetNextWindowPos(ImVec2(60, 60), ImGuiCond_FirstUseEver);
+                ImGui::SetNextWindowSize(ImVec2(340, 180), ImGuiCond_FirstUseEver);
                 ImGui::Begin("Hello, world!"); // Create a window called "Hello, world!" and append into it.
 
                 ImGui::Text("This is some useful text.");          // Display some text (you can use a format strings too)
@@ -157,6 +162,7 @@ int main() {
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+            glfwSwapBuffers(window);
             glfwPollEvents();
         }
 
