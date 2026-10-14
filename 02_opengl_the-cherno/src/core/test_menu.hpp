@@ -1,11 +1,11 @@
 #pragma once
 
 #include <functional>
-#include <iostream>
 #include <string>
 #include <vector>
 
 #include "core/argv.hpp"
+#include "core/log.hpp"
 #include "test.hpp"
 
 struct Entry {
@@ -21,7 +21,7 @@ class TestMenu {
 
     template <typename T>
     void register_test(const std::string &key, const std::string &name) {
-        std::cout << "Registering Test '" << name << "' (key: " << key << ")\n";
+        log_info("Registering test '{}' (key: {})", name, key);
         m_entries.push_back({key, name, [key, name]() { return new T(key, name); }});
     }
 

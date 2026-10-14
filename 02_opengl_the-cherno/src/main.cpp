@@ -1,8 +1,8 @@
 #include <exception>
-#include <iostream>
 
 #include "core/argv.hpp"
 #include "core/imgui_layer.hpp"
+#include "core/log.hpp"
 #include "core/opengl_layer.hpp"
 #include "core/test_menu.hpp"
 #include "core/window.hpp"
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
         App app(argv_obj);
         app.run();
     } catch (const std::exception &error) {
-        std::cerr << "error: " << error.what() << std::endl;
+        log_error("{}", error.what());
         return 1;
     }
     return 0;

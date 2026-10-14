@@ -1,6 +1,6 @@
-#include <iostream>
-
 #include <glew/GL/glew.h>
+
+#include "core/log.hpp"
 
 #include "helper.hpp"
 
@@ -11,7 +11,7 @@ void gl_clear_error() {
 
 bool gl_log_call(const char *function, const char *file, int line) {
     while (GLenum error = glGetError()) {
-        std::cout << "[OpenGL Error] (" << error << ") " << function << " " << file << ":" << line << std::endl;
+        log_error("OpenGL error {} in {} at {}:{}", error, function, file, line);
         return false;
     }
     return true;

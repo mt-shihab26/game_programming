@@ -1,10 +1,10 @@
-#include <iostream>
 #include <string>
 
 #include <glew/GL/glew.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
+#include "core/log.hpp"
 #include "core/path.hpp"
 
 #include "helper.hpp"
@@ -15,7 +15,7 @@ Texture::Texture(const std::string &path) : m_renderer_id(0), m_filepath(path), 
     stbi_set_flip_vertically_on_load(1);
     m_local_buffer = stbi_load(project_path(path).c_str(), &m_width, &m_height, &m_bpp, 4);
     if (!m_local_buffer) {
-        std::cout << "Failed to load texture '" << project_path(path) << "': " << stbi_failure_reason() << std::endl;
+        log_error("Failed to load texture '{}': {}", project_path(path), stbi_failure_reason());
     }
 
     GL_CALL(glGenTextures(1, &m_renderer_id));

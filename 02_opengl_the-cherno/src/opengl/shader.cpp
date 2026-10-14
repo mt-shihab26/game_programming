@@ -1,10 +1,10 @@
 #include <fstream>
-#include <iostream>
 #include <sstream>
 #include <string>
 
 #include <glew/GL/glew.h>
 
+#include "core/log.hpp"
 #include "core/path.hpp"
 
 #include "helper.hpp"
@@ -32,8 +32,7 @@ unsigned int Shader::create_shader() {
         GL_CALL(glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length));
         char *message = (char *)alloca(length * sizeof(char));
         GL_CALL(glGetProgramInfoLog(program, length, &length, message));
-        std::cout << "Failed to link shader program!" << std::endl;
-        std::cout << message << std::endl;
+        log_error("Failed to link shader program:\n{}", message);
     }
 
     GL_CALL(glValidateProgram(program));
@@ -47,7 +46,7 @@ unsigned int Shader::create_shader() {
 ShaderSource Shader::parse_shader() {
     std::ifstream stream(project_path(m_filepath));
     if (!stream) {
-        std::cout << "Failed to open shader '" << project_path(m_filepath) << "'" << std::endl;
+        log_error("Failed to open shader '{}'", project_path(m_filepath));
     }
 
     std::string line;
@@ -87,8 +86,7 @@ unsigned int Shader::compile_shader(unsigned int type, const std::string &source
         GL_CALL(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
         char *message = (char *)alloca(length * sizeof(char));
         GL_CALL(glGetShaderInfoLog(id, length, &length, message));
-        std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << " shader!" << std::endl;
-        std::cout << message << std::endl;
+        log_error("Failed to compile {} shader:\n{}", type == GL_VERTEX_SHADER ? "vertex" : "fragment", message);
         GL_CALL(glDeleteShader(id));
         return 0;
     }
@@ -104,7 +102,7 @@ int Shader::get_uniform_location(const std::string &name) {
     int location;
     GL_CALL(location = glGetUniformLocation(m_renderer_id, name.c_str()));
     if (location == -1) {
-        std::cout << "Warning: uniform '" << name << "'doesn't exist!" << std::endl;
+        log_warn("Uniform '{}' doesn't exist", name);
     } else {
         m_uniform_location_cache[name] = location;
     }
