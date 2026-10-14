@@ -9,9 +9,10 @@ Argv::Argv(int argc, char *i_argv[]) {
 bool Argv::empty() {
     return argv.size() == 1;
 }
+
 std::string Argv::first() {
     if (empty()) {
         return "";
     }
-    return argv[2];
+    return argv[1];
 }
