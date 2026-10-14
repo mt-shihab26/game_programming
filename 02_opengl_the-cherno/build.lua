@@ -48,9 +48,7 @@ project "demo"
     files { "src/**.hpp", "src/**.cpp" }
 
     includedirs {
-        "vendor/include",
-        -- the imgui backend headers include "imgui.h" without the imgui/ prefix
-        "vendor/src/imgui"
+        "vendor/include"
     }
 
     defines { "GLEW_STATIC" }
