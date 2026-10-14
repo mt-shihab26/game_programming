@@ -2,30 +2,37 @@
 
 #include <functional>
 #include <iostream>
+#include <memory>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "test.hpp"
 
-class TestMenu : public Test {
+// Shows a full-screen list of the registered tests. Clicking one opens it in a floating window with a "<-" button.
+class TestMenu {
   public:
-    TestMenu(Test *&current_test);
-    ~TestMenu();
-
-    void on_imgui_render() override;
-
     template <typename T>
     void register_test(const std::string &name) {
         std::cout << "Registering Test '" << name << "'\n";
-        m_tests.push_back(std::make_pair(name, []() { return new T(); }));
+        m_tests.push_back({name, []() { return std::make_unique<T>(); }});
     }
 
-    const std::string &get_current_test_name() const { return m_current_test->get_name(); }
+    void on_update(float dt);
+    void on_render();
+    void on_imgui_render();
 
   private:
-    std::vector<std::pair<std::string, std::function<Test *()>>> m_tests;
-    Test *&m_current_test;
+    struct Entry {
+        std::string name;
+        std::function<std::unique_ptr<Test>()> create;
+    };
 
-    void draw_test_buttons();
+    std::vector<Entry> m_tests;
+
+    // nullptr while the menu is showing
+    std::unique_ptr<Test> m_current_test;
+    std::string m_current_name;
+
+    void draw_menu();
+    void draw_current_test();
 };

@@ -2,7 +2,7 @@
 
 #include "core/imgui_layer.hpp"
 #include "core/opengl_layer.hpp"
-#include "core/test_runner.hpp"
+#include "core/test_menu.hpp"
 #include "core/window.hpp"
 
 class App {
@@ -14,5 +14,5 @@ class App {
     Window m_window;
     OpenGLLayer m_opengl_layer;
     ImGuiLayer m_imgui_layer;
-    TestRunner m_test_runner;
+    TestMenu m_test_menu;
 };

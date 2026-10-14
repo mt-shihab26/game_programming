@@ -78,11 +78,8 @@ bool Window::should_close() const {
     return glfwWindowShouldClose(m_window);
 }
 
-void Window::swap_buffers() const {
+void Window::end_frame() const {
     glfwSwapBuffers(m_window);
-}
-
-void Window::poll_events() const {
     glfwPollEvents();
 }
 

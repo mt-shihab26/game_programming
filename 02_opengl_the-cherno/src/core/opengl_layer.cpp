@@ -8,7 +8,7 @@
 
 #include "opengl_layer.hpp"
 
-static void print_libaray_versions() {
+static void print_library_versions() {
     GL_CALL(printf("Vendor:   %s\n", glGetString(GL_VENDOR)));
     GL_CALL(printf("Renderer: %s\n", glGetString(GL_RENDERER)));
     GL_CALL(printf("OpenGL:   %s\n", glGetString(GL_VERSION)));
@@ -22,7 +22,7 @@ OpenGLLayer::OpenGLLayer() {
         throw std::runtime_error("failed to initialise GLEW");
     }
 
-    print_libaray_versions();
+    print_library_versions();
 
     GL_CALL(glEnable(GL_BLEND));
     GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
