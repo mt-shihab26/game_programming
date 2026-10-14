@@ -4,6 +4,8 @@
 #include <GLFW/glfw3.h>
 #include "glm/ext/matrix_clip_space.hpp"
 
+#include "glm/ext/matrix_transform.hpp"
+#include "glm/ext/vector_float3.hpp"
 #include "supports/helper.hpp"
 #include "supports/window.hpp"
 
@@ -85,11 +87,15 @@ int main() {
         IndexBuffer ib(indices, 6);
 
         glm::mat4 proj = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
+        glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
+        glm::mat4 model = glm::translate(glm::mat4(1.0), glm::vec3(200, 200, 0));
+
+        glm::mat4 mvp = proj * view * model;
 
         Shader shader("assets/shaders/basic.glsl");
         shader.bind();
         shader.set_uniform_1i("u_texture", 0);
-        shader.set_uniform_mat4f("u_mvp", proj);
+        shader.set_uniform_mat4f("u_mvp", mvp);
 
         Texture texture("assets/textures/omarchy-logo-tokyo-night.png");
         texture.bind();
