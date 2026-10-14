@@ -6,7 +6,8 @@
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/ext/vector_float3.hpp"
 #include <imgui/imgui.h>
-#include <imgui/backends/imgui_impl_glfw.h>
+#include <imgui/imgui_impl_glfw.h>
+#include <imgui/imgui_impl_opengl3.h>
 
 #include "supports/helper.hpp"
 #include "supports/window.hpp"
@@ -110,7 +111,8 @@ int main() {
         Renderer renderer;
 
         ImGui::CreateContext();
-        ImGui_ImplGlfwGL3_Init(window, true);
+        ImGui_ImplGlfw_InitForOpenGL(window, true);
+        ImGui_ImplOpenGL3_Init("#version 330");
 
         while (!glfwWindowShouldClose(window)) {
             renderer.clear();
@@ -120,6 +122,10 @@ int main() {
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
+
+        ImGui_ImplOpenGL3_Shutdown();
+        ImGui_ImplGlfw_Shutdown();
+        ImGui::DestroyContext();
     }
     glfwTerminate();
 
