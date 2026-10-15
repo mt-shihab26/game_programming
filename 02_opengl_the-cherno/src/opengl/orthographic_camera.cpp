@@ -25,8 +25,7 @@ void OrthographicCamera::on_update() {
 void OrthographicCamera::handle_mouse_wheel_update() {
     float wheel = ImGui::GetIO().MouseWheel;
     if (wheel) {
-        // below 0.1 the view gets huge, at 0 it divides by zero, and negative flips the image
-        m_zoom = glm::max(m_zoom + wheel * 0.1f, 0.1f);
+        m_zoom = m_zoom + wheel * 0.1f;
     }
 }
 
@@ -37,8 +36,9 @@ void OrthographicCamera::set_viewport() {
 }
 
 void OrthographicCamera::set_projection() {
-    float half_width = m_width / 2.0f / m_zoom;
-    float half_height = m_height / 2.0f / m_zoom;
+    float zoom = (m_zoom == 0.0f ? 1 : m_zoom);
+    float half_width = m_width / 2.0f / zoom;
+    float half_height = m_height / 2.0f / zoom;
     m_projection = glm::ortho(-half_width, half_width, -half_height, half_height, -1.0f, 1.0f);
 }
 
