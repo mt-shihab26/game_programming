@@ -27,7 +27,7 @@ void OrthographicCamera::handle_mouse_drag_update() {
     if (ImGui::IsMouseDragging(ImGuiMouseButton_Left)) {
         ImVec2 mouse = ImGui::GetMousePos();
         ImVec2 delta = ImGui::GetMouseDragDelta(ImGuiMouseButton_Left);
-        log_info("mouse left drag at {}, {} delta {}, {}", mouse.x, mouse.y, delta.x, delta.y);
+        m_position = glm::vec3(delta.x, delta.y, 0);
     }
 }
 
