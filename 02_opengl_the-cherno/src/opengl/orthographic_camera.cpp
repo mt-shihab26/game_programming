@@ -16,23 +16,17 @@ OrthographicCamera::OrthographicCamera() : m_zoom(0.0f) {
     set_projection();
 }
 
-OrthographicCamera::~OrthographicCamera() {
+void OrthographicCamera::on_update() {
+    set_viewport();
+    handle_mouse_wheel_update();
+    set_projection();
 }
 
-void OrthographicCamera::on_update() {
+void OrthographicCamera::handle_mouse_wheel_update() {
     float wheel = ImGui::GetIO().MouseWheel;
     if (wheel) {
         m_zoom += wheel * 0.1f;
-        set_projection();
     }
-}
-
-void OrthographicCamera::on_render() {
-    set_viewport();
-}
-
-glm::mat4 OrthographicCamera::get_view_projection() const {
-    return get_projection() * get_view();
 }
 
 void OrthographicCamera::set_viewport() {
@@ -51,4 +45,7 @@ void OrthographicCamera::set_projection() {
     float half_width = m_width / 2.0f / m_zoom;
     float half_height = m_height / 2.0f / m_zoom;
     m_projection = glm::ortho(-half_width, half_width, -half_height, half_height, -1.0f, 1.0f);
+}
+
+void OrthographicCamera::on_render() {
 }
