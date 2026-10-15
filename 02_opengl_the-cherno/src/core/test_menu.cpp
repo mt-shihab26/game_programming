@@ -26,6 +26,7 @@ void TestMenu::on_render() {
 
 void TestMenu::on_imgui_render() {
     if (m_current_test) {
+        m_current_test->get_camera()->on_imgui_render();
         draw_current_test();
     } else {
         draw_menu();

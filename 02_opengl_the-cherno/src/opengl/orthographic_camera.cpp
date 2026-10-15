@@ -49,3 +49,14 @@ void OrthographicCamera::set_projection() {
 
 void OrthographicCamera::on_render() {
 }
+
+void OrthographicCamera::on_imgui_render() {
+    ImVec2 top_right(ImGui::GetIO().DisplaySize.x - 10.0f, 10.0f);
+    ImGui::SetNextWindowPos(top_right, ImGuiCond_Always, ImVec2(1.0f, 0.0f));
+
+    ImGui::Begin("Camera", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
+
+    ImGui::Text("zoom = %.2f", m_zoom);
+
+    ImGui::End();
+}

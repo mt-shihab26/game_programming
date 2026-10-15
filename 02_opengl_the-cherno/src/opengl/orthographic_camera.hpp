@@ -15,6 +15,7 @@ class OrthographicCamera {
 
     void on_update();
     void on_render();
+    void on_imgui_render();
 
     glm::mat4 get_view_projection() const { return get_projection() * get_view(); }
 
