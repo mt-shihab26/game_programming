@@ -11,17 +11,9 @@
 
 class OrthographicCamera {
   public:
-    glm::mat4 get_view_projection() const {
-        return get_projection() * get_view();
-    }
+    glm::mat4 get_view_projection() const;
 
   private:
-    glm::mat4 get_projection() const {
-        ImGuiIO &io = ImGui::GetIO();
-        return glm::ortho(0.0f, io.DisplaySize.x, 0.0f, io.DisplaySize.y, -1.0f, 1.0f);
-    }
-
-    glm::mat4 get_view() const {
-        return glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
-    }
+    glm::mat4 get_projection() const;
+    glm::mat4 get_view() const;
 };
