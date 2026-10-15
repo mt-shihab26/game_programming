@@ -4,6 +4,7 @@
 
 #include "core/test.hpp"
 #include "opengl/index_buffer.hpp"
+#include "opengl/orthographic_camera.hpp"
 #include "opengl/renderer.hpp"
 #include "opengl/shader.hpp"
 #include "opengl/texture.hpp"
@@ -12,7 +13,7 @@
 
 class TestTexture2D : public Test {
   public:
-    TestTexture2D(const std::string &key, const std::string &name);
+    TestTexture2D(const std::string &key, const std::string &name, const OrthographicCamera camera);
     ~TestTexture2D();
 
     void on_update(float dt) override;

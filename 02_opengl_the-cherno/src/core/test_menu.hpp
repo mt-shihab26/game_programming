@@ -6,6 +6,7 @@
 
 #include "core/argv.hpp"
 #include "core/log.hpp"
+#include "opengl/orthographic_camera.hpp"
 #include "test.hpp"
 
 struct Entry {
@@ -22,7 +23,10 @@ class TestMenu {
     template <typename T>
     void register_test(const std::string &key, const std::string &name) {
         log_info("Registering test '{}' (key: {})", name, key);
-        m_entries.push_back({key, name, [key, name]() { return new T(key, name); }});
+
+        OrthographicCamera camera;
+
+        m_entries.push_back({key, name, [key, name, camera]() { return new T(key, name, camera); }});
     }
 
     void on_update(float dt);
