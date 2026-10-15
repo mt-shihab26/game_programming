@@ -1,8 +1,6 @@
 #include <glew/GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "core/test.hpp"
-
 #include "batch_rendering_color.hpp"
 
 BatchRenderingColor::BatchRenderingColor(const std::string &key, const std::string &name, OrthographicCamera *camera)
@@ -58,6 +56,10 @@ BatchRenderingColor::~BatchRenderingColor() {
     glDeleteBuffers(1, &m_quad_vb);
     glDeleteVertexArrays(1, &m_quad_va);
     delete m_shader;
+
+    glBlendFunc(GL_ONE, GL_ZERO);
+    glDisable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
 }
 
 void BatchRenderingColor::on_update(float dt) {
