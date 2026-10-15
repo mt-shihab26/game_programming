@@ -7,7 +7,7 @@
 #include "core/log.hpp"
 #include "core/path.hpp"
 
-#include "basic_shader.hpp"
+#include "shader_program.hpp"
 
 static GLuint compile_shader(GLenum type, const std::string &source) {
     const char *src = source.c_str();
@@ -27,7 +27,7 @@ static GLuint compile_shader(GLenum type, const std::string &source) {
     return id;
 }
 
-BasicShader::BasicShader(const std::string &filepath) {
+ShaderProgram::ShaderProgram(const std::string &filepath) {
     std::ifstream stream(project_path(filepath));
     if (!stream) {
         log_error("Failed to open shader '{}'", project_path(filepath));
@@ -69,6 +69,6 @@ BasicShader::BasicShader(const std::string &filepath) {
     glDeleteShader(fs);
 }
 
-BasicShader::~BasicShader() {
+ShaderProgram::~ShaderProgram() {
     glDeleteProgram(m_renderer_id);
 }

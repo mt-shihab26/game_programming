@@ -4,10 +4,10 @@
 
 #include <glew/GL/glew.h>
 
-class BasicShader {
+class ShaderProgram {
   public:
-    BasicShader(const std::string &filepath);
-    ~BasicShader();
+    ShaderProgram(const std::string &filepath);
+    ~ShaderProgram();
 
     GLuint get_renderer_id() const { return m_renderer_id; }
 

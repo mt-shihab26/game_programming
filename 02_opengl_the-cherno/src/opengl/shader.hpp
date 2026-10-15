@@ -5,7 +5,7 @@
 
 #include <glm/ext/matrix_float4x4.hpp>
 
-#include "basic_shader.hpp"
+#include "shader_program.hpp"
 
 class Shader {
   public:
@@ -21,7 +21,7 @@ class Shader {
     void set_uniform_mat4f(const std::string &name, const glm::mat4 &matrix);
 
   private:
-    BasicShader m_program;
+    ShaderProgram m_program;
     std::unordered_map<std::string, int> m_uniform_location_cache;
 
     int get_uniform_location(const std::string &name);
