@@ -6,6 +6,7 @@
 #include <glew/GL/glew.h>
 
 class BatchRenderingBasic : public Test {
+  public:
     BatchRenderingBasic(const std::string &key, const std::string &name, OrthographicCamera *camera);
     ~BatchRenderingBasic();
 
@@ -16,5 +17,5 @@ class BatchRenderingBasic : public Test {
   private:
     Shader *m_shader;
 
-    GLuint m_QuadVA, m_QuadVB, m_QuadIB;
+    GLuint m_quad_va, m_quad_vb, m_quad_ib;
 };

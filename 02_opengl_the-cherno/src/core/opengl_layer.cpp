@@ -4,9 +4,9 @@
 #include <glfw/GLFW/glfw3.h>
 
 #include "log.hpp"
+#include "opengl/debug.hpp"
 #include "opengl_layer.hpp"
 
-// OpenGL and GLEW return strings as unsigned char, std::format needs const char
 static const char *gl_string(const unsigned char *string) {
     return reinterpret_cast<const char *>(string);
 }
@@ -25,6 +25,7 @@ OpenGLLayer::OpenGLLayer() {
         throw std::runtime_error("failed to initialise GLEW");
     }
     print_library_versions();
+    enable_gl_debugging();
 }
 
 void OpenGLLayer::begin_frame() const {

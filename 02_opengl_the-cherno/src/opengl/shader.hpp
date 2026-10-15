@@ -24,6 +24,8 @@ class Shader {
     void bind() const;
     void unbind() const;
 
+    inline unsigned int get_renderer_id() const { return m_renderer_id; }
+
     void set_uniform_1i(const std::string &name, int value);
     void set_uniform_4f(const std::string &name, float v0, float v1, float v2, float v4);
     void set_uniform_mat4f(const std::string &name, const glm::mat4 &matrix);
