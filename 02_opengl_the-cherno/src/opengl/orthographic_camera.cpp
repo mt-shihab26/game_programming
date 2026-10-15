@@ -14,22 +14,20 @@ OrthographicCamera::OrthographicCamera() {
     set_default();
 }
 
-void OrthographicCamera::set_default() {
-    m_zoom = 1.0f;
-    m_view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
-}
-
 void OrthographicCamera::on_update() {
     set_viewport();
     handle_mouse_wheel_update();
     handle_reset_shortcut();
     handle_mouse_drag_update();
+    set_view();
     set_projection();
 }
 
 void OrthographicCamera::handle_mouse_drag_update() {
     if (ImGui::IsMouseDragging(ImGuiMouseButton_Left)) {
-        log_info("mouse left drag");
+        ImVec2 mouse = ImGui::GetMousePos();
+        ImVec2 delta = ImGui::GetMouseDragDelta(ImGuiMouseButton_Left);
+        log_info("mouse left drag at {}, {} delta {}, {}", mouse.x, mouse.y, delta.x, delta.y);
     }
 }
 
@@ -49,19 +47,6 @@ void OrthographicCamera::handle_mouse_wheel_update() {
     }
 }
 
-void OrthographicCamera::set_viewport() {
-    ImGuiIO &io = ImGui::GetIO();
-    m_width = io.DisplaySize.x;
-    m_height = io.DisplaySize.y;
-}
-
-void OrthographicCamera::set_projection() {
-    float zoom = (m_zoom == 0.0f ? 1 : m_zoom);
-    float half_width = m_width / 2.0f / zoom;
-    float half_height = m_height / 2.0f / zoom;
-    m_projection = glm::ortho(-half_width, half_width, -half_height, half_height, -1.0f, 1.0f);
-}
-
 void OrthographicCamera::on_render() {
 }
 
@@ -74,4 +59,26 @@ void OrthographicCamera::on_imgui_render() {
     ImGui::Text("zoom = %.2e", m_zoom);
 
     ImGui::End();
+}
+
+void OrthographicCamera::set_default() {
+    m_zoom = 1.0f;
+    m_position = glm::vec3(0, 0, 0);
+}
+
+void OrthographicCamera::set_viewport() {
+    ImGuiIO &io = ImGui::GetIO();
+    m_width = io.DisplaySize.x;
+    m_height = io.DisplaySize.y;
+}
+
+void OrthographicCamera::set_view() {
+    m_view = glm::translate(glm::mat4(1.0f), m_position);
+}
+
+void OrthographicCamera::set_projection() {
+    float zoom = (m_zoom == 0.0f ? 1 : m_zoom);
+    float half_width = m_width / 2.0f / zoom;
+    float half_height = m_height / 2.0f / zoom;
+    m_projection = glm::ortho(-half_width, half_width, -half_height, half_height, -1.0f, 1.0f);
 }

@@ -26,12 +26,14 @@ class OrthographicCamera {
     glm::mat4 m_view;
 
     float m_zoom;
+    glm::vec3 m_position;
 
     void set_default();
     void set_viewport();
     void handle_mouse_wheel_update();
     void handle_reset_shortcut();
     void handle_mouse_drag_update();
+    void set_view();
     void set_projection();
 
     glm::mat4 get_projection() const { return m_projection; }
