@@ -13,8 +13,8 @@ class OrthographicCamera {
     glm::mat4 get_view_projection() const { return get_projection() * get_view(); }
 
   private:
-    float m_width;
-    float m_height;
+    float m_width = 0.0f;
+    float m_height = 0.0f;
     glm::mat4 m_projection;
     glm::mat4 m_view;
 
@@ -26,8 +26,8 @@ class OrthographicCamera {
     void handle_mouse_wheel_update();
     void handle_reset_shortcut();
     void handle_mouse_drag_update();
-    void set_view();
-    void set_projection();
+    void set_view(const glm::vec3 &position);
+    void set_projection(float width, float height, float zoom);
 
     glm::mat4 get_projection() const { return m_projection; }
     glm::mat4 get_view() const { return m_view; }
