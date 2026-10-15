@@ -5,7 +5,7 @@
 
 class Test {
   public:
-    Test(const std::string &key, const std::string &name, OrthographicCamera *&camera)
+    Test(const std::string &key, const std::string &name, OrthographicCamera *camera)
         : m_key(key), m_name(name), m_camera(camera) {}
     virtual ~Test() {}
 
@@ -15,7 +15,7 @@ class Test {
 
     const std::string &get_key() const { return m_key; }
     const std::string &get_name() const { return m_name; }
-    OrthographicCamera *&get_camera() { return m_camera; }
+    OrthographicCamera *get_camera() const { return m_camera; }
 
   private:
     std::string m_key;

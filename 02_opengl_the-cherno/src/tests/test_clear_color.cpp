@@ -5,7 +5,7 @@
 #include <glew/GL/glew.h>
 #include <imgui/imgui.h>
 
-TestClearColor::TestClearColor(const std::string &key, const std::string &name, const OrthographicCamera camera)
+TestClearColor::TestClearColor(const std::string &key, const std::string &name, OrthographicCamera *camera)
     : Test(key, name, camera), m_clear_color{0.2f, 0.3f, 0.8f, 1.0f} {
     log_info("Opened test '{}' (key: {})", get_name(), get_key());
 }

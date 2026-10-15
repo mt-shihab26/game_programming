@@ -13,7 +13,7 @@
 
 class TestTexture2D : public Test {
   public:
-    TestTexture2D(const std::string &key, const std::string &name, const OrthographicCamera camera);
+    TestTexture2D(const std::string &key, const std::string &name, OrthographicCamera *camera);
     ~TestTexture2D();
 
     void on_update(float dt) override;

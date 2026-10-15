@@ -19,7 +19,7 @@
 
 #include "test_texture_2d.hpp"
 
-TestTexture2D::TestTexture2D(const std::string &key, const std::string &name, const OrthographicCamera camera)
+TestTexture2D::TestTexture2D(const std::string &key, const std::string &name, OrthographicCamera *camera)
     : Test(key, name, camera),
       m_vertex_buffer(m_positions, sizeof(m_positions)),
       m_index_buffer(m_indices, 6),
@@ -63,7 +63,7 @@ void TestTexture2D::on_render() {
     ImGuiIO &io = ImGui::GetIO();
 
     glm::mat4 model = glm::translate(glm::mat4(1.0), m_translation);
-    glm::mat4 mvp = get_camera().get_view_projection() * model;
+    glm::mat4 mvp = get_camera()->get_view_projection() * model;
 
     m_shader.bind();
     m_shader.set_uniform_mat4f("u_mvp", mvp);

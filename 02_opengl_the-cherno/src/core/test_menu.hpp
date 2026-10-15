@@ -24,9 +24,7 @@ class TestMenu {
     void register_test(const std::string &key, const std::string &name) {
         log_info("Registering test '{}' (key: {})", name, key);
 
-        OrthographicCamera camera;
-
-        m_entries.push_back({key, name, [key, name, camera]() { return new T(key, name, camera); }});
+        m_entries.push_back({key, name, [this, key, name]() { return new T(key, name, &m_camera); }});
     }
 
     void on_update(float dt);
@@ -39,6 +37,8 @@ class TestMenu {
 
   private:
     std::vector<Entry> m_entries;
+
+    OrthographicCamera m_camera;
 
     Test *m_current_test = nullptr;
 
