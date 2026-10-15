@@ -35,11 +35,9 @@ void OrthographicCamera::handle_reset_shortcut() {
 void OrthographicCamera::handle_mouse_wheel_update() {
     float wheel = ImGui::GetIO().MouseWheel;
     if (wheel > 0) {
-        log_info("{} * 1.1f: {}", m_zoom, m_zoom * 1.1f);
         m_zoom *= 1.1f;
     }
     if (wheel < 0) {
-        log_info("{} / 1.1f: {}", m_zoom, m_zoom / 1.1f);
         m_zoom /= 1.1f;
     }
 }
@@ -66,7 +64,7 @@ void OrthographicCamera::on_imgui_render() {
 
     ImGui::Begin("Camera", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
 
-    ImGui::Text("zoom = %.2f", m_zoom);
+    ImGui::Text("zoom = %.2e", m_zoom);
 
     ImGui::End();
 }
