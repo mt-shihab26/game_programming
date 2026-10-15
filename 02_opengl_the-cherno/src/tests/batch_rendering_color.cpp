@@ -15,24 +15,6 @@ BatchRenderingColor::BatchRenderingColor(const std::string &key, const std::stri
     glGenVertexArrays(1, &m_quad_va);
     glBindVertexArray(m_quad_va);
 
-    // clang-format off
-    float vertices[] = {
-        -150.0f, -50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
-         -50.0f, -50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
-         -50.0f,  50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
-        -150.0f,  50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
-
-          50.0f, -50.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f,
-         150.0f, -50.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f,
-         150.0f,  50.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f,
-          50.0f,  50.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f
-    };
-    // clang-format on
-
-    glGenBuffers(1, &m_quad_vb);
-    glBindBuffer(GL_ARRAY_BUFFER, m_quad_vb);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 7, 0);
 
@@ -63,6 +45,23 @@ BatchRenderingColor::~BatchRenderingColor() {
 }
 
 void BatchRenderingColor::on_update(float dt) {
+    // clang-format off
+    float vertices[] = {
+        -150.0f, -50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
+         -50.0f, -50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
+         -50.0f,  50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
+        -150.0f,  50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
+
+          50.0f, -50.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f,
+         150.0f, -50.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f,
+         150.0f,  50.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f,
+          50.0f,  50.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f
+    };
+    // clang-format on
+
+    glGenBuffers(1, &m_quad_vb);
+    glBindBuffer(GL_ARRAY_BUFFER, m_quad_vb);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 }
 
 void BatchRenderingColor::on_render() {

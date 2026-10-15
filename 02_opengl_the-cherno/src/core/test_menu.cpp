@@ -26,8 +26,14 @@ void TestMenu::on_render() {
 
 void TestMenu::on_imgui_render() {
     if (m_current_test) {
-        m_current_test->get_camera()->on_imgui_render();
+        bool go_back = m_current_test->get_camera()->on_imgui_render();
         draw_current_test();
+
+        // close after both windows are drawn, so the test isn't deleted while still in use
+        if (go_back) {
+            delete m_current_test;
+            m_current_test = nullptr;
+        }
     } else {
         draw_menu();
     }
@@ -99,13 +105,6 @@ void TestMenu::draw_current_test() {
     ImGui::SetNextWindowSize(ImVec2(340 * content_scale, 180 * content_scale), ImGuiCond_FirstUseEver);
 
     ImGui::Begin(m_current_test->get_name().c_str());
-    bool go_back = ImGui::Button("<-");
     m_current_test->on_imgui_render();
     ImGui::End();
-
-    // close after End(), so the test isn't deleted while its window is still being drawn
-    if (go_back) {
-        delete m_current_test;
-        m_current_test = nullptr;
-    }
 }

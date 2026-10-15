@@ -55,16 +55,20 @@ void OrthographicCamera::handle_mouse_wheel_update() {
 void OrthographicCamera::on_render() {
 }
 
-void OrthographicCamera::on_imgui_render() {
+bool OrthographicCamera::on_imgui_render() {
     ImGui::SetNextWindowPos(ImVec2(10.0f, 10.0f), ImGuiCond_Always);
 
     ImGui::Begin("Camera", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
+
+    bool go_back = ImGui::Button("<- Back");
 
     ImGui::Text("zoom = %.2e", m_zoom);
     ImGui::Text("position = %.2f, %.2f", m_position.x, m_position.y);
     ImGui::Text("viewport = %.0f x %.0f", m_width, m_height);
 
     ImGui::End();
+
+    return go_back;
 }
 
 void OrthographicCamera::set_default() {
