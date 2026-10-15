@@ -20,7 +20,9 @@ class OrthographicCamera {
   private:
     float m_width;
     float m_height;
+    glm::mat4 m_projection;
+    glm::mat4 m_view;
 
-    glm::mat4 get_projection() const;
-    glm::mat4 get_view() const;
+    glm::mat4 get_projection() const { return m_projection; }
+    glm::mat4 get_view() const { return m_view; }
 };

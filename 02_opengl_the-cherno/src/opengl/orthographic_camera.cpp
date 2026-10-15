@@ -11,6 +11,9 @@
 
 OrthographicCamera::OrthographicCamera() {
     set_viewport();
+
+    m_projection = glm::ortho(0.0f, m_width, 0.0f, m_height, -1.0f, 1.0f);
+    m_view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
 }
 
 OrthographicCamera::~OrthographicCamera() {
@@ -24,12 +27,4 @@ void OrthographicCamera::set_viewport() {
 
 glm::mat4 OrthographicCamera::get_view_projection() const {
     return get_projection() * get_view();
-}
-
-glm::mat4 OrthographicCamera::get_projection() const {
-    return glm::ortho(0.0f, m_width, 0.0f, m_height, -1.0f, 1.0f);
-}
-
-glm::mat4 OrthographicCamera::get_view() const {
-    return glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
 }
