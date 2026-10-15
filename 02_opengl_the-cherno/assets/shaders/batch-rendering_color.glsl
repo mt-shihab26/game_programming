@@ -2,8 +2,8 @@
 
 #version 330 core
 
-layout(location = 0) in vec2 position;
-layout(location = 1) in vec4 color;
+layout(location = 0) in vec2 a_position;
+layout(location = 1) in vec4 a_color;
 
 uniform mat4 u_mvp;
 
@@ -11,19 +11,19 @@ out vec4 v_color;
 
 void main()
 {
-    gl_Position = u_mvp * vec4(position, 0.0, 1.0);
-    v_color = color;
+    gl_Position = u_mvp * vec4(a_position, 0.0, 1.0);
+    v_color = a_color;
 };
 
 #type fragment
 
 #version 330 core
 
-layout(location = 0) out vec4 color;
+layout(location = 0) out vec4 o_color;
 
 in vec4 v_color;
 
 void main()
 {
-    color = v_color;
+    o_color = v_color;
 };
