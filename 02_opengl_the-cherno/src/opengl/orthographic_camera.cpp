@@ -15,9 +15,16 @@ OrthographicCamera::OrthographicCamera() {
 
 void OrthographicCamera::on_update() {
     set_viewport();
-    handle_mouse_wheel_update();
-    handle_reset_shortcut();
-    handle_mouse_drag_update();
+
+    ImGuiIO &io = ImGui::GetIO();
+    if (!io.WantCaptureMouse) {
+        handle_mouse_wheel_update();
+        handle_mouse_drag_update();
+    }
+    if (!io.WantCaptureKeyboard) {
+        handle_reset_shortcut();
+    }
+
     set_view();
     set_projection();
 }
@@ -76,8 +83,7 @@ void OrthographicCamera::set_view() {
 }
 
 void OrthographicCamera::set_projection() {
-    float zoom = (m_zoom == 0.0f ? 1 : m_zoom);
-    float half_width = m_width / 2.0f / zoom;
-    float half_height = m_height / 2.0f / zoom;
+    float half_width = m_width / 2.0f / m_zoom;
+    float half_height = m_height / 2.0f / m_zoom;
     m_projection = glm::ortho(-half_width, half_width, -half_height, half_height, -1.0f, 1.0f);
 }
