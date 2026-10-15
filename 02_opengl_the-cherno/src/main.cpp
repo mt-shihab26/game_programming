@@ -7,6 +7,7 @@
 #include "core/test_menu.hpp"
 #include "core/window.hpp"
 
+#include "tests/batch_rendering_basic.hpp"
 #include "tests/test_clear_color.hpp"
 #include "tests/test_texture_2d.hpp"
 
@@ -15,6 +16,7 @@ class App {
     App(Argv &argv) : m_window(1280, 780, "OpenGL - The Cherno"), m_imgui_layer(m_window) {
         m_test_menu.register_test<TestClearColor>("clear-color", "Clear Color");
         m_test_menu.register_test<TestTexture2D>("texture-2d", "Texture 2D");
+        m_test_menu.register_test<BatchRenderingBasic>("batch-rendering-basic", "Batch Rendering Basic");
 
         m_test_menu.open_from_args(argv);
     }

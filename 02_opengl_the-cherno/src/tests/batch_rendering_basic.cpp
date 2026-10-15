@@ -12,7 +12,7 @@ BatchRenderingBasic::BatchRenderingBasic(const std::string &key, const std::stri
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    m_shader = new Shader("assets/shaders/texture.glsl");
+    m_shader = new Shader("assets/shaders/batch-rendering_basic.glsl");
 
     glGenVertexArrays(1, &m_quad_va);
     glBindVertexArray(m_quad_va);
