@@ -74,5 +74,14 @@ void TestTexture2D::on_render() {
 void TestTexture2D::on_imgui_render() {
     ImGuiIO &io = ImGui::GetIO();
 
+    // SetNextWindow* only applies to the next Begin(), so it has to be set here, before the test's window opens
+    float content_scale = io.DisplayFramebufferScale.x;
+    // pivot (1, 0) anchors the window by its top-right corner
+    ImVec2 top_right(io.DisplaySize.x, 0.0f);
+    ImGui::SetNextWindowPos(top_right, ImGuiCond_Appearing, ImVec2(1.0f, 0.0f));
+    ImGui::SetNextWindowSize(ImVec2(340 * content_scale, 180 * content_scale), ImGuiCond_FirstUseEver);
+
+    ImGui::Begin(get_name().c_str());
     ImGui::SliderFloat3("Translation", &m_translation.x, 0.0f, io.DisplaySize.x);
+    ImGui::End();
 }

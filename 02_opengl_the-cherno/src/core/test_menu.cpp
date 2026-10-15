@@ -27,7 +27,7 @@ void TestMenu::on_render() {
 void TestMenu::on_imgui_render() {
     if (m_current_test) {
         bool go_back = m_current_test->get_camera()->on_imgui_render();
-        draw_current_test();
+        m_current_test->on_imgui_render();
 
         // close after both windows are drawn, so the test isn't deleted while still in use
         if (go_back) {
@@ -93,18 +93,5 @@ void TestMenu::draw_menu() {
         }
     }
 
-    ImGui::End();
-}
-
-void TestMenu::draw_current_test() {
-    // SetNextWindow* only applies to the next Begin(), so it has to be set here, before the test's window opens
-    float content_scale = ImGui::GetIO().DisplayFramebufferScale.x;
-    // pivot (1, 0) anchors the window by its top-right corner
-    ImVec2 top_right(ImGui::GetIO().DisplaySize.x, 0.0f);
-    ImGui::SetNextWindowPos(top_right, ImGuiCond_Appearing, ImVec2(1.0f, 0.0f));
-    ImGui::SetNextWindowSize(ImVec2(340 * content_scale, 180 * content_scale), ImGuiCond_FirstUseEver);
-
-    ImGui::Begin(m_current_test->get_name().c_str());
-    m_current_test->on_imgui_render();
     ImGui::End();
 }

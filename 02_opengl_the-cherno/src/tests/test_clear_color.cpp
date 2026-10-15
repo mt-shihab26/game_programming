@@ -20,5 +20,14 @@ void TestClearColor::on_render() {
 }
 
 void TestClearColor::on_imgui_render() {
+    // SetNextWindow* only applies to the next Begin(), so it has to be set here, before the test's window opens
+    float content_scale = ImGui::GetIO().DisplayFramebufferScale.x;
+    // pivot (1, 0) anchors the window by its top-right corner
+    ImVec2 top_right(ImGui::GetIO().DisplaySize.x, 0.0f);
+    ImGui::SetNextWindowPos(top_right, ImGuiCond_Appearing, ImVec2(1.0f, 0.0f));
+    ImGui::SetNextWindowSize(ImVec2(340 * content_scale, 180 * content_scale), ImGuiCond_FirstUseEver);
+
+    ImGui::Begin(get_name().c_str());
     ImGui::ColorEdit4("Clear Color", m_clear_color);
+    ImGui::End();
 }

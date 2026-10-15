@@ -43,5 +43,4 @@ class TestMenu {
     Test *m_current_test = nullptr;
 
     void draw_menu();
-    void draw_current_test();
 };
