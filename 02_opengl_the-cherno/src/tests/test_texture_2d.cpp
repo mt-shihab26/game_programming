@@ -23,7 +23,7 @@ TestTexture2D::TestTexture2D(const std::string &key, const std::string &name, Or
     : Test(key, name, camera),
       m_vertex_buffer(m_positions, sizeof(m_positions)),
       m_index_buffer(m_indices, 6),
-      m_shader("assets/shaders/basic.glsl"),
+      m_shader("assets/shaders/texture.glsl"),
       m_texture("assets/textures/omarchy-logo-tokyo-night.png") {
 
     log_info("Opened test '{}' (key: {})", get_name(), get_key());
