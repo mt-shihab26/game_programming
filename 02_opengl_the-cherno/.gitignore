@@ -18,3 +18,5 @@ Makefile
 *.xcworkspace/
 .DS_Store
 
+# clangd index
+.cache/
