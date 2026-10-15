@@ -17,11 +17,11 @@
     } while (0)
 
 // wrapped in do/while so it acts as one statement, e.g. inside an if without braces
-#define GL_CALL(x)                                      \
-    do {                                                \
-        gl_clear_error();                               \
-        x;                                              \
-        ASSERT(gl_log_call(#x, __FILE__, __LINE__));    \
+#define GL_CALL(x)                                   \
+    do {                                             \
+        gl_clear_error();                            \
+        x;                                           \
+        ASSERT(gl_log_call(#x, __FILE__, __LINE__)); \
     } while (0)
 
 void gl_clear_error();
