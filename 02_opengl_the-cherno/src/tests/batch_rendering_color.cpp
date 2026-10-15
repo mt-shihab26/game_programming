@@ -19,15 +19,15 @@ BatchRenderingColor::BatchRenderingColor(const std::string &key, const std::stri
 
     // clang-format off
     float vertices[] = {
-        -150.0f, -50.0f, 0.0f,
-         -50.0f, -50.0f, 0.0f,
-         -50.0f,  50.0f, 0.0f,
-        -150.0f,  50.0f, 0.0f,
+        -150.0f, -50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
+         -50.0f, -50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
+         -50.0f,  50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
+        -150.0f,  50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
 
-          50.0f, -50.0f, 0.0f,
-         150.0f, -50.0f, 0.0f,
-         150.0f,  50.0f, 0.0f,
-          50.0f,  50.0f, 0.0f
+          50.0f, -50.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f,
+         150.0f, -50.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f,
+         150.0f,  50.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f,
+          50.0f,  50.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f
     };
     // clang-format on
 
@@ -36,7 +36,10 @@ BatchRenderingColor::BatchRenderingColor(const std::string &key, const std::stri
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 7, 0);
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 7, (const void *)(sizeof(float) * 3));
 
     // clang-format off
     uint32_t indices[] = {
