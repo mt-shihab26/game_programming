@@ -19,8 +19,11 @@
 #include "test_texture_2d.hpp"
 
 TestTexture2D::TestTexture2D(const std::string &key, const std::string &name)
-    : Test(key, name), m_vertex_buffer(m_positions, sizeof(m_positions)), m_index_buffer(m_indices, 6),
-      m_shader("assets/shaders/basic.glsl"), m_texture("assets/textures/omarchy-logo-tokyo-night.png") {
+    : Test(key, name),
+      m_vertex_buffer(m_positions, sizeof(m_positions)),
+      m_index_buffer(m_indices, 6),
+      m_shader("assets/shaders/basic.glsl"),
+      m_texture("assets/textures/omarchy-logo-tokyo-night.png") {
 
     log_info("Opened test '{}' (key: {})", get_name(), get_key());
 
