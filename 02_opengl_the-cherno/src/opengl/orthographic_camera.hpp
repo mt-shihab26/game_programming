@@ -11,9 +11,16 @@
 
 class OrthographicCamera {
   public:
+    OrthographicCamera();
+    ~OrthographicCamera();
+
+    void set_viewport();
     glm::mat4 get_view_projection() const;
 
   private:
+    float m_width;
+    float m_height;
+
     glm::mat4 get_projection() const;
     glm::mat4 get_view() const;
 };

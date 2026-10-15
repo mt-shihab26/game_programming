@@ -18,6 +18,7 @@ void TestMenu::on_update(float dt) {
 
 void TestMenu::on_render() {
     if (m_current_test) {
+        m_current_test->get_camera()->set_viewport();
         m_current_test->on_render();
     }
 }
