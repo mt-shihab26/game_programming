@@ -2,7 +2,7 @@
 
 #include "core/test.hpp"
 #include "opengl/orthographic_camera.hpp"
-#include "opengl/shader.hpp"
+#include "opengl/basic_shader.hpp"
 #include <glew/GL/glew.h>
 
 class BatchRenderingBasic : public Test {
@@ -15,7 +15,7 @@ class BatchRenderingBasic : public Test {
     void on_imgui_render() override;
 
   private:
-    Shader *m_shader;
+    BasicShader *m_shader;
 
     GLuint m_quad_va, m_quad_vb, m_quad_ib;
 };

@@ -1,97 +1,22 @@
-#include <fstream>
-#include <sstream>
 #include <string>
 
 #include <glew/GL/glew.h>
 
 #include "core/log.hpp"
-#include "core/path.hpp"
 
 #include "helper.hpp"
 
 #include "shader.hpp"
 
-unsigned int Shader::create_shader() {
-    ShaderSource shader_source = parse_shader();
-
-    unsigned int program;
-    GL_CALL(program = glCreateProgram());
-
-    unsigned int vs = compile_shader(GL_VERTEX_SHADER, shader_source.vertex);
-    unsigned int fs = compile_shader(GL_FRAGMENT_SHADER, shader_source.fragment);
-
-    GL_CALL(glAttachShader(program, vs));
-    GL_CALL(glAttachShader(program, fs));
-
-    GL_CALL(glLinkProgram(program));
-
-    int linked;
-    GL_CALL(glGetProgramiv(program, GL_LINK_STATUS, &linked));
-    if (!linked) {
-        int length;
-        GL_CALL(glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length));
-        char *message = (char *)alloca(length * sizeof(char));
-        GL_CALL(glGetProgramInfoLog(program, length, &length, message));
-        log_error("Failed to link shader program:\n{}", message);
-    }
-
-    GL_CALL(glValidateProgram(program));
-
-    GL_CALL(glDeleteShader(vs));
-    GL_CALL(glDeleteShader(fs));
-
-    return program;
+Shader::Shader(const std::string &filepath) : m_program(filepath) {
 }
 
-ShaderSource Shader::parse_shader() {
-    std::ifstream stream(project_path(m_filepath));
-    if (!stream) {
-        log_error("Failed to open shader '{}'", project_path(m_filepath));
-    }
-
-    std::string line;
-    std::stringstream ss[2];
-    ShaderType type = ShaderType::None;
-
-    while (getline(stream, line)) {
-        if (line.find("#type") != std::string::npos) {
-            if (line.find("vertex") != std::string::npos) {
-                type = ShaderType::Vertex;
-            }
-            if (line.find("fragment") != std::string::npos) {
-                type = ShaderType::Fragment;
-            }
-        } else if (type != ShaderType::None) {
-            // lines before the first #type don't belong to any shader
-            ss[(int)type] << line << "\n";
-        }
-    }
-
-    return {ss[0].str(), ss[1].str()};
+void Shader::bind() const {
+    GL_CALL(glUseProgram(get_renderer_id()));
 }
 
-unsigned int Shader::compile_shader(unsigned int type, const std::string &source) {
-    const char *src = source.c_str();
-
-    unsigned int id;
-    GL_CALL(id = glCreateShader(type));
-    GL_CALL(glShaderSource(id, 1, &src, nullptr));
-    GL_CALL(glCompileShader(id));
-
-    // error handling
-    int result;
-    GL_CALL(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
-    if (!result) {
-        int length;
-        GL_CALL(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
-        char *message = (char *)alloca(length * sizeof(char));
-        GL_CALL(glGetShaderInfoLog(id, length, &length, message));
-        log_error("Failed to compile {} shader:\n{}", type == GL_VERTEX_SHADER ? "vertex" : "fragment", message);
-        GL_CALL(glDeleteShader(id));
-        return 0;
-    }
-
-    return id;
+void Shader::unbind() const {
+    GL_CALL(glUseProgram(0));
 }
 
 int Shader::get_uniform_location(const std::string &name) {
@@ -100,7 +25,7 @@ int Shader::get_uniform_location(const std::string &name) {
     }
 
     int location;
-    GL_CALL(location = glGetUniformLocation(m_renderer_id, name.c_str()));
+    GL_CALL(location = glGetUniformLocation(get_renderer_id(), name.c_str()));
     if (location == -1) {
         log_warn("Uniform '{}' doesn't exist", name);
     } else {
@@ -108,22 +33,6 @@ int Shader::get_uniform_location(const std::string &name) {
     }
 
     return location;
-}
-
-Shader::Shader(const std::string &filepath) : m_filepath(filepath), m_renderer_id(0) {
-    m_renderer_id = create_shader();
-}
-
-Shader::~Shader() {
-    GL_CALL(glDeleteProgram(m_renderer_id));
-}
-
-void Shader::bind() const {
-    GL_CALL(glUseProgram(m_renderer_id));
-}
-
-void Shader::unbind() const {
-    GL_CALL(glUseProgram(0));
 }
 
 void Shader::set_uniform_1i(const std::string &name, int value) {
