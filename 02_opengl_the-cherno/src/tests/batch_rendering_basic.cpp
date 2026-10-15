@@ -17,11 +17,19 @@ BatchRenderingBasic::BatchRenderingBasic(const std::string &key, const std::stri
     glGenVertexArrays(1, &m_quad_va);
     glBindVertexArray(m_quad_va);
 
+    // clang-format off
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.5f, 0.5f, 0.0f,
-        -0.5f, 0.5f, 0.0f};
+        -150.0f, -50.0f, 0.0f,
+         -50.0f, -50.0f, 0.0f,
+         -50.0f,  50.0f, 0.0f,
+        -150.0f,  50.0f, 0.0f,
+
+          50.0f, -50.0f, 0.0f,
+         150.0f, -50.0f, 0.0f,
+         150.0f,  50.0f, 0.0f,
+          50.0f,  50.0f, 0.0f
+    };
+    // clang-format on
 
     glGenBuffers(1, &m_quad_vb);
     glBindBuffer(GL_ARRAY_BUFFER, m_quad_vb);
@@ -30,7 +38,13 @@ BatchRenderingBasic::BatchRenderingBasic(const std::string &key, const std::stri
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
 
-    uint32_t indices[] = {0, 1, 2, 2, 3, 0};
+    // clang-format off
+    uint32_t indices[] = {
+        0, 1, 2, 2, 3, 0,
+        4, 5, 6, 6, 7, 4
+    };
+    // clang-format on
+
     glGenBuffers(1, &m_quad_ib);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_quad_ib);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
@@ -56,7 +70,7 @@ void BatchRenderingBasic::on_update(float dt) {
 }
 
 void BatchRenderingBasic::on_render() {
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 }
 
 void BatchRenderingBasic::on_imgui_render() {
