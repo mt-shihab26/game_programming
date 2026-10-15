@@ -39,7 +39,7 @@ BatchRenderingColor::BatchRenderingColor(const std::string &key, const std::stri
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 7, 0);
 
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 7, (const void *)(sizeof(float) * 3));
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 7, (const void *)(sizeof(float) * 3));
 
     // clang-format off
     uint32_t indices[] = {
