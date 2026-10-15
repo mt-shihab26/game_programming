@@ -147,6 +147,21 @@ of memory. The GPU also skips recomputing a corner it has just processed.
 
 ---
 
+## 5. Many vertex arrays, one bound at a time
+
+You can create many vertex arrays (one per object), but only **one is bound
+at a time**. A draw call renders whatever is bound right now: the vertex
+array, and also the shader and texture.
+
+```
+bind VAO 1 → draw   (player)
+bind VAO 2 → draw   (tree)
+```
+
+> Analogy: TV channels. Many saved, one on screen.
+
+---
+
 ## How they fit together
 
 ```
@@ -173,5 +188,5 @@ of memory. The GPU also skips recomputing a corner it has just processed.
 - **Vertex Buffer:** the data (a box of numbers)
 - **Layout:** how to interpret the data (the label on the box)
 - **Vertex Array:** remembers buffer + layout + indices together (a save slot)
-- **Index Buffer:** which vertices form triangles, so shared corners aren't
-  duplicated (connect-the-dots)
+- **Index Buffer:** which vertices form triangles, so shared corners aren't duplicated (connect-the-dots)
+- **Draw:** renders whatever is bound right now. You can have many vertex arrays, but only one is active at a time (TV channels)
