@@ -10,17 +10,28 @@
 #include "core/log.hpp"
 #include "orthographic_camera.hpp"
 
-OrthographicCamera::OrthographicCamera() : m_zoom(1.0f) {
-    m_view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
-
+OrthographicCamera::OrthographicCamera() {
+    set_default();
     set_viewport();
     set_projection();
+}
+
+void OrthographicCamera::set_default() {
+    m_zoom = 1.0f;
+    m_view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
 }
 
 void OrthographicCamera::on_update() {
     set_viewport();
     handle_mouse_wheel_update();
+    handle_reset_shortcut();
     set_projection();
+}
+
+void OrthographicCamera::handle_reset_shortcut() {
+    if (ImGui::IsKeyChordPressed(ImGuiMod_Ctrl | ImGuiKey_R)) {
+        set_default();
+    }
 }
 
 void OrthographicCamera::handle_mouse_wheel_update() {
