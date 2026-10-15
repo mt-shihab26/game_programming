@@ -31,6 +31,7 @@ class OrthographicCamera {
     void set_viewport();
     void handle_mouse_wheel_update();
     void handle_reset_shortcut();
+    void handle_mouse_drag_update();
     void set_projection();
 
     glm::mat4 get_projection() const { return m_projection; }

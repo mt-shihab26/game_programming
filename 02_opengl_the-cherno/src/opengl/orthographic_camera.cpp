@@ -23,7 +23,14 @@ void OrthographicCamera::on_update() {
     set_viewport();
     handle_mouse_wheel_update();
     handle_reset_shortcut();
+    handle_mouse_drag_update();
     set_projection();
+}
+
+void OrthographicCamera::handle_mouse_drag_update() {
+    if (ImGui::IsMouseDragging(ImGuiMouseButton_Left)) {
+        log_info("mouse left drag");
+    }
 }
 
 void OrthographicCamera::handle_reset_shortcut() {
