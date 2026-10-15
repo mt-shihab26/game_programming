@@ -93,7 +93,10 @@ void TestMenu::draw_menu() {
 void TestMenu::draw_current_test() {
     // SetNextWindow* only applies to the next Begin(), so it has to be set here, before the test's window opens
     float content_scale = ImGui::GetIO().DisplayFramebufferScale.x;
-    ImGui::SetNextWindowPos(ImVec2(60 * content_scale, 60 * content_scale), ImGuiCond_FirstUseEver);
+    ImVec2 display_size = ImGui::GetIO().DisplaySize;
+    // pivot (1, 1) anchors the window by its bottom-right corner
+    ImVec2 bottom_right(display_size.x - 60 * content_scale, display_size.y - 60 * content_scale);
+    ImGui::SetNextWindowPos(bottom_right, ImGuiCond_Appearing, ImVec2(1.0f, 1.0f));
     ImGui::SetNextWindowSize(ImVec2(340 * content_scale, 180 * content_scale), ImGuiCond_FirstUseEver);
 
     ImGui::Begin(m_current_test->get_name().c_str());
