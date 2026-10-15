@@ -12,8 +12,6 @@
 
 OrthographicCamera::OrthographicCamera() {
     set_default();
-    set_viewport();
-    set_projection();
 }
 
 void OrthographicCamera::set_default() {
