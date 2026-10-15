@@ -7,7 +7,6 @@
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
 
-#include "core/log.hpp"
 #include "orthographic_camera.hpp"
 
 OrthographicCamera::OrthographicCamera() {
@@ -25,9 +24,9 @@ void OrthographicCamera::on_update() {
 
 void OrthographicCamera::handle_mouse_drag_update() {
     if (ImGui::IsMouseDragging(ImGuiMouseButton_Left)) {
-        ImVec2 mouse = ImGui::GetMousePos();
         ImVec2 delta = ImGui::GetMouseDragDelta(ImGuiMouseButton_Left);
-        m_position = glm::vec3(delta.x, delta.y, 0);
+        ImGui::ResetMouseDragDelta(ImGuiMouseButton_Left);
+        m_position += glm::vec3(delta.x, -delta.y, 0) / m_zoom;
     }
 }
 
