@@ -61,6 +61,9 @@ BatchRenderingColor::~BatchRenderingColor() {
 }
 
 void BatchRenderingColor::on_update(float dt) {
+}
+
+void BatchRenderingColor::on_render() {
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -70,9 +73,6 @@ void BatchRenderingColor::on_update(float dt) {
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(get_camera()->get_view_projection()));
 
     glBindVertexArray(m_quad_va);
-}
-
-void BatchRenderingColor::on_render() {
     glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 }
 
