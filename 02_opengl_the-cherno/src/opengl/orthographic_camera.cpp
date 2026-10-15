@@ -7,6 +7,7 @@
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
 
+#include "core/log.hpp"
 #include "orthographic_camera.hpp"
 
 OrthographicCamera::OrthographicCamera() : m_zoom(1.0f) {
@@ -24,8 +25,13 @@ void OrthographicCamera::on_update() {
 
 void OrthographicCamera::handle_mouse_wheel_update() {
     float wheel = ImGui::GetIO().MouseWheel;
-    if (wheel) {
-        m_zoom = m_zoom + wheel * 0.1f;
+    if (wheel > 0) {
+        log_info("{} * 1.1f: {}", m_zoom, m_zoom * 1.1f);
+        m_zoom *= 1.1f;
+    }
+    if (wheel < 0) {
+        log_info("{} / 1.1f: {}", m_zoom, m_zoom / 1.1f);
+        m_zoom /= 1.1f;
     }
 }
 
