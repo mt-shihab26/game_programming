@@ -36,7 +36,7 @@ TestTexture2D::TestTexture2D(const std::string &key, const std::string &name, Or
     layout.push<float>(2);
     m_vertex_array.add_buffer(m_vertex_buffer, layout);
 
-    m_translation = glm::vec3(200, 200, 0);
+    m_translation = glm::vec3(0, 0, 0);
 
     m_shader.bind();
     m_shader.set_uniform_1i("u_texture", 0);
