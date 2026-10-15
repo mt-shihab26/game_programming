@@ -4,7 +4,7 @@
 
 class TestClearColor : public Test {
   public:
-    TestClearColor(const std::string &key, const std::string &name);
+    TestClearColor(const std::string &key, const std::string &name, const OrthographicCamera camera);
     ~TestClearColor();
 
     void on_render() override;
