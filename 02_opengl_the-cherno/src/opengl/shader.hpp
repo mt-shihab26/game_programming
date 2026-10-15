@@ -17,16 +17,6 @@ struct ShaderSource {
 };
 
 class Shader {
-  private:
-    std::string m_filepath;
-    unsigned int m_renderer_id;
-    std::unordered_map<std::string, int> m_uniform_location_cache;
-
-    unsigned int create_shader();
-    ShaderSource parse_shader();
-    unsigned int compile_shader(unsigned int type, const std::string &source);
-    int get_uniform_location(const std::string &name);
-
   public:
     Shader(const std::string &filepath);
     ~Shader();
@@ -37,4 +27,14 @@ class Shader {
     void set_uniform_1i(const std::string &name, int value);
     void set_uniform_4f(const std::string &name, float v0, float v1, float v2, float v4);
     void set_uniform_mat4f(const std::string &name, const glm::mat4 &matrix);
+
+  private:
+    std::string m_filepath;
+    unsigned int m_renderer_id;
+    std::unordered_map<std::string, int> m_uniform_location_cache;
+
+    unsigned int create_shader();
+    ShaderSource parse_shader();
+    unsigned int compile_shader(unsigned int type, const std::string &source);
+    int get_uniform_location(const std::string &name);
 };

@@ -106,6 +106,7 @@ int Shader::get_uniform_location(const std::string &name) {
     } else {
         m_uniform_location_cache[name] = location;
     }
+
     return location;
 }
 
