@@ -1,4 +1,10 @@
-If:
-    PathMatch: .*\.c
-CompileFlags:
-    Remove: [-std=c++23]
+Diagnostics:
+    UnusedIncludes: Strict
+    ClangTidy:
+        Add: [bugprone-*, readability-*]
+
+InlayHints:
+    ParameterNames: Yes
+
+Index:
+    Background: Build
