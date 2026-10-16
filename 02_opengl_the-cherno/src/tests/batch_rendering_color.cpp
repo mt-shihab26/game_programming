@@ -1,11 +1,14 @@
 #include <glew/GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "core/log.hpp"
+
 #include "batch_rendering_color.hpp"
 #include "imgui/imgui.h"
 
 BatchRenderingColor::BatchRenderingColor(const std::string &key, const std::string &name, OrthographicCamera *camera)
     : Test(key, name, camera) {
+    log_info("Opened test '{}' (key: {})", get_name(), get_key());
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
@@ -47,6 +50,8 @@ BatchRenderingColor::~BatchRenderingColor() {
     glBlendFunc(GL_ONE, GL_ZERO);
     glDisable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
+
+    log_info("Closed test '{}' (key: {})", get_name(), get_key());
 }
 
 void BatchRenderingColor::on_update(float dt) {

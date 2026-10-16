@@ -3,10 +3,13 @@
 
 #include "core/test.hpp"
 
+#include "core/log.hpp"
+
 #include "batch_rendering_basic.hpp"
 
 BatchRenderingBasic::BatchRenderingBasic(const std::string &key, const std::string &name, OrthographicCamera *camera)
     : Test(key, name, camera) {
+    log_info("Opened test '{}' (key: {})", get_name(), get_key());
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
@@ -59,6 +62,8 @@ BatchRenderingBasic::~BatchRenderingBasic() {
     glBlendFunc(GL_ONE, GL_ZERO);
     glDisable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
+
+    log_info("Closed test '{}' (key: {})", get_name(), get_key());
 }
 
 void BatchRenderingBasic::on_update(float dt) {
