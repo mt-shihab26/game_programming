@@ -9,7 +9,7 @@
 
 #include "shader_program.hpp"
 
-static GLuint compile_shader(GLenum type, const std::string &source) {
+static GLuint compile_shader(GLenum type, const std::string &source, const std::string &filepath) {
     const char *src = source.c_str();
 
     GLuint id = glCreateShader(type);
@@ -20,8 +20,13 @@ static GLuint compile_shader(GLenum type, const std::string &source) {
     glGetShaderiv(id, GL_COMPILE_STATUS, &compiled);
     if (!compiled) {
         char message[1024];
-        glGetShaderInfoLog(id, sizeof(message), nullptr, message);
-        log_error("Failed to compile {} shader:\n{}", type == GL_VERTEX_SHADER ? "vertex" : "fragment", message);
+        GLsizei length;
+        glGetShaderInfoLog(id, sizeof(message), &length, message);
+        // the driver ends the log with a newline, and log_error adds its own
+        if (length > 0 && message[length - 1] == '\n') {
+            message[length - 1] = '\0';
+        }
+        log_error("Failed to compile {} shader '{}':\n{}", type == GL_VERTEX_SHADER ? "vertex" : "fragment", filepath, message);
     }
 
     return id;
@@ -44,12 +49,15 @@ ShaderProgram::ShaderProgram(const std::string &filepath) {
         } else if (line.find("#type fragment") != std::string::npos) {
             current = 1;
         } else if (current != -1) {
-            sources[current] << line << "\n";
+            sources[current] << line;
         }
+        // both stages get a newline for every file line, so error line numbers match the file
+        sources[0] << "\n";
+        sources[1] << "\n";
     }
 
-    GLuint vs = compile_shader(GL_VERTEX_SHADER, sources[0].str());
-    GLuint fs = compile_shader(GL_FRAGMENT_SHADER, sources[1].str());
+    GLuint vs = compile_shader(GL_VERTEX_SHADER, sources[0].str(), filepath);
+    GLuint fs = compile_shader(GL_FRAGMENT_SHADER, sources[1].str(), filepath);
 
     m_renderer_id = glCreateProgram();
     glAttachShader(m_renderer_id, vs);

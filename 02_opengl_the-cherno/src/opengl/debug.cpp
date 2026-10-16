@@ -46,4 +46,6 @@ void enable_gl_debugging() {
     glEnable(GL_DEBUG_OUTPUT);
     // report the error inside the GL call that caused it, so a breakpoint shows the right line
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    // ShaderProgram reports compile errors itself, with the shader file name
+    glDebugMessageControl(GL_DEBUG_SOURCE_SHADER_COMPILER, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_FALSE);
 }
