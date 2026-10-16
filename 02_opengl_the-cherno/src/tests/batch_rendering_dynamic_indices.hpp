@@ -5,12 +5,6 @@
 #include "opengl/shader_program.hpp"
 #include <glew/GL/glew.h>
 
-struct Vertex {
-    float position[3];
-    float tex_coords[2];
-    float tex_id;
-};
-
 class BatchRenderingDynamicIndices : public Test {
   public:
     BatchRenderingDynamicIndices(const std::string &key, const std::string &name, OrthographicCamera *camera);

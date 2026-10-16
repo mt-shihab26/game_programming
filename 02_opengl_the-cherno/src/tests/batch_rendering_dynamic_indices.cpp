@@ -34,6 +34,12 @@ static GLuint load_texture(const std::string &path) {
     return texture_id;
 }
 
+struct Vertex {
+    float position[3];
+    float tex_coords[2];
+    float tex_id;
+};
+
 static std::array<Vertex, 4> create_quad(float x, float y, float size, float texture_id) {
     Vertex v0 = {{x, y, 0.0f}, {0.0f, 0.0f}, texture_id};
     Vertex v1 = {{x + size, y, 0.0f}, {1.0f, 0.0f}, texture_id};
