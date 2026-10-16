@@ -8,9 +8,9 @@
 #include "core/log.hpp"
 #include "core/path.hpp"
 
-#include "batch_rendering_texture.hpp"
+#include "batch_rendering_dynamic_geometry.hpp"
 
-GLuint load_texture(const std::string &path) {
+static GLuint load_texture(const std::string &path) {
     int w, h, bits;
 
     stbi_set_flip_vertically_on_load(1);
@@ -31,7 +31,7 @@ GLuint load_texture(const std::string &path) {
     return texture_id;
 }
 
-BatchRenderingTexture::BatchRenderingTexture(const std::string &key, const std::string &name, OrthographicCamera *camera)
+BatchRenderingDynamicGeometry::BatchRenderingDynamicGeometry(const std::string &key, const std::string &name, OrthographicCamera *camera)
     : Test(key, name, camera) {
     log_info("Opened test '{}' (key: {})", get_name(), get_key());
 
@@ -39,7 +39,7 @@ BatchRenderingTexture::BatchRenderingTexture(const std::string &key, const std::
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    m_shader = new ShaderProgram("assets/shaders/batch-rendering-texture.glsl");
+    m_shader = new ShaderProgram("assets/shaders/batch-rendering-dynamic-geometry.glsl");
 
     glGenVertexArrays(1, &m_quad_va);
     glBindVertexArray(m_quad_va);
@@ -78,7 +78,7 @@ BatchRenderingTexture::BatchRenderingTexture(const std::string &key, const std::
     m_texture_b = load_texture("assets/textures/raylib-logo.png");
 }
 
-BatchRenderingTexture::~BatchRenderingTexture() {
+BatchRenderingDynamicGeometry::~BatchRenderingDynamicGeometry() {
     glDeleteTextures(1, &m_texture_a);
     glDeleteTextures(1, &m_texture_b);
     glDeleteBuffers(1, &m_quad_ib);
@@ -93,7 +93,7 @@ BatchRenderingTexture::~BatchRenderingTexture() {
     log_info("Closed test '{}' (key: {})", get_name(), get_key());
 }
 
-void BatchRenderingTexture::on_update(float dt) {
+void BatchRenderingDynamicGeometry::on_update(float dt) {
     // clang-format off
     float vertices[] = {
         -150.0f, -50.0f, 0.0f, 0.0f, 0.0f, 0.0f,
@@ -112,7 +112,7 @@ void BatchRenderingTexture::on_update(float dt) {
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 }
 
-void BatchRenderingTexture::on_render() {
+void BatchRenderingDynamicGeometry::on_render() {
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -132,5 +132,5 @@ void BatchRenderingTexture::on_render() {
     glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 }
 
-void BatchRenderingTexture::on_imgui_render() {
+void BatchRenderingDynamicGeometry::on_imgui_render() {
 }
