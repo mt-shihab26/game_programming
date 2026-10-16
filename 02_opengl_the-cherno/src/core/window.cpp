@@ -44,17 +44,17 @@ static void wait_for_window_size(GLFWwindow *window, int width, int height) {
 }
 
 Window::Window(int width, int height, const std::string &title) : m_window(nullptr) {
-    // Mesa returns the newest version it has, so pin it to 3.3
-    setenv("MESA_GL_VERSION_OVERRIDE", "3.3", 1);
-    setenv("MESA_GLSL_VERSION_OVERRIDE", "330", 1);
+    // Mesa returns the newest version it has, so pin it to 4.6
+    setenv("MESA_GL_VERSION_OVERRIDE", "4.6", 1);
+    setenv("MESA_GLSL_VERSION_OVERRIDE", "460", 1);
 
     if (!glfwInit()) {
         throw std::runtime_error("failed to initialise GLFW");
     }
 
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 

@@ -1,6 +1,6 @@
 #type vertex
 
-#version 330 core
+#version 460 core
 
 layout(location = 0) in vec3 a_position;
 layout(location = 2) in vec2 a_tex_coord;
@@ -20,7 +20,7 @@ void main()
 
 #type fragment
 
-#version 330 core
+#version 460 core
 
 in vec2 v_tex_coord;
 in float v_tex_index;

@@ -7,7 +7,7 @@
 ImGuiLayer::ImGuiLayer(const Window &window) {
     ImGui::CreateContext();
     ImGui_ImplGlfw_InitForOpenGL(window.handle(), true);
-    ImGui_ImplOpenGL3_Init("#version 330");
+    ImGui_ImplOpenGL3_Init("#version 460");
     ImGui::StyleColorsDark();
 
     ImGuiIO &io = ImGui::GetIO();
