@@ -41,8 +41,6 @@ TestTexture2D::TestTexture2D(const std::string &key, const std::string &name, Or
     m_shader.bind();
     m_shader.set_uniform_1i("u_texture", 0);
 
-    m_texture.bind();
-
     m_vertex_array.unbind();
     m_shader.unbind();
     m_vertex_buffer.unbind();
@@ -67,6 +65,8 @@ void TestTexture2D::on_render() {
 
     m_shader.bind();
     m_shader.set_uniform_mat4f("u_mvp", mvp);
+
+    m_texture.bind();
 
     m_renderer.draw(m_vertex_array, m_index_buffer, m_shader);
 }

@@ -55,6 +55,10 @@ BatchRenderingBasic::~BatchRenderingBasic() {
     glDeleteBuffers(1, &m_quad_vb);
     glDeleteVertexArrays(1, &m_quad_va);
     delete m_shader;
+
+    glBlendFunc(GL_ONE, GL_ZERO);
+    glDisable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
 }
 
 void BatchRenderingBasic::on_update(float dt) {
