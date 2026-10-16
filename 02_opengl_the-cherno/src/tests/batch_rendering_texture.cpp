@@ -49,7 +49,7 @@ BatchRenderingTexture::BatchRenderingTexture(const std::string &key, const std::
     glBindBuffer(GL_ARRAY_BUFFER, m_quad_vb);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 7 * 8, nullptr, GL_DYNAMIC_DRAW);
 
-    float stride = sizeof(float) * 9;
+    float stride = sizeof(float) * 10;
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0);
@@ -59,6 +59,9 @@ BatchRenderingTexture::BatchRenderingTexture(const std::string &key, const std::
 
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 7));
+
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 9));
 
     // clang-format off
     uint32_t indices[] = {
@@ -94,14 +97,14 @@ void BatchRenderingTexture::on_update(float dt) {
     // clang-format off
     float vertices[] = {
         -150.0f, -50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3], 0.0f, 0.0f, 0.0f,
-         -50.0f, -50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3], 1.0f, 0.0f,0.0f,
-         -50.0f,  50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3], 1.0f, 1.0f,0.0f,
-        -150.0f,  50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3], 0.0f, 1.0f,0.0f,
+         -50.0f, -50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3], 1.0f, 0.0f, 0.0f,
+         -50.0f,  50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3], 1.0f, 1.0f, 0.0f,
+        -150.0f,  50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3], 0.0f, 1.0f, 0.0f,
 
-          50.0f, -50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3], 0.0f, 0.0f,1.0f,
-         150.0f, -50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3], 1.0f, 0.0f,1.0f,
-         150.0f,  50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3], 1.0f, 1.0f,1.0f,
-          50.0f,  50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3], 0.0f, 1.0f,1.0f
+          50.0f, -50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3], 0.0f, 0.0f, 1.0f,
+         150.0f, -50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3], 1.0f, 0.0f, 1.0f,
+         150.0f,  50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3], 1.0f, 1.0f, 1.0f,
+          50.0f,  50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3], 0.0f, 1.0f, 1.0f
     };
     // clang-format on
 
