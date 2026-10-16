@@ -1,0 +1,148 @@
+#include <array>
+#include <cstddef>
+#include <cstdint>
+#include <string>
+
+#include <glew/GL/glew.h>
+#include <glm/gtc/type_ptr.hpp>
+#include <imgui/imgui.h>
+#include <stb/stb_image.h>
+
+#include "core/log.hpp"
+#include "core/path.hpp"
+
+#include "batch_rendering_dynamic_indices.hpp"
+
+static GLuint load_texture(const std::string &path) {
+    int w, h, bits;
+
+    stbi_set_flip_vertically_on_load(1);
+    auto pixels = stbi_load(project_path(path).c_str(), &w, &h, &bits, STBI_rgb_alpha);
+
+    GLuint texture_id;
+    glCreateTextures(GL_TEXTURE_2D, 1, &texture_id);
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+
+    stbi_image_free(pixels);
+
+    return texture_id;
+}
+
+static std::array<Vertex, 4> create_quad(float x, float y, float size, float texture_id) {
+    Vertex v0 = {{x, y, 0.0f}, {0.0f, 0.0f}, texture_id};
+    Vertex v1 = {{x + size, y, 0.0f}, {1.0f, 0.0f}, texture_id};
+    Vertex v2 = {{x + size, y + size, 0.0f}, {1.0f, 1.0f}, texture_id};
+    Vertex v3 = {{x, y + size, 0.0f}, {0.0f, 1.0f}, texture_id};
+
+    return {v0, v1, v2, v3};
+}
+
+BatchRenderingDynamicIndices::BatchRenderingDynamicIndices(const std::string &key, const std::string &name, OrthographicCamera *camera)
+    : Test(key, name, camera) {
+    log_info("Opened test '{}' (key: {})", get_name(), get_key());
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    m_shader = new ShaderProgram("assets/shaders/batch-rendering-dynamic-indices.glsl");
+
+    const size_t max_quad_count = 1000;
+    const size_t max_vertex_count = max_quad_count * 4;
+    const size_t max_indices_count = max_quad_count * 6;
+
+    glGenVertexArrays(1, &m_quad_va);
+    glBindVertexArray(m_quad_va);
+
+    glGenBuffers(1, &m_quad_vb);
+    glBindBuffer(GL_ARRAY_BUFFER, m_quad_vb);
+    glBufferData(GL_ARRAY_BUFFER, max_vertex_count * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void *)(offsetof(Vertex, position)));
+
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void *)(offsetof(Vertex, tex_coords)));
+
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void *)(offsetof(Vertex, tex_id)));
+
+    uint32_t indices[max_indices_count];
+    uint32_t offset = 0;
+    for (size_t i = 0; i < max_indices_count; i += 6) {
+        indices[i + 0] = 0 + offset;
+        indices[i + 1] = 1 + offset;
+        indices[i + 2] = 2 + offset;
+
+        indices[i + 3] = 2 + offset;
+        indices[i + 4] = 3 + offset;
+        indices[i + 5] = 0 + offset;
+
+        offset += 4;
+    }
+
+    glGenBuffers(1, &m_quad_ib);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_quad_ib);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    m_texture_a = load_texture("assets/textures/omarchy-logo-tokyo-night.png");
+    m_texture_b = load_texture("assets/textures/raylib-logo.png");
+}
+
+BatchRenderingDynamicIndices::~BatchRenderingDynamicIndices() {
+    glDeleteTextures(1, &m_texture_a);
+    glDeleteTextures(1, &m_texture_b);
+    glDeleteBuffers(1, &m_quad_ib);
+    glDeleteBuffers(1, &m_quad_vb);
+    glDeleteVertexArrays(1, &m_quad_va);
+    delete m_shader;
+
+    glBlendFunc(GL_ONE, GL_ZERO);
+    glDisable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
+
+    log_info("Closed test '{}' (key: {})", get_name(), get_key());
+}
+
+void BatchRenderingDynamicIndices::on_update(float dt) {
+    auto q0 = create_quad(m_quad_a_position[0], m_quad_a_position[1], 100.0f, 0.0f);
+    auto q1 = create_quad(m_quad_b_position[0], m_quad_b_position[1], 100.0f, 1.0f);
+
+    Vertex vertices[8];
+    memcpy(vertices, q0.data(), q0.size() * sizeof(Vertex));
+    memcpy(vertices + q0.size(), q1.data(), q1.size() * sizeof(Vertex));
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_quad_vb);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+}
+
+void BatchRenderingDynamicIndices::on_render() {
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glUseProgram(m_shader->get_renderer_id());
+
+    int location = glGetUniformLocation(m_shader->get_renderer_id(), "u_mvp");
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(get_camera()->get_view_projection()));
+
+    location = glGetUniformLocation(m_shader->get_renderer_id(), "u_texture");
+    int samplers[2] = {0, 1};
+    glUniform1iv(location, 2, samplers);
+
+    glBindTextureUnit(0, m_texture_a);
+    glBindTextureUnit(1, m_texture_b);
+
+    glBindVertexArray(m_quad_va);
+    glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
+}
+
+void BatchRenderingDynamicIndices::on_imgui_render() {
+    ImGui::DragFloat2("Quad A Position", m_quad_a_position, 1.0f);
+    ImGui::DragFloat2("Quad B Position", m_quad_b_position, 1.0f);
+}
