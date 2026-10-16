@@ -18,4 +18,7 @@ class BatchRenderingColor : public Test {
     ShaderProgram *m_shader;
 
     GLuint m_quad_va, m_quad_vb, m_quad_ib;
+
+    glm::vec4 color_a{0.18f, 0.6f, 0.96f, 1.0f};
+    glm::vec4 color_b{1.0f, 0.93f, 0.24f, 1.0f};
 };

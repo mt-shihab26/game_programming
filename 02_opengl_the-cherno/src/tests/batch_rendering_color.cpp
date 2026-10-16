@@ -2,6 +2,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "batch_rendering_color.hpp"
+#include "imgui/imgui.h"
 
 BatchRenderingColor::BatchRenderingColor(const std::string &key, const std::string &name, OrthographicCamera *camera)
     : Test(key, name, camera) {
@@ -51,15 +52,15 @@ BatchRenderingColor::~BatchRenderingColor() {
 void BatchRenderingColor::on_update(float dt) {
     // clang-format off
     float vertices[] = {
-        -150.0f, -50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
-         -50.0f, -50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
-         -50.0f,  50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
-        -150.0f,  50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f,
+        -150.0f, -50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3],
+         -50.0f, -50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3],
+         -50.0f,  50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3],
+        -150.0f,  50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3],
 
-          50.0f, -50.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f,
-         150.0f, -50.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f,
-         150.0f,  50.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f,
-          50.0f,  50.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f
+          50.0f, -50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3],
+         150.0f, -50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3],
+         150.0f,  50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3],
+          50.0f,  50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3]
     };
     // clang-format on
 
@@ -81,4 +82,6 @@ void BatchRenderingColor::on_render() {
 }
 
 void BatchRenderingColor::on_imgui_render() {
+    ImGui::ColorEdit4("Color A", &color_a[0]);
+    ImGui::ColorEdit4("Color B", &color_b[0]);
 }
