@@ -1,3 +1,4 @@
+#include <array>
 #include <cstddef>
 #include <string>
 
@@ -31,6 +32,21 @@ static GLuint load_texture(const std::string &path) {
     return texture_id;
 }
 
+struct Vertex {
+    float position[3];
+    float tex_coords[2];
+    float tex_id;
+};
+
+static std::array<Vertex, 4> create_quad(float x, float y, float size, float texture_id) {
+    Vertex v0 = {{x, y, 0.0f}, {0.0f, 0.0f}, texture_id};
+    Vertex v1 = {{x + size, y, 0.0f}, {1.0f, 0.0f}, texture_id};
+    Vertex v2 = {{x + size, y + size, 0.0f}, {1.0f, 1.0f}, texture_id};
+    Vertex v3 = {{x, y + size, 0.0f}, {0.0f, 1.0f}, texture_id};
+
+    return {v0, v1, v2, v3};
+}
+
 BatchRenderingDynamicGeometry::BatchRenderingDynamicGeometry(const std::string &key, const std::string &name, OrthographicCamera *camera)
     : Test(key, name, camera) {
     log_info("Opened test '{}' (key: {})", get_name(), get_key());
@@ -43,12 +59,6 @@ BatchRenderingDynamicGeometry::BatchRenderingDynamicGeometry(const std::string &
 
     glGenVertexArrays(1, &m_quad_va);
     glBindVertexArray(m_quad_va);
-
-    struct Vertex {
-        float position[3];
-        float tex_coords[2];
-        float tex_id;
-    };
 
     glGenBuffers(1, &m_quad_vb);
     glBindBuffer(GL_ARRAY_BUFFER, m_quad_vb);
