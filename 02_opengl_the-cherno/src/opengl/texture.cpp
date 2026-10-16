@@ -1,7 +1,6 @@
 #include <string>
 
 #include <glew/GL/glew.h>
-#define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
 #include "core/log.hpp"
