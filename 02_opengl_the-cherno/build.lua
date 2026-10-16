@@ -39,7 +39,7 @@ workspace "demo"
     objdir(obj_dir)
 
     filter "system:linux"
-        toolset "clang"
+        toolset "gcc"
 
 
 project "demo"
