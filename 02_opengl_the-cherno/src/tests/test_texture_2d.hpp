@@ -25,8 +25,8 @@ class TestTexture2D : public Test {
     float m_positions[16] = {
         -50.0f, -50.0f, 0.0f, 0.0f, // 0
          50.0f, -50.0f, 1.0f, 0.0f, // 1
-         50.0f,  50.5f, 1.0f, 1.0f, // 2
-        -50.0f,  50.5f, 0.0f, 1.0f  // 3
+         50.0f,  50.0f, 1.0f, 1.0f, // 2
+        -50.0f,  50.0f, 0.0f, 1.0f  // 3
     };
 
     unsigned int m_indices[6] = {
