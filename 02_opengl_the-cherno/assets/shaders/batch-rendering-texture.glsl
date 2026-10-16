@@ -11,7 +11,7 @@ uniform mat4 u_mvp;
 
 void main()
 {
-    gl_Position = u_mvp * vec4(a_position, 1.0)
+    gl_Position = u_mvp * vec4(a_position, 1.0);
     v_tex_coord = a_tex_coord;
 };
 
@@ -27,5 +27,5 @@ uniform sampler2D u_texture;
 
 void main()
 {
-    o_color = texture(u_texture, v_tex_coord)
+    o_color = texture(u_texture, v_tex_coord);
 };

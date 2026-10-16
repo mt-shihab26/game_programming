@@ -1,10 +1,36 @@
+#include <string>
+
+#include "imgui/imgui.h"
 #include <glew/GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <stb/stb_image.h>
+
 #include "core/log.hpp"
+#include "core/path.hpp"
 
 #include "batch_rendering_texture.hpp"
-#include "imgui/imgui.h"
+
+GLuint load_texture(const std::string &path) {
+    int w, h, bits;
+
+    stbi_set_flip_vertically_on_load(1);
+    auto pixels = stbi_load(project_path(path).c_str(), &w, &h, &bits, STBI_rgb);
+
+    GLuint texture_id;
+    glCreateTextures(GL_TEXTURE_2D, 1, &texture_id);
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+
+    stbi_image_free(pixels);
+
+    return texture_id;
+}
 
 BatchRenderingTexture::BatchRenderingTexture(const std::string &key, const std::string &name, OrthographicCamera *camera)
     : Test(key, name, camera) {
@@ -44,6 +70,9 @@ BatchRenderingTexture::BatchRenderingTexture(const std::string &key, const std::
     glGenBuffers(1, &m_quad_ib);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_quad_ib);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    load_texture("assets/textures/omarchy-logo-tokyo-night.png");
+    load_texture("assets/textures/raylib-logo.png");
 }
 
 BatchRenderingTexture::~BatchRenderingTexture() {
@@ -86,6 +115,9 @@ void BatchRenderingTexture::on_render() {
 
     int location = glGetUniformLocation(m_shader->get_renderer_id(), "u_mvp");
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(get_camera()->get_view_projection()));
+
+    location = glGetUniformLocation(m_shader->get_renderer_id(), "u_texture");
+    glUniformMatrix4fv(location, 1, GL_FALSE, 0);
 
     glBindVertexArray(m_quad_va);
     glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
