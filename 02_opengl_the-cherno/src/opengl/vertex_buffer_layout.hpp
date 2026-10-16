@@ -36,15 +36,15 @@ class VertexBufferLayout {
     template <typename T>
     void push(unsigned int count) = delete;
 
-    template <>
-    void push<float>(unsigned int count);
-
-    template <>
-    void push<unsigned int>(unsigned int count);
-
-    template <>
-    void push<unsigned char>(unsigned int count);
-
     inline unsigned int get_stride() const { return m_stride; }
     inline const std::vector<VertexBufferElement> &get_elements() const { return m_elements; }
 };
+
+template <>
+void VertexBufferLayout::push<float>(unsigned int count);
+
+template <>
+void VertexBufferLayout::push<unsigned int>(unsigned int count);
+
+template <>
+void VertexBufferLayout::push<unsigned char>(unsigned int count);

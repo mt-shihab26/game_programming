@@ -4,7 +4,7 @@
 
 Install these for your OS:
 
-- [Clang](https://clang.llvm.org/), the compiler the project is built with
+- [GCC](https://gcc.gnu.org/), the compiler the project is built with
 - [premake5](https://premake.github.io/), which generates the build files
 
 ## Building and running (Linux)
