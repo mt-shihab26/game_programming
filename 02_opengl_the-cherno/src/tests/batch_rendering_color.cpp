@@ -14,7 +14,7 @@ BatchRenderingColor::BatchRenderingColor(const std::string &key, const std::stri
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    m_shader = new ShaderProgram("assets/shaders/batch-rendering_color.glsl");
+    m_shader = new ShaderProgram("assets/shaders/batch-rendering-color.glsl");
 
     glGenVertexArrays(1, &m_quad_va);
     glBindVertexArray(m_quad_va);
