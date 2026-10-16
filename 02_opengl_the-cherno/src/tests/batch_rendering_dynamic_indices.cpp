@@ -117,15 +117,32 @@ BatchRenderingDynamicIndices::~BatchRenderingDynamicIndices() {
 }
 
 void BatchRenderingDynamicIndices::on_update(float dt) {
-    auto q0 = create_quad(m_quad_a_position[0], m_quad_a_position[1], 100.0f, 0.0f);
-    auto q1 = create_quad(m_quad_b_position[0], m_quad_b_position[1], 100.0f, 1.0f);
+    // 40 x 25 = 1000 quads
+    const int columns = 40;
+    const int rows = 25;
+    const float size = 20.0f;
+    const float step = 25.0f;
 
-    Vertex vertices[8];
-    memcpy(vertices, q0.data(), q0.size() * sizeof(Vertex));
-    memcpy(vertices + q0.size(), q1.data(), q1.size() * sizeof(Vertex));
+    // shift the grid so it's centered on the origin
+    const float start_x = -columns * step * 0.5f;
+    const float start_y = -rows * step * 0.5f;
+
+    std::array<Vertex, columns * rows * 4> vertices;
+    Vertex *buffer = vertices.data();
+
+    for (int y = 0; y < rows; y++) {
+        for (int x = 0; x < columns; x++) {
+            // checkerboard: alternate between texture slot 0 and 1
+            float texture_id = (float)((x + y) % 2);
+
+            auto quad = create_quad(start_x + x * step, start_y + y * step, size, texture_id);
+            memcpy(buffer, quad.data(), quad.size() * sizeof(Vertex));
+            buffer += quad.size();
+        }
+    }
 
     glBindBuffer(GL_ARRAY_BUFFER, m_quad_vb);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices.data());
 }
 
 void BatchRenderingDynamicIndices::on_render() {
@@ -145,7 +162,8 @@ void BatchRenderingDynamicIndices::on_render() {
     glBindTextureUnit(1, m_texture_b);
 
     glBindVertexArray(m_quad_va);
-    glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
+    // 1000 quads * 6 indices
+    glDrawElements(GL_TRIANGLES, 6000, GL_UNSIGNED_INT, nullptr);
 }
 
 void BatchRenderingDynamicIndices::on_imgui_render() {
