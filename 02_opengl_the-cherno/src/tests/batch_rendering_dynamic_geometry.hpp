@@ -5,6 +5,12 @@
 #include "opengl/shader_program.hpp"
 #include <glew/GL/glew.h>
 
+struct Vertex {
+    float position[3];
+    float tex_coords[2];
+    float tex_id;
+};
+
 class BatchRenderingDynamicGeometry : public Test {
   public:
     BatchRenderingDynamicGeometry(const std::string &key, const std::string &name, OrthographicCamera *camera);
@@ -20,4 +26,7 @@ class BatchRenderingDynamicGeometry : public Test {
     GLuint m_quad_va, m_quad_vb, m_quad_ib;
     GLuint m_texture_a;
     GLuint m_texture_b;
+
+    float m_quad_a_position[2] = {-150.0f, -50.0f};
+    float m_quad_b_position[2] = {50.0f, -50.0f};
 };

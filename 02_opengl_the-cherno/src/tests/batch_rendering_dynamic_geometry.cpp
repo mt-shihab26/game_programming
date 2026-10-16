@@ -4,6 +4,7 @@
 
 #include <glew/GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <imgui/imgui.h>
 #include <stb/stb_image.h>
 
 #include "core/log.hpp"
@@ -31,12 +32,6 @@ static GLuint load_texture(const std::string &path) {
 
     return texture_id;
 }
-
-struct Vertex {
-    float position[3];
-    float tex_coords[2];
-    float tex_id;
-};
 
 static std::array<Vertex, 4> create_quad(float x, float y, float size, float texture_id) {
     Vertex v0 = {{x, y, 0.0f}, {0.0f, 0.0f}, texture_id};
@@ -104,8 +99,8 @@ BatchRenderingDynamicGeometry::~BatchRenderingDynamicGeometry() {
 }
 
 void BatchRenderingDynamicGeometry::on_update(float dt) {
-    auto q0 = create_quad(-150.0f, -50.0f, 100.0f, 0.0f);
-    auto q1 = create_quad(50.0f, -50.0f, 100.0f, 1.0f);
+    auto q0 = create_quad(m_quad_a_position[0], m_quad_a_position[1], 100.0f, 0.0f);
+    auto q1 = create_quad(m_quad_b_position[0], m_quad_b_position[1], 100.0f, 1.0f);
 
     Vertex vertices[8];
     memcpy(vertices, q0.data(), q0.size() * sizeof(Vertex));
@@ -136,4 +131,6 @@ void BatchRenderingDynamicGeometry::on_render() {
 }
 
 void BatchRenderingDynamicGeometry::on_imgui_render() {
+    ImGui::DragFloat2("Quad A Position", m_quad_a_position, 1.0f);
+    ImGui::DragFloat2("Quad B Position", m_quad_b_position, 1.0f);
 }
