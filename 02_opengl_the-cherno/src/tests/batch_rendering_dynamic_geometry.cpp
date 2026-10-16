@@ -104,19 +104,12 @@ BatchRenderingDynamicGeometry::~BatchRenderingDynamicGeometry() {
 }
 
 void BatchRenderingDynamicGeometry::on_update(float dt) {
-    // clang-format off
-    float vertices[] = {
-        -150.0f, -50.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-         -50.0f, -50.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-         -50.0f,  50.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-        -150.0f,  50.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+    auto q0 = create_quad(-150.0f, -50.0f, 100.0f, m_texture_a);
+    auto q1 = create_quad(50.0f, -50.0f, 100.0f, m_texture_a);
 
-          50.0f, -50.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-         150.0f, -50.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-         150.0f,  50.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-          50.0f,  50.0f, 0.0f, 0.0f, 1.0f, 1.0f
-    };
-    // clang-format on
+    Vertex vertices[8];
+    memcpy(vertices, q0.data(), q0.size() * sizeof(Vertex));
+    memcpy(vertices + q0.size(), q1.data(), q1.size() * sizeof(Vertex));
 
     glBindBuffer(GL_ARRAY_BUFFER, m_quad_vb);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
