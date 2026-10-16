@@ -15,6 +15,10 @@ BatchRenderingColor::BatchRenderingColor(const std::string &key, const std::stri
     glGenVertexArrays(1, &m_quad_va);
     glBindVertexArray(m_quad_va);
 
+    glGenBuffers(1, &m_quad_vb);
+    glBindBuffer(GL_ARRAY_BUFFER, m_quad_vb);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 7, nullptr, GL_DYNAMIC_DRAW);
+
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 7, 0);
 
