@@ -1,8 +1,8 @@
+#include <cstddef>
 #include <string>
 
 #include <glew/GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
-
 #include <stb/stb_image.h>
 
 #include "core/log.hpp"
@@ -44,20 +44,24 @@ BatchRenderingTexture::BatchRenderingTexture(const std::string &key, const std::
     glGenVertexArrays(1, &m_quad_va);
     glBindVertexArray(m_quad_va);
 
+    struct Vertex {
+        float position[3];
+        float tex_coords[2];
+        float tex_id;
+    };
+
     glGenBuffers(1, &m_quad_vb);
     glBindBuffer(GL_ARRAY_BUFFER, m_quad_vb);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 7 * 8, nullptr, GL_DYNAMIC_DRAW);
-
-    float stride = sizeof(float) * (3 + 2 + 1);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 1000, nullptr, GL_DYNAMIC_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void *)(offsetof(Vertex, position)));
 
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 3));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void *)(offsetof(Vertex, tex_coords)));
 
     glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * (3 + 2)));
+    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void *)(offsetof(Vertex, tex_id)));
 
     // clang-format off
     uint32_t indices[] = {
