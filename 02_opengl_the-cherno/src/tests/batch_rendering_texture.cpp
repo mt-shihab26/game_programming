@@ -72,7 +72,6 @@ BatchRenderingTexture::BatchRenderingTexture(const std::string &key, const std::
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     load_texture("assets/textures/omarchy-logo-tokyo-night.png");
-    load_texture("assets/textures/raylib-logo.png");
 }
 
 BatchRenderingTexture::~BatchRenderingTexture() {
@@ -117,7 +116,7 @@ void BatchRenderingTexture::on_render() {
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(get_camera()->get_view_projection()));
 
     location = glGetUniformLocation(m_shader->get_renderer_id(), "u_texture");
-    glUniformMatrix4fv(location, 1, GL_FALSE, 0);
+    glUniform1i(location, 0);
 
     glBindVertexArray(m_quad_va);
     glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
