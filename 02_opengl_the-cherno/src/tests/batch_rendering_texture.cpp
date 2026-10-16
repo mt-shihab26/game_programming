@@ -58,7 +58,7 @@ BatchRenderingTexture::BatchRenderingTexture(const std::string &key, const std::
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 3));
 
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 3 * 4));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 7));
 
     // clang-format off
     uint32_t indices[] = {
@@ -71,10 +71,13 @@ BatchRenderingTexture::BatchRenderingTexture(const std::string &key, const std::
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_quad_ib);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    load_texture("assets/textures/omarchy-logo-tokyo-night.png");
+    m_texture_a = load_texture("assets/textures/omarchy-logo-tokyo-night.png");
+    m_texture_b = load_texture("assets/textures/raylib-logo.png");
 }
 
 BatchRenderingTexture::~BatchRenderingTexture() {
+    glDeleteTextures(1, &m_texture_a);
+    glDeleteTextures(1, &m_texture_b);
     glDeleteBuffers(1, &m_quad_ib);
     glDeleteBuffers(1, &m_quad_vb);
     glDeleteVertexArrays(1, &m_quad_va);
@@ -90,15 +93,15 @@ BatchRenderingTexture::~BatchRenderingTexture() {
 void BatchRenderingTexture::on_update(float dt) {
     // clang-format off
     float vertices[] = {
-        -150.0f, -50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3], 0.0f, 0.0f,
-         -50.0f, -50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3], 1.0f, 0.0f,
-         -50.0f,  50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3], 1.0f, 1.0f,
-        -150.0f,  50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3], 0.0f, 1.0f,
+        -150.0f, -50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3], 0.0f, 0.0f, 0.0f,
+         -50.0f, -50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3], 1.0f, 0.0f,0.0f,
+         -50.0f,  50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3], 1.0f, 1.0f,0.0f,
+        -150.0f,  50.0f, 0.0f, color_a[0], color_a[1], color_a[2], color_a[3], 0.0f, 1.0f,0.0f,
 
-          50.0f, -50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3], 0.0f, 0.0f,
-         150.0f, -50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3], 1.0f, 0.0f,
-         150.0f,  50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3], 1.0f, 1.0f,
-          50.0f,  50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3], 0.0f, 1.0f
+          50.0f, -50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3], 0.0f, 0.0f,1.0f,
+         150.0f, -50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3], 1.0f, 0.0f,1.0f,
+         150.0f,  50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3], 1.0f, 1.0f,1.0f,
+          50.0f,  50.0f, 0.0f, color_b[0], color_b[1], color_b[2], color_b[3], 0.0f, 1.0f,1.0f
     };
     // clang-format on
 
@@ -116,7 +119,11 @@ void BatchRenderingTexture::on_render() {
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(get_camera()->get_view_projection()));
 
     location = glGetUniformLocation(m_shader->get_renderer_id(), "u_texture");
-    glUniform1i(location, 0);
+    int samplers[2] = {0, 1};
+    glUniform1iv(location, 2, samplers);
+
+    glBindTextureUnit(0, m_texture_a);
+    glBindTextureUnit(1, m_texture_b);
 
     glBindVertexArray(m_quad_va);
     glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
